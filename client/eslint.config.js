@@ -7,8 +7,8 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
 export default [
-  { 
-    ignores: ['dist', 'node_modules'] 
+  {
+    ignores: ['dist', 'node_modules'],
   },
 
   {
@@ -27,19 +27,19 @@ export default [
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      prettier: prettierPlugin, 
+      prettier: prettierPlugin,
     },
     rules: {
-      ...js.configs.recommended.rules, 
-      ...react.configs.recommended.rules, 
-      ...react.configs['jsx-runtime'].rules, 
-      ...reactHooks.configs.recommended.rules, 
+      ...js.configs.recommended.rules,
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      'prettier/prettier': 'error', 
+      'prettier/prettier': 'error',
     },
   },
 
