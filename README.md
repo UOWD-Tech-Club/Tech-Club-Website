@@ -6,11 +6,11 @@ Welcome to the UOWD Tech Club website repository! This project is managed and cr
 
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
-- [Repository Structure](#repository-structure)
 - [Setup Instructions](#setup-instructions)
 - [Workflow](#workflow)
 - [Labels and Conventions](#labels-and-conventions)
 - [Code Guidelines](#code-guidelines)
+    - [Commit Message Guidelines](#commit-message-guidelines)
     - [CSS Guidelines](#css-guidelines)
     - [React Guidelines](#react-guidelines)
 
@@ -83,20 +83,20 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 
     Or assign an available issue to yourself from the **Project Board**.
 
-2. **Add to Project Board**
+2. **Update to Project Board**
 
-    Newly created issues are automatically added to the "Backlog" column in the project board.
+    Newly created issues are automatically added to the "Backlog" column in the project board. Update the status of the issue regularly and do not forget to add start/end dates.
 
 3. **Create a Branch**
 
     Inside the issue, use the option to create a branch which will automatically link the issue with the created branch.
 
     Follow the branch naming convention based on the issue type:
-    - Feature: `feature/issue-number-brief-description`
+    - Feature: `feat/issue-number-brief-description`
     - Bug Fix: `bug/issue-number-brief-description`
     - Maintenance: `maintain/issue-number-brief-description`
 
-    Example: `feature/123-add-login-page`
+    Example: `feat/123-add-login-page`
 
 4. **Develop the Feature**
 
@@ -106,11 +106,12 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 
 5. **Push Changes**
 
-    Once all changes are made you can push your changes to the remote repository:
+    Once all changes are made you can commit and push your changes to the remote repository:
 
     ```bash
     git push origin feature/123-add-login-page
     ```
+    Commit messages must follow the convention detailed in [Code Guidelines](#code-guidelines).
 
 6. **Create a Pull Request**
 
@@ -139,7 +140,7 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 
 - **Type:**
     - `bug`: Issues related to bugs in the application.
-    - `enhancement`: Feature requests and new functionality.
+    - `feature`: Feature requests and new functionality.
     - `maintenance`: Refactoring, technical debt, or dependencies updates.
 
 ### Applying Labels
@@ -147,6 +148,42 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 Remember to apply and update labels regularly during the development process to make collaboration more seamless and track overall project progress.
 
 ## Code Guidelines
+
+### Commit Message Guidelines
+
+We follow a specific format for commit messages to maintain clarity and consistency. Each commit message should be structured as follows:
+
+#### Format
+
+```php
+<type>(<scope>): <description>
+```
+
+#### Types
+
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation changes
+- **style**: Changes that do not affect code meaning (white-space, formatting, etc.)
+- **refactor**: Code changes that neither fix bugs nor add features
+- **test**: Adding or modifying tests
+- **chore**: Changes to the build process, dependencies, or project configuration
+
+#### Example
+
+```scss
+feat(auth): add login page with form validation
+fix(button): resolve hover state issue on mobile devices
+docs(readme): update installation instructions
+```
+
+#### Guidelines
+
+- Use the imperative mood in the description (e.g., "add" not "added" or "adds").
+- Limit the subject line to 50 characters.
+- Capitalize the subject line.
+- Do not end the subject line with a period.
+- Include a brief explanation in the commit body if necessary.
 
 ### CSS Guidelines
 
