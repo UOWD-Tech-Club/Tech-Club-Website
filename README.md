@@ -23,8 +23,7 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 - **Frontend:** React, Vite, CSS Modules
 - **Backend:** Node.js, Express, Postgres
 - **Version Control:** Git, GitHub
-- **CI/CD:** GitHub Actions
-- **Pre-commit Hooks:** Husky
+- **CI/CD:** GitHub Actions, Husky
 - **Linting & Formatting:** ESLint, Prettier
 
 ## Setup Instructions
@@ -38,8 +37,8 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/your-username/uowd-tech-club-website.git
-    cd uowd-tech-club-website
+    https://github.com/UOWD-Tech-Club/Tech-Club-Website.git
+    cd Tech-Club-Website
     ```
 
 2. **Install Dependencies:**
@@ -83,7 +82,7 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 
     Or assign an available issue to yourself from the **Project Board**.
 
-2. **Update to Project Board**
+2. **Update the Project Board**
 
     Newly created issues are automatically added to the "Backlog" column in the project board. Update the status of the issue regularly and do not forget to add start/end dates.
 
@@ -263,25 +262,6 @@ function Counter() {
 
 export default Counter;
 ```
-
-#### PropTypes
-
-Use `prop-types` for type checking props in your components.
-
-```jsx
-import PropTypes from 'prop-types';
-
-function Button({ label }) {
-    return <button>{label}</button>;
-}
-
-Button.propTypes = {
-    label: PropTypes.string.isRequired,
-};
-
-export default Button;
-```
-
 #### Hooks
 
 Use React hooks (`useState`, `useEffect`, `useContext`, etc.) for state and side-effects management.
