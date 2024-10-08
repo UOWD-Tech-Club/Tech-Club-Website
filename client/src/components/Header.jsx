@@ -10,7 +10,7 @@ function Header() {
             <a className="nav-link">Home</a>
           </li>
           <li>
-            <a className="nav-link">About</a>
+            <a className="nav-link">Events</a>
           </li>
           <li>
             <button className="nav-signup">Sign up</button>
