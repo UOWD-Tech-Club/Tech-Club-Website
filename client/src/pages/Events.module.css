@@ -1,0 +1,135 @@
+/* General container for the carousel */
+.carouselContainer {
+  padding: 20px;
+  background-color: #20201f;
+  color: white;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.carouselHeading {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+/* Embla specific styles */
+.embla {
+  position: relative;
+  padding: 10px 0;
+}
+
+.emblaViewport {
+  width: 75%;
+}
+
+.emblaContainer {
+  display: flex;
+  gap: 30px;
+  transition: transform 0.3s ease; /* Smooth slide transition */
+}
+
+.emblaSlide {
+  flex: 0 0 25%;
+  min-width: 20%;
+  position: relative;
+  background-color: #222;
+  border-radius: 12px;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.emblaSlide:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Slide content styling */
+.slideImage {
+  width: 100%;
+  height: auto;
+}
+
+.heading {
+  padding: 20px 0px 20px 0;
+  font-size: 25px;
+}
+
+.slideContent {
+  padding: 15px;
+  color: white;
+  float: left;
+}
+
+.slideContent h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.slideContent p {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Navigation buttons */
+.emblaPrev,
+.emblaNext {
+  background-color: #e1f264;
+  border: none;
+  color: #111;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  line-height: 1;
+}
+
+.emblaPrev {
+  left: 10px;
+}
+
+.emblaNext {
+  right: 10px;
+}
+
+.emblaPrev:hover,
+.emblaNext:hover {
+  background-color: #c7d100;
+}
+
+.registerButton {
+  background-color: #e1f264;
+  color: #111;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.registerButton:hover,
+.allEventsButton:hover {
+  background-color: #c7d100;
+  transition: background-color 0.3s;
+}
+
+.allEventsButton {
+  background-color: #e1f264;
+  color: #111;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

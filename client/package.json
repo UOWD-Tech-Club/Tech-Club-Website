@@ -13,6 +13,7 @@
     "prepare": "cd .. && husky client/.husky"
   },
   "dependencies": {
+    "embla-carousel-react": "^8.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -28,10 +29,10 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-    "prettier": "^3.3.3",
-    "vite": "^5.4.1",
     "husky": "^9.1.6",
-    "lint-staged": "^15.2.10"
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "vite": "^5.4.1"
   },
   "lint-staged": {
     "*.{js,jsx,css,html,md,json}": [
