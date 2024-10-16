@@ -1,0 +1,53 @@
+.newsletterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 20px;
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+.newsletter h1 {
+  font-family: Nacelle-Black, sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+}
+
+/* Carousel Styles */
+.carousel {
+  width: 100%;
+  margin-bottom: -140px;
+}
+
+.carouselItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../assets/newsletter-bg.png');
+  height: 180px;
+  color: var(--secondary);
+  font-size: 1.5rem;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+div {
+  padding: 0 5px;
+}
+/* Button Styles */
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.seeMoreButton {
+  background-color: var(--accent);
+  color: var(--primary);
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+  border-radius: 20px;
+}
