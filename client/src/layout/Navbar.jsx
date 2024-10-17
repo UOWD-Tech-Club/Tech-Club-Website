@@ -1,11 +1,16 @@
 import styles from './Navbar.module.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
 
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
+  };
+
+  const closeNavbar = () => {
+    setShowNavbar(false);
   };
 
   return (
@@ -27,19 +32,33 @@ function Navbar() {
       </div>
 
       {/* Logo Section */}
-      <div className={styles.logo}>
+      <Link to="/" className={styles.logo} onClick={closeNavbar}>
         <span className={styles.logo_tech}>Tech</span>
         <span className={styles.logo_club}>Club</span>
-      </div>
+      </Link>
 
       {/* Main Navigation and Join Us Button */}
       <div className={styles.nav_action}>
         <div
           className={`${styles.nav_links} ${showNavbar ? styles.active : ''}`}
         >
-          <a className={styles.nav_link}>Events</a>
-          <a className={styles.nav_link}>Projects</a>
-          <a className={styles.nav_link}>Newsletter</a>
+          <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
+            Events
+          </Link>
+          <Link
+            to="/projects"
+            className={styles.nav_link}
+            onClick={closeNavbar}
+          >
+            Projects
+          </Link>
+          <Link
+            to="/newsletter"
+            className={styles.nav_link}
+            onClick={closeNavbar}
+          >
+            Newsletter
+          </Link>
         </div>
         <button className={styles.joinus}>Join Us</button>
       </div>
