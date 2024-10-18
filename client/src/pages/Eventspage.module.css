@@ -1,7 +1,6 @@
 /* General container for the carousel */
 .carouselContainer {
   padding: 20px;
-  background-color: #20201f;
   color: white;
   text-align: center;
   margin: 0 auto;
@@ -29,9 +28,9 @@
 }
 
 .emblaViewport {
-  width: 75%;
+  width: 100%; /* Increase the width to occupy more space */
   margin: 0 auto;
-  padding-left: 15px; /* Add padding to make sure first slide is visible */
+  padding-left: 0px; /* Remove or minimize the padding */
 }
 
 .emblaContainer {
@@ -41,8 +40,8 @@
 }
 
 .emblaSlide {
-  margin-right: 50px;
-  flex: 0 0 40%;
+  margin-right: 30px; /* Adjust spacing between slides */
+  flex: 0 0 30%; /* Modify this to fit your desired number of slides */
   position: relative;
   background-color: #222;
   border-radius: 12px;
@@ -205,5 +204,18 @@
     width: 35px;
     height: 35px;
     font-size: 20px;
+  }
+}
+
+/* Optional: Adjust for smaller screens */
+@media (max-width: 768px) {
+  .emblaSlide {
+    flex: 0 0 40%; /* Increase the size for better fit */
+  }
+}
+
+@media (max-width: 576px) {
+  .emblaSlide {
+    flex: 0 0 60%;
   }
 }

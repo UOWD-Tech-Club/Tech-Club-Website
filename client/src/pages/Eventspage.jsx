@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import useEvents from 'embla-carousel-react';
-import eventImage from '../../public/img/Picture1.png';
+import eventImage from '../img/Picture1.png';
 import styles from './Eventspage.module.css'; // Import CSS module
 
 function Eventspage() {
