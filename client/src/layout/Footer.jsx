@@ -9,6 +9,12 @@ function Footer() {
     // Handle form submission
     console.log(email);
   };
+  let emailError;
+  const emailRegex =
+    /^([a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@[a-zA-Z-]+(\.[a-zA-Z]{2,}){1,3}|)$/;
+  if (!emailRegex.test(email)) {
+    emailError = true;
+  }
   return (
     <footer className={styles.footer}>
       <img src={logo} alt="Tech Club Logo" className={styles.footer__logo} />
@@ -42,6 +48,9 @@ function Footer() {
           />
           <button type="submit">Let&apos;s Go</button>
         </form>
+        {emailError && (
+          <p className={styles.emailError}>Please enter a valid email ID</p>
+        )}
       </div>
       <div className={styles.footer__socials}>
         <h1>Socials</h1>

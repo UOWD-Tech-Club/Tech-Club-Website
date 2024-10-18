@@ -104,6 +104,14 @@
   background-color: var(--secondary);
 }
 
+.emailError {
+  height: 0;
+  display: block;
+  font-size: 7px;
+  margin-left: 15px;
+  color: #d40000;
+}
+
 .footer__socials {
   height: 80px;
   margin: auto auto 25px auto;
@@ -208,5 +216,9 @@
     width: 100%;
     margin: 0 40px 0 0;
     align-items: end;
+  }
+
+  .emailError {
+    margin-right: 110px;
   }
 }
