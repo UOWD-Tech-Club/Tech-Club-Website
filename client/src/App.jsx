@@ -7,6 +7,7 @@ import Newsletterpage from './pages/Newsletterpage';
 
 import Footer from './layout/Footer';
 
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
