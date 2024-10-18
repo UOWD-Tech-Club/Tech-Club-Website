@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import useEvents from 'embla-carousel-react';
 import eventImage from '../../public/img/Picture1.png';
-import styles from './Events.module.css'; // Import CSS module
+import styles from './Eventspage.module.css'; // Import CSS module
 
-export const Events = () => {
+function Eventspage() {
   const [emblaRef, emblaApi] = useEvents({
     watchDrag: true,
   });
@@ -88,7 +88,7 @@ export const Events = () => {
       location: '@2.55',
     },
     {
-      id: 8,
+      id: 9,
       title: 'Event Example 9',
       date: '25th October, 2024',
       time: '3:00pm - 4:30pm',
@@ -139,4 +139,6 @@ export const Events = () => {
       </div>
     </div>
   );
-};
+}
+
+export default Eventspage;
