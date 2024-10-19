@@ -37,7 +37,7 @@ The UOWD Tech Club website is built as a full-stack web application using React 
 1. **Clone the Repository:**
 
     ```bash
-    https://github.com/UOWD-Tech-Club/Tech-Club-Website.git
+    git clone https://github.com/UOWD-Tech-Club/Tech-Club-Website.git
     cd Tech-Club-Website
     ```
 
