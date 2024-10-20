@@ -1,18 +1,17 @@
 import Slider from 'react-slick';
-import styles from './Newsletterpage.module.css';
+import styles from './Newsletter.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import ArrowIcon from '../assets/button-arrow.svg';
 
-function Newsletter() {
+const Newsletter = () => {
   // Settings for the first carousel
   const settings1 = {
     dots: false,
     arrows: false,
     infinite: true,
-    speed: 1500,
+    speed: 500,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 3000,
     slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
@@ -47,16 +46,16 @@ function Newsletter() {
     dots: false,
     arrows: false,
     infinite: true,
-    speed: 1100,
+    speed: 500,
     autoplay: true,
-    autoplaySpeed: 4500,
+    autoplaySpeed: 2500,
     slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
           dots: false,
@@ -65,14 +64,14 @@ function Newsletter() {
       {
         breakpoint: 960,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
@@ -119,13 +118,10 @@ function Newsletter() {
       </div>
 
       <div className={styles.buttonContainer}>
-        <button className={styles.seeMoreButton}>
-          All News
-          <img src={ArrowIcon} alt="Arrow Icon" className={styles.arrowIcon} />
-        </button>
+        <button className={styles.seeMoreButton}>All News</button>
       </div>
     </div>
   );
-}
+};
 
 export default Newsletter;
