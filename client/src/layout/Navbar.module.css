@@ -16,6 +16,7 @@
 .logo_club {
   color: transparent;
   -webkit-text-stroke: 2px var(--accent);
+  text-stroke: 2px var(--accent);
 }
 
 .logo_tech {
