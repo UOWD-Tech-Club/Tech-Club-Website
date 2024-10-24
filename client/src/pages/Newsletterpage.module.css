@@ -105,3 +105,108 @@ div {
     margin: 0 8px;
   }
 }
+.newsletterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 40px;
+  background-color: var(--primary);
+  color: var(--secondary);
+  padding: 80px 0px;
+}
+
+.newsletter h1 {
+  font-family: Nacelle-Black, sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+}
+
+/* Carousel Styles */
+.carousel {
+  padding-top: 20px;
+  width: 100%;
+  height: 200px;
+  /*margin-bottom: -140px;*/
+}
+
+.carouselItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../assets/newsletter-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 180px;
+  color: var(--secondary);
+  font-size: 1.5rem;
+  padding: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.carouselItem:hover {
+  transform: scale(1.02); /* Slightly enlarge the card */
+}
+div {
+  padding: 0 5px;
+}
+/* Button Styles */
+.buttonContainer {
+  padding-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  z-index: 10;
+}
+
+.seeMoreButton {
+  background-color: var(--accent);
+  color: var(--primary);
+  font-size: 15px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Work Sans', sans-serif;
+  border-radius: 20px;
+  display: flex; /* Use flexbox to align items */
+  align-items: center; /* Center items vertically */
+}
+
+.arrowIcon {
+  width: 25.444px;
+  height: 20.556px;
+  margin-left: 10px; /* Space between text and icon */
+}
+.seeMoreButton:hover {
+  transform: scale(1.02); /* Add a white border on hover */
+}
+
+/*responsive margins */
+
+/* for large screens */
+@media (min-width: 1200px) {
+  .newsletterContainer {
+    margin: 0 80px;
+  }
+}
+
+/* for medium screens */
+@media (max-width: 1199px) and (min-width: 960px) {
+  .newsletterContainer {
+    margin: 0 90px;
+  }
+}
+
+/* for smaller screens */
+@media (max-width: 959px) and (min-width: 600px) {
+  .newsletterContainer {
+    margin: 0 15px;
+  }
+}
+
+/* for mobile screens */
+@media (max-width: 599px) {
+  .newsletterContainer {
+    margin: 0 8px;
+  }
+}
