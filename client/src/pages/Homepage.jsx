@@ -1,10 +1,11 @@
 // import styles from './Homepage.module.css';
+import Newsletter from '../components/Newsletter';
 
 function Homepage() {
   return (
-    <div>
-      <h1>Homepage</h1>
-    </div>
+    <>
+      <Newsletter />
+    </>
   );
 }
 
