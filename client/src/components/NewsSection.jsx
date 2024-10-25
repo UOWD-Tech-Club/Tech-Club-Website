@@ -1,5 +1,5 @@
 import Slider from 'react-slick';
-import styles from './Newsletterpage.module.css';
+import styles from './NewsSection.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';

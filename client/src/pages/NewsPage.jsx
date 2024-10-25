@@ -1,8 +1,8 @@
-function Projectspage() {
+function NewsPage() {
   return (
     <div>
       <h1>Projects page</h1>
     </div>
   );
 }
-export default Projectspage;
+export default NewsPage;
