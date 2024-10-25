@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const eventRoutes = require("../Routes/eventsRoutes");
+import eventRoutes from "./Routes/eventsRoutes.js";
 
 //ES6 equivalent to __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -23,9 +23,16 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/api", eventRoutes);
 
-const PORT = process.env.LOCAL_PORT;
+app.use((req, res, next) => {
+  console.log(`Received a ${req.method} request for ${req.url}`);
+  next();
+});
+
+
+app.use("/api", eventRoutes);
+
+const PORT = process.env.LOCAL_PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

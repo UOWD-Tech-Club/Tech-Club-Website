@@ -8,7 +8,7 @@ Things to be included
 */
 }
 
-import pool from "../Db/db_config";
+import pool from "../Db/db_config.js";
 
 // Fetch events logic
 async function getEvents(req, res) {
@@ -26,6 +26,24 @@ async function getEvents(req, res) {
   }
 }
 
-module.exports = {
-  getEvents,
-};
+// Register users logic (POST request)
+async function registerUser(req, res) {
+  const { user_id, event_id } = req.body;
+  
+  if (!user_id || !event_id) {
+    return res.status(400).json({ message: "User ID and Event ID are required" });
+  }
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO registrations (user_id, event_id) VALUES ($1, $2)",
+      [user_id, event_id]
+    );
+    res.status(201).json({ message: "User registered successfully", data: result.rows[0] });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+export { getEvents, registerUser };
