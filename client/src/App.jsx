@@ -8,12 +8,14 @@ import Newsletterpage from './pages/Newsletterpage';
 import Footer from './layout/Footer';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import EventsSection from './layout/EventsSection';
 
 function App() {
   return (
     <BrowserRouter>
       <>
         <Navbar />
+        <EventsSection />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Eventspage />} />
