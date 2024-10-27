@@ -1,6 +1,6 @@
 //File contains the code that is ran initially to create the Events table -- for reference only (Not in production)
 
-import pool from "../Db/db_config";
+import pool from "../Db/db_config.js";
 
 const createEvent = async () => {
   try {
@@ -26,5 +26,8 @@ const createEvent = async () => {
   }
 };
 
+
+
+createEvent();
 
 

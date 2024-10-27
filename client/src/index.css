@@ -8,6 +8,11 @@
   --accent: #e1f264;
 }
 
+/*This is to hide the scroll bar*/
+::-webkit-scrollbar {
+  display: none;
+}
+
 @font-face {
   font-family: Nacelle-Black;
   src: url('../fonts/Nacelle-Black.otf') format('opentype');
@@ -104,6 +109,9 @@ ol {
 html,
 body {
   height: 100%;
+  overflow: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 /* Set default line height */
