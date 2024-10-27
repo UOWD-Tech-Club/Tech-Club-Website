@@ -1,9 +1,10 @@
 // import styles from './Homepage.module.css';
+import NewsSection from '../components/NewsSection';
 
 function Homepage() {
   return (
     <div>
-      <h1>Homepage</h1>
+      <NewsSection />
     </div>
   );
 }
