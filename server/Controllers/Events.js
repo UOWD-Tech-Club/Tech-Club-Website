@@ -8,7 +8,7 @@ Things to be included
 */
 }
 
-import pool from "../Db/db_config";
+import pool from "../Db/db_config.js";
 
 export const getEvents = async (req, res) => {
   const db = await pool.connect();
@@ -41,17 +41,17 @@ export const getEvents = async (req, res) => {
 export const searchEvents = async (req, res) => {
   const db = await pool.connect();
   try {
-    const { searchTerm } = req.query; // Assuming search term is passed as a query parameter
+    const { q } = req.query; // Assuming search term is passed as a query parameter
 
-    if (!searchTerm) {
+    if (!q) {
       return res.status(400).json({
         message: "Search term is required",
       });
     }
 
     const result = await db.query(
-      `SELECT * FROM events WHERE event_name ILIKE $1 OR event_details LIKE $1 ORDER BY event_date DESC`,
-      [`%${searchTerm}%`]
+      `SELECT * FROM events WHERE event_title LIKE $1 ORDER BY event_date DESC`,
+      [`%${q}%`]
     );
 
     const events = result.rows;
@@ -77,11 +77,13 @@ export const searchEvents = async (req, res) => {
 };
 
 // Register users logic (POST request)
-async function registerUser(req, res) {
+export const registerUser = async (req, res) => {
   const { user_studentId, event_id } = req.body;
-  
+
   if (!user_studentId || !event_id) {
-    return res.status(400).json({ message: "User Student ID and Event ID are required" });
+    return res
+      .status(400)
+      .json({ message: "User Student ID and Event ID are required" });
   }
 
   try {
@@ -96,6 +98,4 @@ async function registerUser(req, res) {
     console.error(err.message);
     res.status(500).json({ message: "Server error" });
   }
-}
-
-export { getEvents, searchEvents, registerUser };
+};
