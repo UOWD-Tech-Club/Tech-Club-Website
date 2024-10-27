@@ -43,7 +43,7 @@ function EventsSection() {
     infinite: true,
     speed: 1500,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 3000,
     slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
