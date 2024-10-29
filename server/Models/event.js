@@ -10,24 +10,23 @@ const createEvent = async () => {
     await pool.query(
       `CREATE TABLE events (
             event_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-            event_name VARCHAR(100) NOT NULL,
-            event_details VARCHAR (250) NOT NULL,
+            event_title VARCHAR(100) NOT NULL,
+            event_time TIME,
             event_date DATE,
-            event_createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            event_details VARCHAR(250),
+            event_location VARCHAR(150) NOT NULL,
+            event_createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            event_img_link varchar(200)
             );
             
-    `);
+    `
+    );
 
-    console.log("Events Table Added")
-    
+    console.log("Events Table Added");
   } catch (error) {
     console.log(error);
     console.error(error);
   }
 };
 
-
-
 createEvent();
-
-
