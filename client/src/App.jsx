@@ -1,18 +1,16 @@
 import Navbar from './layout/Navbar';
-import EventsPage from './pages/Eventspage';
-import Homepage from './pages/Homepage';
+import EventsPage from './pages/EventsPage';
+import Homepage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
 import Footer from './layout/Footer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import EventsSection from './layout/EventsSection';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Tech-Club-Website">
       <>
         <Navbar />
-        <EventsSection />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<EventsPage />} />
