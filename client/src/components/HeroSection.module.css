@@ -1,0 +1,42 @@
+.heroContainer {
+  /* background-color: lime; */
+  position: relative;
+  padding: 20vh 0;
+  width: 100%;
+  height: 90vh;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoContainer {
+  position: fixed;
+}
+
+.logo {
+  margin: 10px;
+  transition:
+    transform 0.5s ease-in-out,
+    opacity 0.2s ease-in-out;
+}
+
+#logo__tech {
+  transform: translate(-37px, -274px) scale(0.3);
+}
+
+#logo__club {
+  transform: translate(12px, -354px) scale(0.3);
+}
+
+.isUnscrolled {
+  transform: translateY(0) !important;
+}
+
+.logo.hidden {
+  opacity: 0;
+}
+
+/* #logo__club.isUnscrolled path {
+    stroke-width: 4;
+} */

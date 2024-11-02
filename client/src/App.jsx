@@ -11,7 +11,7 @@ function App() {
   return (
     <BrowserRouter>
       <>
-        <Navbar />
+        <Navbar isLogoVis={true} />
 
         <Routes>
           <Route path="/" element={<Homepage />} />

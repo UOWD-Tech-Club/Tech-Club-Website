@@ -1,4 +1,10 @@
 .navbar {
+  /* CHANGE START */
+  width: 100%;
+  position: fixed;
+  z-index: 500;
+  background-color: var(--primary);
+  /* CHANGE END */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -11,6 +17,9 @@
   gap: 10px;
   font-family: Nacelle-Black;
   font-size: 2rem;
+  /* CHANGE START */
+  transition: opacity 0.5s ease-in-out 0.4s;
+  /* CHANGE END */
 }
 
 .logo_club {
@@ -162,6 +171,7 @@
     padding: 0px 10px;
     font-size: 20px;
   }
+
   .logo {
     font-size: 35px;
   }
@@ -178,6 +188,7 @@
     padding: 0px 13px;
     font-size: 20px;
   }
+
   .logo {
     font-size: 42px;
   }
