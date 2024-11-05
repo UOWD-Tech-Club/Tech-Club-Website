@@ -1,6 +1,6 @@
 import Navbar from './layout/Navbar';
-import EventsPage from './pages/Eventspage';
-import Homepage from './pages/Homepage';
+import EventsPage from './pages/EventsPage';
+import Homepage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
 import Footer from './layout/Footer';
@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Tech-Club-Website">
       <>
         <Navbar />
         <Routes>
