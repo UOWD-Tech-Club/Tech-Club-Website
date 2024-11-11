@@ -3,39 +3,27 @@ import styles from './EventsSection.module.css'; // Import CSS module
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';
+import { useState, useEffect } from 'react';
+import { format } from 'date-fns';
 
 function EventsSection() {
-  const events = [
-    {
-      id: 1,
-      title: 'Event Example 1',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    {
-      id: 2,
-      title: 'Event Example 2',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    {
-      id: 3,
-      title: 'Event Example 3',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    {
-      id: 4,
-      title: 'Event Example 4',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    // more events...
-  ];
+  const [events, setEvents] = useState([]);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/events');
+      const data = await response.json();
+      console.log(data.events);
+      setEvents(data.events);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch events from the backend
+    fetchEvents();
+  }, []);
 
   const settings = {
     dots: false,
@@ -82,16 +70,28 @@ function EventsSection() {
       <div className={styles.events}>
         <Slider {...settings}>
           {events.map((event) => (
-            <div key={event.id} className={styles.eventsItem}>
-              <div className={styles.eventContent}>
-                <h3 className={styles.eventTitle}>{event.title}</h3>
+            <div key={event.event_id} className={styles.eventsItem}>
+              <div
+                className={styles.eventContent}
+                style={{
+                  backgroundImage: `linear-gradient(
+                    to bottom,
+                    rgba(255, 255, 255, 0.1),
+                    rgba(0, 0, 0, 0.7)
+                  ),
+                  url(${event.event_img_link})`,
+                }}
+              >
+                <div>
+                  <h3 className={styles.eventTitle}>{event.event_title}</h3>
+                </div>
                 <div className={styles.eventInfo}>
                   <p className={styles.eventDetails}>
-                    {event.date}
+                    {format(new Date(event.event_date), 'yyyy-MM-dd')}
                     <br />
-                    {event.time}
+                    {event.event_time}
                     <br />
-                    {event.location}
+                    {event.event_location}
                   </p>
                   <button className={styles.registerButton}>Register →</button>
                 </div>
