@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';
+import { format } from 'date-fns';
 
 function EventsSection() {
   const [events, setEvents] = useState([]);
@@ -25,15 +26,6 @@ function EventsSection() {
 
     fetchEvents();
   }, []);
-
-  function formatDateTime(isoString) {
-    const date = new Date(isoString);
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }
 
   const handleRegisterClick = (event) => {
     navigate(`/events/${event.event_id}`, { state: { event } });
@@ -89,7 +81,7 @@ function EventsSection() {
                 <h3 className={styles.eventTitle}>{event.event_title}</h3>
                 <div className={styles.eventInfo}>
                   <p className={styles.eventDetails}>
-                    {formatDateTime(event.event_date)}
+                    {format(new Date(event.event_date), 'yyyy-MM-dd')}
                     <br />
                     {event.event_time}
                     <br />
