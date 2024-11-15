@@ -1,12 +1,24 @@
 import { useState } from 'react';
 import styles from './EventsPage.module.css';
 import eventimg from '../assets/events_img.png';
+import { useLocation } from 'react-router-dom';
 
 function EventsPage() {
   const [name, setName] = useState('');
-  const [studentId, setStudentId] = useState('');
+  const [user_studentId, setUser_studentId] = useState('');
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({ name: '', studentId: '', email: '' });
+  const [errors, setErrors] = useState({
+    name: '',
+    user_studentId: '',
+    email: '',
+  });
+
+  const location = useLocation();
+  const { event } = location.state || {};
+
+  if (!event) {
+    return <p>No event data available.</p>;
+  }
 
   const nameRegex = /^[A-Za-z\s]{3,50}$/;
   const studentIdRegex = /^\d{7}$/;
@@ -17,8 +29,8 @@ function EventsPage() {
     if (!nameRegex.test(name)) {
       newErrors.name = 'Valid name required';
     }
-    if (!studentIdRegex.test(studentId)) {
-      newErrors.studentId = '7 digit university ID';
+    if (!studentIdRegex.test(user_studentId)) {
+      newErrors.user_studentId = '7 digit university ID';
     }
     if (!emailRegex.test(email)) {
       newErrors.email = 'University email format required';
@@ -27,10 +39,35 @@ function EventsPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const formattedDate = new Date(event.event_date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert('Form submitted successfully!');
+      try {
+        const response = await fetch('http://localhost:8080/events/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_studentId,
+            event_id: event.event_id, // Use the correct syntax here
+          }),
+        });
+        if (response.ok) {
+          alert('Form submitted successfully!');
+        } else {
+          alert('Failed to submit form. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again later.');
+      }
     } else {
       alert('Please fix the errors in the form.');
     }
@@ -42,49 +79,55 @@ function EventsPage() {
         <img src={eventimg} alt="Event" />
       </div>
       <div className={styles.eventDetails}>
-        <h1>Event Name</h1>
-        <h2>October 31 - Room 2.22</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa
-          mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla,
-          mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis
-          tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non
-          suscipit magna interdum eu. Curabitur pellentesque nibh nibh, at
-          maximus ante fermentum sit amet. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Ut et massa mi...
-        </p>
+        <h1>{event.event_title}</h1>
+        <h2>
+          {formattedDate},{event.event_time} - {event.event_location}
+        </h2>
+        <p>{event.event_details}</p>
 
         <h3>Interested? Register Now</h3>
         <form className={styles.registrationForm} onSubmit={handleSubmit}>
-          <label className={styles.username}>
+          <label className={`${styles.customField} ${styles.one}`}>
             <input
               type="text"
-              placeholder="Your Name"
+              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+              placeholder=" "
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
+              Your Name
+            </span>
             {errors.name && <span className={styles.error}>{errors.name}</span>}
           </label>
 
-          <label className={styles.userid}>
+          <label className={`${styles.customField} ${styles.one}`}>
             <input
               type="text"
-              placeholder="Student ID"
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
+              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+              placeholder=" "
+              value={user_studentId}
+              onChange={(e) => setUser_studentId(e.target.value)}
             />
-            {errors.studentId && (
-              <span className={styles.error}>{errors.studentId}</span>
+            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
+              Student ID
+            </span>
+            {errors.user_studentId && (
+              <span className={styles.error}>{errors.user_studentId}</span>
             )}
           </label>
 
-          <label className={styles.useremail}>
+          <label className={`${styles.customField} ${styles.one}`}>
             <input
               type="email"
-              placeholder="University Email"
+              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+              placeholder=" "
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
+              University Email
+            </span>
             {errors.email && (
               <span className={styles.error}>{errors.email}</span>
             )}

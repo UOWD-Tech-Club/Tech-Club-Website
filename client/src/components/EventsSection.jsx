@@ -1,41 +1,43 @@
 import Slider from 'react-slick';
 import styles from './EventsSection.module.css'; // Import CSS module
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';
 
 function EventsSection() {
-  const events = [
-    {
-      id: 1,
-      title: 'Event Example 1',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    {
-      id: 2,
-      title: 'Event Example 2',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    {
-      id: 3,
-      title: 'Event Example 3',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    {
-      id: 4,
-      title: 'Event Example 4',
-      date: '25th October, 2024',
-      time: '3:00pm - 4:30pm',
-      location: '@2.55',
-    },
-    // more events...
-  ];
+  const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch events from the backend
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/events/');
+        const data = await response.json();
+        console.log('API Response:', data); // Log the full response
+        setEvents(data.events); // Access the 'events' array
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  function formatDateTime(isoString) {
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+
+  const handleRegisterClick = (event) => {
+    navigate(`/events/${event.event_id}`, { state: { event } });
+  };
 
   const settings = {
     dots: false,
@@ -82,18 +84,23 @@ function EventsSection() {
       <div className={styles.events}>
         <Slider {...settings}>
           {events.map((event) => (
-            <div key={event.id} className={styles.eventsItem}>
+            <div key={event.event_id} className={styles.eventsItem}>
               <div className={styles.eventContent}>
-                <h3 className={styles.eventTitle}>{event.title}</h3>
+                <h3 className={styles.eventTitle}>{event.event_title}</h3>
                 <div className={styles.eventInfo}>
                   <p className={styles.eventDetails}>
-                    {event.date}
+                    {formatDateTime(event.event_date)}
                     <br />
-                    {event.time}
+                    {event.event_time}
                     <br />
-                    {event.location}
+                    {event.event_location}
                   </p>
-                  <button className={styles.registerButton}>Register →</button>
+                  <button
+                    className={styles.registerButton}
+                    onClick={() => handleRegisterClick(event)}
+                  >
+                    Register →
+                  </button>
                 </div>
               </div>
             </div>
