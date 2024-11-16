@@ -2,7 +2,7 @@ import Slider from 'react-slick';
 import styles from './NewsSection.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import ArrowIcon from '../assets/button-arrow.svg';
+import { useState, useEffect } from 'react';
 
 function Newsletter() {
   // Settings for the first carousel
@@ -79,6 +79,20 @@ function Newsletter() {
     ],
   };
 
+  const [dailyNews, setDailyNews] = useState([]);
+  const fetchDailyNews = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/news/dailynews');
+      const data = await response.json();
+      setDailyNews(data.news);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+  useEffect(() => {
+    fetchDailyNews();
+  }, []);
+
   return (
     <div className={styles.newsletterContainer}>
       <div className={styles.newsletter}>
@@ -100,28 +114,32 @@ function Newsletter() {
         </Slider>
       </div>
 
-      {/* Second Carousel */}
       <div className={styles.carousel}>
         <Slider {...settings2}>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 4</h2>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 5</h2>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 6</h2>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 7</h2>
-          </div>
+          {dailyNews.map((news, index) => (
+            <div
+              key={index}
+              className={styles.carouselItem}
+              style={{
+                height: '200px !important',
+                backgroundColor: 'black',
+              }}
+            >
+              <div>
+                <p>{news.news_title}</p>
+              </div>
+              <div style={{ backgroundColor: 'yellow' }}>
+                <p>{news.news_pubDate}</p>
+              </div>
+            </div>
+          ))}
         </Slider>
       </div>
 
       <div className={styles.buttonContainer}>
         <button className={styles.seeMoreButton}>
           All News
-          <img src={ArrowIcon} alt="Arrow Icon" className={styles.arrowIcon} />
+          <img alt="Arrow Icon" className={styles.arrowIcon} />
         </button>
       </div>
     </div>
