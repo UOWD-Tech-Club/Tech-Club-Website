@@ -1,29 +1,36 @@
 import Slider from 'react-slick';
 import styles from './EventsSection.module.css'; // Import CSS module
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';
-import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 
 function EventsSection() {
   const [events, setEvents] = useState([]);
-
-  const fetchEvents = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/events');
-      const data = await response.json();
-      console.log(data.events);
-      setEvents(data.events);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch events from the backend
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/events/');
+        const data = await response.json();
+        console.log('API Response:', data); // Log the full response
+        setEvents(data.events); // Access the 'events' array
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
     fetchEvents();
   }, []);
+
+  const handleRegisterClick = (event) => {
+    navigate(`/events/${event.event_id}`, { state: { event } });
+  };
+
 
   const settings = {
     dots: false,
@@ -93,7 +100,12 @@ function EventsSection() {
                     <br />
                     {event.event_location}
                   </p>
-                  <button className={styles.registerButton}>Register →</button>
+                  <button
+                    className={styles.registerButton}
+                    onClick={() => handleRegisterClick(event)}
+                  >
+                    Register →
+                  </button>
                 </div>
               </div>
             </div>
