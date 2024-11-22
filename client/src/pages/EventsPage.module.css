@@ -32,7 +32,7 @@
 }
 
 .eventDetails h3 {
-  margin: 30px 0 10px 0;
+  margin: 30px 0 20px 0;
   font-weight: bold;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .error {
-  height: 0;
+  /* height: 0; */
   margin-top: 2px;
   display: block;
   font-size: 15px;
@@ -94,7 +94,7 @@
 .customField {
   position: relative;
   font-size: 14px;
-  border-top: 20px solid transparent;
+  /* border-top: 20px solid transparent; */
   margin-bottom: 5px;
   display: inline-block;
   --field-padding: 12px;
