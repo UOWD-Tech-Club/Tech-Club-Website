@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';
+import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 
 function EventsSection() {
@@ -30,6 +31,7 @@ function EventsSection() {
   const handleRegisterClick = (event) => {
     navigate(`/events/${event.event_id}`, { state: { event } });
   };
+
 
   const settings = {
     dots: false,
@@ -77,8 +79,20 @@ function EventsSection() {
         <Slider {...settings}>
           {events.map((event) => (
             <div key={event.event_id} className={styles.eventsItem}>
-              <div className={styles.eventContent}>
-                <h3 className={styles.eventTitle}>{event.event_title}</h3>
+              <div
+                className={styles.eventContent}
+                style={{
+                  backgroundImage: `linear-gradient(
+                    to bottom,
+                    rgba(255, 255, 255, 0.1),
+                    rgba(0, 0, 0, 0.7)
+                  ),
+                  url(${event.event_img_link})`,
+                }}
+              >
+                <div>
+                  <h3 className={styles.eventTitle}>{event.event_title}</h3>
+                </div>
                 <div className={styles.eventInfo}>
                   <p className={styles.eventDetails}>
                     {format(new Date(event.event_date), 'yyyy-MM-dd')}
