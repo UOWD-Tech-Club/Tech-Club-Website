@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ArrowIcon from '../assets/button-arrow.svg';
-import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 
 function EventsSection() {
