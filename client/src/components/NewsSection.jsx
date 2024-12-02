@@ -1,18 +1,18 @@
 import Slider from 'react-slick';
-import styles from './NewsSection.module.css';
+import styles from './Newsletter.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useState, useEffect } from 'react';
 
-function Newsletter() {
+const Newsletter = () => {
   // Settings for the first carousel
   const settings1 = {
     dots: false,
     arrows: false,
     infinite: true,
-    speed: 1500,
+    speed: 500,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 3000,
     slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
@@ -47,16 +47,16 @@ function Newsletter() {
     dots: false,
     arrows: false,
     infinite: true,
-    speed: 1100,
+    speed: 500,
     autoplay: true,
-    autoplaySpeed: 4500,
+    autoplaySpeed: 2500,
     slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 1,
           infinite: true,
           dots: false,
@@ -65,30 +65,38 @@ function Newsletter() {
       {
         breakpoint: 960,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
     ],
   };
 
-  const [dailyNews, setDailyNews] = useState([]);
+  const [newsPart1, setNewsPart1] = useState([]);
+  const [newsPart2, setNewsPart2] = useState([]);
+
   const fetchDailyNews = async () => {
     try {
       const response = await fetch('http://localhost:8080/news/dailynews');
       const data = await response.json();
-      setDailyNews(data.news);
+
+      const allNews = data.news;
+      // Split news into two parts
+      const midIndex = Math.ceil(allNews.length / 2);
+      setNewsPart1(allNews.slice(0, midIndex));
+      setNewsPart2(allNews.slice(midIndex));
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error('Error fetching news:', error);
     }
   };
+
   useEffect(() => {
     fetchDailyNews();
   }, []);
@@ -102,48 +110,31 @@ function Newsletter() {
       {/* First Carousel */}
       <div className={styles.carousel}>
         <Slider {...settings1}>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 1</h2>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 2</h2>
-          </div>
-          <div className={styles.carouselItem}>
-            <h2>News Headline 3</h2>
-          </div>
+          {newsPart1.map((news, index) => (
+            <div key={index} className={styles.carouselItem}>
+              <h2>{news.news_title}</h2>
+              <p>{news.summary}</p>
+            </div>
+          ))}
         </Slider>
       </div>
 
+      {/* Second Carousel */}
       <div className={styles.carousel}>
         <Slider {...settings2}>
-          {dailyNews.map((news, index) => (
-            <div
-              key={index}
-              className={styles.carouselItem}
-              style={{
-                height: '200px !important',
-                backgroundColor: 'black',
-              }}
-            >
-              <div>
-                <p>{news.news_title}</p>
-              </div>
-              <div style={{ backgroundColor: 'yellow' }}>
-                <p>{news.news_pubDate}</p>
-              </div>
+          {newsPart2.map((news, index) => (
+            <div key={index} className={styles.carouselItem}>
+              <h2>{news.news_title}</h2>
             </div>
           ))}
         </Slider>
       </div>
 
       <div className={styles.buttonContainer}>
-        <button className={styles.seeMoreButton}>
-          All News
-          <img alt="Arrow Icon" className={styles.arrowIcon} />
-        </button>
+        <button className={styles.seeMoreButton}>All News</button>
       </div>
     </div>
   );
-}
+};
 
 export default Newsletter;
