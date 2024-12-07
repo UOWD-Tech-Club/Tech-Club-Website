@@ -1,8 +1,11 @@
+import Navbar from '../layout/Navbar';
+
 function EventsPage() {
   return (
-    <div>
+    <>
+      <Navbar />
       <h1>Eventspage</h1>
-    </div>
+    </>
   );
 }
 export default EventsPage;

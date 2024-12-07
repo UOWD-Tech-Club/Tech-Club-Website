@@ -42,7 +42,7 @@ function Footer() {
             type="email"
             id="subscription-email"
             name="email"
-            placeholder="enter your email"
+            placeholder="Enter your email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />

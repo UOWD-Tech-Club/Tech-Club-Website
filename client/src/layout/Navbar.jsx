@@ -1,12 +1,9 @@
 import styles from './Navbar.module.css';
-// import { useEffect, useState } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-function Navbar({ isLogoVis }) {
+function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
-  // const [showLogo, setShowLogo] = useState(isLogoVis);
 
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
@@ -15,8 +12,6 @@ function Navbar({ isLogoVis }) {
   const closeNavbar = () => {
     setShowNavbar(false);
   };
-
-  // useEffect(() => setShowLogo(isLogoVis));
 
   return (
     <nav className={styles.navbar}>
@@ -37,12 +32,7 @@ function Navbar({ isLogoVis }) {
       </div>
 
       {/* Logo Section */}
-      <Link
-        to="/"
-        className={styles.logo}
-        onClick={closeNavbar}
-        style={{ opacity: isLogoVis ? 1 : 0 }}
-      >
+      <Link to="/" className={styles.logo} onClick={closeNavbar}>
         <span className={styles.logo_tech}>Tech</span>
         <span className={styles.logo_club}>Club</span>
       </Link>
@@ -75,9 +65,5 @@ function Navbar({ isLogoVis }) {
     </nav>
   );
 }
-
-Navbar.propTypes = {
-  isLogoVis: PropTypes.bool,
-};
 
 export default Navbar;

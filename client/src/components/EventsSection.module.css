@@ -3,7 +3,7 @@
   align-items: flex-start;
   flex-direction: column;
   padding-top: 40px;
-  padding: 80px 0px;
+  padding-bottom: 20px;
   width: 100%;
   background-color: var(--primary);
   color: #fff;
@@ -25,7 +25,7 @@
 .events {
   padding: 20px;
   width: 100%;
-  height: 450px;
+  max-height: 450px;
 }
 
 .eventTitle {
@@ -43,7 +43,7 @@
   margin-left: 0px;
   color: var(--secondary);
   height: 410px;
-  width: 327px;
+  width: 100%;
 }
 
 /* General padding for div */
@@ -52,12 +52,6 @@ div {
 }
 
 .eventContent {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.1),
-      rgba(0, 0, 0, 0.7)
-    ),
-    url('../assets/events_img.png'); /* Background image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -65,8 +59,8 @@ div {
   border-radius: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: stretch;
   position: relative;
   z-index: 2;
   height: 100%;
@@ -78,10 +72,11 @@ div {
   align-items: center;
   width: 100%;
   justify-content: space-evenly;
-  padding-top: 190px;
-  height: 100%;
+  padding-top: 20px;
+  margin-top: auto;
+  height: auto;
+  padding-bottom: 20px;
 }
-
 .buttonContainer {
   padding-top: 30px;
   display: flex;

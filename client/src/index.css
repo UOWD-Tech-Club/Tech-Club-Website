@@ -8,6 +8,11 @@
   --accent: #e1f264;
 }
 
+#root {
+  padding: 0;
+  margin: 0;
+}
+
 /*This is to hide the scroll bar*/
 ::-webkit-scrollbar {
   display: none;
@@ -15,12 +20,12 @@
 
 @font-face {
   font-family: Nacelle-Black;
-  src: url('../fonts/Nacelle-Black.otf') format('opentype');
+  src: url('/fonts/Nacelle-Black.otf') format('opentype');
 }
 
 @font-face {
   font-family: Nacelle-Bold;
-  src: url('../fonts/Nacelle-Bold.otf') format('opentype');
+  src: url('/fonts/Nacelle-Bold.otf') format('opentype');
 }
 
 /**** BASE STYLES ****/

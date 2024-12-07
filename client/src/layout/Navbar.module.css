@@ -1,10 +1,4 @@
 .navbar {
-  /* CHANGE START */
-  width: 100%;
-  position: fixed;
-  z-index: 500;
-  background-color: var(--primary);
-  /* CHANGE END */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,9 +11,6 @@
   gap: 10px;
   font-family: Nacelle-Black;
   font-size: 2rem;
-  /* CHANGE START */
-  transition: opacity 0.5s ease-in-out 0.4s;
-  /* CHANGE END */
 }
 
 .logo_club {
@@ -42,7 +33,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  background-color: var(--primary);
+  /* background-color: var(--primary); */
   left: 0;
   top: 80px;
   width: 0;
@@ -50,7 +41,7 @@
   transition: all 0.3s ease-in;
   overflow: hidden;
   font-size: 24px;
-  padding: 0.5rem;
+  padding: 0;
 }
 
 .nav_links.active {
@@ -58,7 +49,7 @@
 }
 
 .nav_link {
-  padding: 0.5rem;
+  padding: 1rem;
   color: var(--secondary);
   transition: transform 0.2s ease;
 }
@@ -143,6 +134,13 @@
   transform: rotate(180deg);
 }
 
+/* Mobile Styles */
+@media screen and (max-width: 620px) {
+  .nav_links {
+    background-color: var(--primary);
+  }
+}
+
 /* Tablet Styles */
 @media screen and (min-width: 620px) and (max-width: 960px) {
   .joinus {
@@ -163,6 +161,10 @@
   .bars {
     height: 4px;
   }
+
+  .nav_links {
+    background-color: var(--primary);
+  }
 }
 
 /* Small Desktop Styles */
@@ -171,7 +173,6 @@
     padding: 0px 10px;
     font-size: 20px;
   }
-
   .logo {
     font-size: 35px;
   }
@@ -188,7 +189,6 @@
     padding: 0px 13px;
     font-size: 20px;
   }
-
   .logo {
     font-size: 42px;
   }
@@ -237,4 +237,8 @@
     transform: scale(0.95);
     transform-origin: center;
   }
+}
+
+* {
+  transition: none;
 }

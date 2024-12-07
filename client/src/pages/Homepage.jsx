@@ -1,15 +1,20 @@
 // import styles from './Homepage.module.css';
+import Navbar from '../layout/Navbar';
 import EventsSection from '../components/EventsSection';
 import NewsSection from '../components/NewsSection';
-import HeroSection from '../components/HeroSection';
+import Footer from '../layout/Footer';
+import AnimatedNavbar from '../layout/AnimatedNavbar';
 
 function Homepage() {
   return (
-    <div>
-      <HeroSection />
+    <AnimatedNavbar
+      navbar={<Navbar />}
+      footer={<Footer />}
+      img={'src/img/bgWithText.png'}
+    >
       <EventsSection />
       <NewsSection />
-    </div>
+    </AnimatedNavbar>
   );
 }
 
