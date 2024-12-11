@@ -33,8 +33,7 @@
   transition: color 0.2s ease;
 }
 
-.footer__navigation li a:hover,
-.footer__navigation li a:active {
+.footer__navigation li a:hover {
   color: var(--accent);
 }
 
@@ -99,15 +98,11 @@
   line-height: 17px;
   word-wrap: break-word;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease-in;
 }
 
 .footer__newsletterSubscription button:hover {
   background-color: var(--secondary);
-}
-
-.footer__newsletterSubscription button:active {
-  background-color: var(--accent);
 }
 
 .emailError {
