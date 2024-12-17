@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import classNames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
-import eventImage from '../img/eventspic.jpg';
+import eventImage from '../assets/eventspic.jpg';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 
 function EventsSection() {
@@ -125,7 +125,6 @@ function EventsSection() {
     }
   };
 
-
   // Recalculate on mount and resize
   useEffect(() => {
     calculateMaxItems();
@@ -133,10 +132,9 @@ function EventsSection() {
     return () => window.removeEventListener('resize', calculateMaxItems);
   }, []);
 
-  const handleRegisterClick = (event) => {
-    navigate(`/events/${event.event_id}`, { state: { event } });
-  };
-
+  // const handleRegisterClick = (event) => {
+  //   navigate(`/events/${event.event_id}`, { state: { event } });
+  // };
 
   const settings = {
     arrows: true,
@@ -197,7 +195,6 @@ function EventsSection() {
                   </p>
                   <p className={styles.eventTime}>{event.event_time}</p>
                   <p className={styles.eventLocation}>{event.event_location}</p>
-
                 </div>
                 <button
                   className={styles.registerButton}
