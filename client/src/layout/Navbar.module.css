@@ -28,12 +28,11 @@
   gap: 50px;
 }
 
-.menu_popup,
 .nav_links {
   position: absolute;
   display: flex;
   flex-direction: column;
-  background-color: var(--primary);
+  /* background-color: var(--primary); */
   left: 0;
   top: 80px;
   width: 0;
@@ -41,7 +40,7 @@
   transition: all 0.3s ease-in;
   overflow: hidden;
   font-size: 24px;
-  padding: 0.5rem;
+  padding: 0;
 }
 
 .nav_links.active {
@@ -49,9 +48,14 @@
 }
 
 .nav_link {
-  padding: 0.5rem;
+  padding: 1rem;
   color: var(--secondary);
-  transition: transform 0.2s ease;
+  transition: color 0.2s ease-in;
+}
+
+.nav_links.active .nav_link:active {
+  color: var(--accent);
+  transition: none;
 }
 
 .joinus {
@@ -62,12 +66,8 @@
   background-color: var(--accent);
   font-size: 12px;
   border: none;
-  transition: transform 0.3s ease;
-}
-
-.joinus:active {
-  transform: scale(0.95);
-  transform-origin: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
 }
 
 .logo {
@@ -134,6 +134,13 @@
   transform: rotate(180deg);
 }
 
+/* Mobile Styles */
+@media screen and (max-width: 620px) {
+  .nav_links {
+    background-color: var(--primary);
+  }
+}
+
 /* Tablet Styles */
 @media screen and (min-width: 620px) and (max-width: 960px) {
   .joinus {
@@ -154,6 +161,10 @@
   .bars {
     height: 4px;
   }
+
+  .nav_links {
+    background-color: var(--primary);
+  }
 }
 
 /* Small Desktop Styles */
@@ -162,6 +173,7 @@
     padding: 0px 10px;
     font-size: 20px;
   }
+
   .logo {
     font-size: 35px;
   }
@@ -175,9 +187,10 @@
 /* Large Desktop Styles */
 @media screen and (min-width: 1200px) {
   .joinus {
-    padding: 0px 13px;
+    padding: 13px 20px;
     font-size: 20px;
   }
+
   .logo {
     font-size: 42px;
   }
@@ -208,22 +221,14 @@
   }
 
   .nav_link:hover {
-    text-shadow: 0 0 10px var(--secondary);
-  }
-
-  .nav_link:active {
-    transform: scale(0.8);
-    transform-origin: center;
+    color: var(--accent);
   }
 
   .joinus:hover {
-    /* box-shadow: 0 0 15px var(--accent); */
-    transform: scale(1.1);
-    transform-origin: center;
+    background-color: var(--secondary);
   }
+}
 
-  .joinus:active {
-    transform: scale(0.95);
-    transform-origin: center;
-  }
+* {
+  transition: none;
 }

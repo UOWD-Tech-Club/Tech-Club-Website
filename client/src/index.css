@@ -8,6 +8,11 @@
   --accent: #e1f264;
 }
 
+#root {
+  padding: 0;
+  margin: 0;
+}
+
 /*This is to hide the scroll bar*/
 ::-webkit-scrollbar {
   display: none;
