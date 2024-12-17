@@ -125,12 +125,18 @@ function EventsSection() {
     }
   };
 
+
   // Recalculate on mount and resize
   useEffect(() => {
     calculateMaxItems();
     window.addEventListener('resize', calculateMaxItems);
     return () => window.removeEventListener('resize', calculateMaxItems);
   }, []);
+
+  const handleRegisterClick = (event) => {
+    navigate(`/events/${event.event_id}`, { state: { event } });
+  };
+
 
   const settings = {
     arrows: true,
@@ -191,6 +197,7 @@ function EventsSection() {
                   </p>
                   <p className={styles.eventTime}>{event.event_time}</p>
                   <p className={styles.eventLocation}>{event.event_location}</p>
+
                 </div>
                 <button
                   className={styles.registerButton}

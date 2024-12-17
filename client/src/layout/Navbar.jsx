@@ -42,9 +42,9 @@ function Navbar() {
         <div
           className={`${styles.nav_links} ${showNavbar ? styles.active : ''}`}
         >
-          <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
+          {/* <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
             Events
-          </Link>
+          </Link> */}
           <Link
             to="/projects"
             className={styles.nav_link}
