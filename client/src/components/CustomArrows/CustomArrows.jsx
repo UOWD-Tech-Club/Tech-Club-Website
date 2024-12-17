@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import styles from './CustomArrows.module.css';
 
 export function NextArrow(props) {
-  const { hidden, news } = props;
+  const { hidden, news, onClick } = props; // Destructure onClick
   return (
     <div
       className={`${styles.customNextArrow} ${hidden ? styles.hide : ''} ${news ? styles.news : ''}`}
+      onClick={onClick}
     >
       <svg
         className={styles.arrow}
@@ -35,13 +36,15 @@ export function NextArrow(props) {
 NextArrow.propTypes = {
   hidden: PropTypes.bool,
   news: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 export function PrevArrow(props) {
-  const { hidden, news } = props;
+  const { hidden, news, onClick } = props;
   return (
     <div
       className={`${styles.customPrevArrow} ${hidden ? styles.hide : ''} ${news ? styles.news : ''}`}
+      onClick={onClick}
     >
       <svg
         className={styles.arrow}
@@ -71,4 +74,5 @@ export function PrevArrow(props) {
 PrevArrow.propTypes = {
   hidden: PropTypes.bool,
   news: PropTypes.bool,
+  onClick: PropTypes.func,
 };
