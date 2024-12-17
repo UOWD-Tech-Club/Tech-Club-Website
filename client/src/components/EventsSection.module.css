@@ -21,6 +21,7 @@
   padding: 20px 0;
   width: 100%;
   max-height: 450px;
+  max-height: 450px;
 }
 
 .eventTitle {
@@ -93,7 +94,6 @@
   font-size: 13px;
   line-height: 15px;
 }
-
 .buttonContainer {
   padding: 4px 24px 0 0;
   display: flex;
