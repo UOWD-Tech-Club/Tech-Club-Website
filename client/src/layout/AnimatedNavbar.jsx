@@ -36,7 +36,6 @@ export default function AnimatedNavbar({ navbar, footer, img, children }) {
           </div>
         </section>
         <section className={styles.second}>{children}</section>
-        <div className={styles.grad}></div>
         {footer}
       </div>
     </div>
