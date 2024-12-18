@@ -1,8 +1,14 @@
+import Navbar from '../layout/Navbar';
+import Footer from '../layout/Footer';
+
 function NewsPage() {
   return (
-    <div>
-      <h1>Projects page</h1>
-    </div>
+    <>
+      <Navbar />
+      <h1 style={{ height: '80vh' }}>News page</h1>
+      <Footer />
+    </>
   );
 }
+
 export default NewsPage;
