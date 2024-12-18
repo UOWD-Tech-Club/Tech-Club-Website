@@ -57,13 +57,10 @@ section,
   visibility: hidden;
 }
 
-/* .second {
-  padding: 10vh 0 10vh 0;
-} */
-
-/* .second {
-    padding: calc(var(--hero-height) + 10vh) 0 10vh 0;
-  } */
+.second {
+  filter: opacity(25%);
+  pointer-events: none;
+}
 
 /* JS STYLES
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -95,6 +92,8 @@ section,
 
 .isSticky .second {
   padding-top: 7rem;
+  filter: opacity(100%);
+  pointer-events: all;
 }
 
 /* .isSticky .second {
@@ -141,25 +140,6 @@ section,
   color: var(--secondary);
   padding: 0;
   margin: 0;
-}
-
-.grad {
-  position: absolute;
-  width: 100%;
-  height: calc(100vh - var(--hero-height));
-  top: 100%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  z-index: 13;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), var(--primary));
-  transition: all 0.6s;
-}
-
-.isSticky .grad {
-  transform: translate(-50%, 0%);
-  opacity: 0;
-  visibility: hidden;
-  height: 0;
 }
 
 @-moz-document url-prefix() {
