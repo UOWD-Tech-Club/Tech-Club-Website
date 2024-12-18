@@ -24,12 +24,19 @@ export default function AnimatedNavbar({ navbar, footer, img, children }) {
         <section
           className={styles.first}
           style={{
-            '--img': `url(${img}) no-repeat center / cover`,
+            '--img': `url(${img}) no-repeat right / cover`,
           }}
         >
           <header className={styles.pageHeader}>{navbar}</header>
+          <div className={styles.logo_wrapper}>
+            <div className={styles.logo}>
+              <span className={styles.logo_tech}>Tech</span>
+              <span className={styles.logo_club}>Club</span>
+            </div>
+          </div>
         </section>
         <section className={styles.second}>{children}</section>
+        <div className={styles.grad}></div>
         {footer}
       </div>
     </div>
