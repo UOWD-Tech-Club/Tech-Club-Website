@@ -1,13 +1,10 @@
-import Navbar from '../layout/Navbar';
-import Footer from '../layout/Footer';
+import PageLayout from '../layout/PageLayout';
 
 function ProjectsPage() {
   return (
-    <>
-      <Navbar />
-      <h1 style={{ height: '80vh' }}>Projects page</h1>
-      <Footer />
-    </>
+    <PageLayout>
+      <h1 style={{ height: '100vh' }}>Projects page</h1>
+    </PageLayout>
   );
 }
 

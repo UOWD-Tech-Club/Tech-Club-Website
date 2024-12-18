@@ -1,13 +1,10 @@
-import Navbar from '../layout/Navbar';
-import Footer from '../layout/Footer';
+import PageLayout from '../layout/PageLayout';
 
 function NewsPage() {
   return (
-    <>
-      <Navbar />
-      <h1 style={{ height: '80vh' }}>News page</h1>
-      <Footer />
-    </>
+    <PageLayout>
+      <h1 style={{ height: '100vh' }}>News page</h1>
+    </PageLayout>
   );
 }
 
