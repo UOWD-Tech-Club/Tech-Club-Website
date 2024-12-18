@@ -161,3 +161,9 @@ section,
   visibility: hidden;
   height: 0;
 }
+
+@-moz-document url-prefix() {
+  .isSticky .second {
+    padding-top: 7em;
+  }
+}
