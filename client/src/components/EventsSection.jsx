@@ -132,18 +132,14 @@ function EventsSection() {
     return () => window.removeEventListener('resize', calculateMaxItems);
   }, []);
 
-  // const handleRegisterClick = (event) => {
-  //   navigate(`/events/${event.event_id}`, { state: { event } });
-  // };
-
   const settings = {
     arrows: true,
     infinite: false,
     speed: 300,
     draggable: false,
     variableWidth: true,
-    nextArrow: slideEnd ? <NextArrow hidden="true" /> : <NextArrow />,
-    prevArrow: slideStart ? <PrevArrow hidden="true" /> : <PrevArrow />,
+    nextArrow: slideEnd ? <NextArrow hidden={true} /> : <NextArrow />,
+    prevArrow: slideStart ? <PrevArrow hidden={true} /> : <PrevArrow />,
     beforeChange: (cur, next) => {
       setCurrentSlide(next);
     },
@@ -177,16 +173,21 @@ function EventsSection() {
                 [styles.firstEvent]: index === 0,
                 [styles.lastEvent]: index === events.length - 1,
               })}
+              onClick={() => handleRegister(event.event_id)}
             >
+              <img
+                src={event.event_img_link}
+                alt={event.event_title}
+                className={classNames(styles.eventImage, {
+                  [styles.zoomed]: hoveredEvent === event.event_id,
+                })}
+              />
               <div
                 className={classNames(styles.eventContent, {
                   [styles.hovered]: hoveredEvent === event.event_id,
                 })}
                 onMouseEnter={() => handleMouseEnter(event.event_id)}
                 onMouseLeave={handleMouseLeave}
-                style={{
-                  backgroundImage: `url(${event.event_img_link})`,
-                }}
               >
                 <h3 className={styles.eventTitle}>{event.event_title}</h3>
                 <div className={styles.eventInfo}>
@@ -196,12 +197,7 @@ function EventsSection() {
                   <p className={styles.eventTime}>{event.event_time}</p>
                   <p className={styles.eventLocation}>{event.event_location}</p>
                 </div>
-                <button
-                  className={styles.registerButton}
-                  onClick={() => handleRegister(event.event_id)}
-                >
-                  Register
-                </button>
+                <span className={styles.registerButton}>Register</span>
               </div>
             </div>
           ))}

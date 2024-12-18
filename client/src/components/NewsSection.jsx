@@ -33,6 +33,11 @@ function Newsletter() {
     setCar2(sliderRef2);
   }, []);
 
+  const handleClick = (newsId) => {
+    // Handle click on news card
+    console.log('News ' + newsId);
+  };
+
   const news = [
     {
       news_id: 1,
@@ -107,8 +112,8 @@ function Newsletter() {
     draggable: false,
     slidesToShow: 3,
     slidesToScroll: 1,
-    prevArrow: <PrevArrow news="true" />,
-    nextArrow: <NextArrow news="true" />,
+    prevArrow: <PrevArrow news={true} />,
+    nextArrow: <NextArrow news={true} />,
     responsive: [
       {
         breakpoint: 1000,
@@ -163,13 +168,17 @@ function Newsletter() {
           {news
             .slice(0, Math.floor(news.length * (isMobile ? 1 : 0.5)))
             .map((item) => (
-              <div key={item.news_id} className={styles.carouselItem}>
-                <div
-                  className={styles.newsContent}
-                  style={{
-                    backgroundImage: `url(${item.news_img_link})`,
-                  }}
-                >
+              <div
+                key={item.news_id}
+                className={styles.carouselItem}
+                onClick={() => handleClick(item.news_id)}
+              >
+                <img
+                  src={item.news_img_link}
+                  alt={item.news_title}
+                  className={styles.newsImage}
+                />
+                <div className={styles.newsContent}>
                   <h2>{item.news_title}</h2>
                   <p className={styles.newsDate}>
                     {format(new Date(item.news_date), 'd MMMM, yyyy')}
@@ -190,13 +199,17 @@ function Newsletter() {
             ref={(slider) => !isTablet && (sliderRef2 = slider)} // Conditionally set ref
           >
             {news.slice(Math.floor(news.length * 0.5)).map((item) => (
-              <div key={item.news_id} className={styles.secondCarouselItem}>
-                <div
-                  className={styles.newsContent}
-                  style={{
-                    backgroundImage: `url(${item.news_img_link})`,
-                  }}
-                >
+              <div
+                key={item.news_id}
+                className={styles.secondCarouselItem}
+                onClick={() => handleClick(item.news_id)}
+              >
+                <img
+                  src={item.news_img_link}
+                  alt={item.news_title}
+                  className={styles.newsImage}
+                />
+                <div className={styles.newsContent}>
                   <h2>{item.news_title}</h2>
                   <p className={styles.newsDate}>
                     {format(new Date(item.news_date), 'd MMMM, yyyy')}
