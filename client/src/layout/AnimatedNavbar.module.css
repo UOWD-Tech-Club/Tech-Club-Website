@@ -159,6 +159,5 @@ section,
   transform: translate(-50%, 0%);
   opacity: 0;
   visibility: hidden;
-  width: 0;
   height: 0;
 }
