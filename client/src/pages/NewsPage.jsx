@@ -1,8 +1,11 @@
+import PageLayout from '../layout/PageLayout';
+
 function NewsPage() {
   return (
-    <div>
-      <h1>Projects page</h1>
-    </div>
+    <PageLayout>
+      <h1 style={{ height: '100vh' }}>News page</h1>
+    </PageLayout>
   );
 }
+
 export default NewsPage;

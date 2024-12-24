@@ -4,7 +4,7 @@ import EventsSection from '../components/EventsSection';
 import NewsSection from '../components/NewsSection';
 import Footer from '../layout/Footer';
 import AnimatedNavbar from '../layout/AnimatedNavbar';
-import heroImg from '../assets/hero-bg.png';
+import heroImg from '../assets/bgNoText.png';
 
 function Homepage() {
   return (

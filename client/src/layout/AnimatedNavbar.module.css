@@ -1,5 +1,6 @@
 :root {
-  --hero-height: min(56.25vw, 75vh);
+  --hero-height: 75vh;
+  /* --hero-height: min(56.25vw, 75vh); */
   /* --hero-height: 80vh; */
   --small-sticky-header-height: 80px;
   --big-sticky-header-height: 100px;
@@ -56,13 +57,10 @@ section,
   visibility: hidden;
 }
 
-/* .second {
-  padding: 10vh 0 10vh 0;
-} */
-
-/* .second {
-    padding: calc(var(--hero-height) + 10vh) 0 10vh 0;
-  } */
+.second {
+  filter: opacity(25%);
+  pointer-events: none;
+}
 
 /* JS STYLES
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -93,7 +91,9 @@ section,
 }
 
 .isSticky .second {
-  padding-top: 15vh;
+  padding-top: 7rem;
+  filter: opacity(100%);
+  pointer-events: all;
 }
 
 /* .isSticky .second {
@@ -103,5 +103,47 @@ section,
 @media screen and (min-width: 1200px) {
   .isSticky .first {
     height: var(--big-sticky-header-height);
+  }
+}
+
+.logo_wrapper {
+  position: absolute;
+  width: fit-content;
+  height: fit-content;
+  top: 50%;
+  left: min(50vh, 50vw);
+  transform: translate(-50%, -50%);
+}
+
+.isSticky .logo {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  font-family: Nacelle-Black;
+  font-size: min(25vh, 25vw);
+  line-height: min(25vh, 25vw);
+}
+
+.logo_club {
+  color: transparent;
+  -webkit-text-stroke: min(1vh, 1vw) var(--accent);
+  text-stroke: min(1vh, 1vw) var(--accent);
+  padding: 0;
+  margin: 0;
+}
+
+.logo_tech {
+  color: var(--secondary);
+  padding: 0;
+  margin: 0;
+}
+
+@-moz-document url-prefix() {
+  .isSticky .second {
+    padding-top: 7em;
   }
 }
