@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import styles from './CustomArrows.module.css';
 
 export function NextArrow(props) {
-  const { hidden, news, onClick } = props; // Destructure onClick
+  const { hidden, news, onClick } = props;
   return (
     <div
       className={`${styles.customNextArrow} ${hidden ? styles.hide : ''} ${news ? styles.news : ''}`}

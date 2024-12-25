@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './AnimatedNavbar.module.css';
 
-// eslint-disable-next-line react/prop-types
 export default function AnimatedNavbar({ navbar, footer, img, children }) {
   const [scroll, setScroll] = useState(0);
   const scrollContainerRef = useRef(null);
