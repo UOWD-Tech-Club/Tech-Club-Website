@@ -127,10 +127,6 @@ const Newsletter = () => {
                 <p className={styles.newsDate}>
                   {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
                 </p>
-                <p>{news.news_description}</p>
-                <p style={{ fontWeight: 'bold' }}>
-                  <a href={news.news_url}>Published by: {news.news_source}</a>
-                </p>
               </div>
             </div>
           ))}
@@ -155,10 +151,6 @@ const Newsletter = () => {
                 <h2>{news.news_title}</h2>
                 <p className={styles.newsDate}>
                   {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
-                </p>
-                <p>{news.news_description}</p>
-                <p style={{ fontWeight: 'bold' }}>
-                  <a href={news.news_url}>Published by: {news.news_source}</a>
                 </p>
               </div>
             </div>
