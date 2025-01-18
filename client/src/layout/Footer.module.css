@@ -20,21 +20,27 @@
 .footer__logo {
   width: 60px;
   height: 44px;
-  margin: auto auto auto 0;
+  margin: 20px auto auto 5px;
 }
 
 .footer__navigation {
   margin: auto;
 }
 
-.footer__navigation li a {
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.footer__link {
   font-weight: 400;
   line-height: 22px;
+  color: var(--secondary);
   transition: color 0.2s ease;
 }
 
-.footer__navigation li a:hover,
-.footer__navigation li a:active {
+.footer__link:hover {
   color: var(--accent);
 }
 
@@ -49,14 +55,14 @@
 }
 
 .footer__newsletterSubscription h1 {
-  font-size: 15px;
+  font-size: 12px;
   line-height: 25px;
 }
 
 .footer__newsletterSubscription form {
   border: 1px solid var(--secondary);
   border-radius: 50px;
-  width: 220px;
+  width: 180px;
   height: 26px;
   display: flex;
   align-items: center;
@@ -94,20 +100,16 @@
   border: none;
   background-color: var(--accent);
   border-radius: 50px;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 400;
   line-height: 17px;
   word-wrap: break-word;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease-in;
 }
 
 .footer__newsletterSubscription button:hover {
   background-color: var(--secondary);
-}
-
-.footer__newsletterSubscription button:active {
-  background-color: var(--accent);
 }
 
 .emailError {
@@ -147,7 +149,7 @@
     padding: 15px;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-around;
+    /* justify-content: space-around; */
   }
 
   .footer :nth-child(3) {
@@ -161,7 +163,6 @@
   .footer__logo {
     width: 75px;
     height: 55px;
-    margin: 5px 0 0 0;
   }
 
   .footer__navigation,
@@ -174,7 +175,7 @@
     font-size: 15px;
   }
 
-  .footer__navigation li a {
+  .footer__link {
     line-height: 21px;
   }
 
@@ -233,7 +234,7 @@
     margin: 0 0 0 4.2%;
   }
 
-  .footer__navigation li a {
+  .footer__link {
     line-height: 25px;
   }
 
@@ -314,7 +315,7 @@
     font-size: 25px;
   }
 
-  .footer__navigation li a {
+  .footer__link {
     line-height: 28px;
   }
 
