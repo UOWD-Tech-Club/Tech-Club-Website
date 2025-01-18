@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 import logo from '../assets/tech-club-logo.svg';
 
@@ -20,20 +21,23 @@ function Footer() {
       <img src={logo} alt="Tech Club Logo" className={styles.footer__logo} />
       <div className={styles.footer__navigation}>
         <h1>Navigation</h1>
-        <ul>
-          <li>
-            <a href="">Home</a>
-          </li>
-          <li>
+        <div className={styles.footer__links}>
+          <Link to="/" className={styles.footer__link}>
+            Home
+          </Link>
+
+          {/* <li>
             <a href="">Events</a>
-          </li>
-          <li>
-            <a href="">Projects</a>
-          </li>
-          <li>
-            <a href="">Newsletter</a>
-          </li>
-        </ul>
+          </li> */}
+
+          <Link to="/projects" className={styles.footer__link}>
+            Projects
+          </Link>
+
+          <Link to="/newsletter" className={styles.footer__link}>
+            Newsletter
+          </Link>
+        </div>
       </div>
       <div className={styles.footer__newsletterSubscription}>
         <h1>Subscribe to our newsletter</h1>

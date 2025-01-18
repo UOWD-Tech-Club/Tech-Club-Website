@@ -1,0 +1,52 @@
+.customNextArrow,
+.customPrevArrow {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 2;
+  width: 55px;
+  height: 55px;
+  background-color: var(--accent);
+  color: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.customNextArrow::before,
+.customPrevArrow::before {
+  display: none;
+}
+
+.hide {
+  display: none !important;
+}
+
+.customNextArrow {
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.customPrevArrow {
+  left: 35px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.customNextArrow:hover,
+.customPrevArrow:hover {
+  background-color: var(--secondary);
+}
+
+.news.customNextArrow {
+  top: 0;
+  transform: translateY(177.5px);
+}
+
+.news.customPrevArrow {
+  top: 0;
+  transform: translateY(177.5px) scaleX(-1);
+}
