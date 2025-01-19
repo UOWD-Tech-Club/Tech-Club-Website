@@ -5,8 +5,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import classNames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
-import eventImage from '../assets/eventspic.jpg';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
+import { useNavigate } from 'react-router-dom';
 
 function EventsSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -16,6 +16,8 @@ function EventsSection() {
 
   const sliderContainerRef = useRef(null); // Reference to parent container
 
+  const navigate = useNavigate();
+
   const handleMouseEnter = (eventId) => {
     setHoveredEvent(eventId);
   };
@@ -24,93 +26,88 @@ function EventsSection() {
     setHoveredEvent(null);
   };
 
-  const handleRegister = (eventId) => {
-    // Handle register for event
-    console.log('Register for event ' + eventId);
+  const [events, setEvents] = useState([]);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(
+        'https://tech-club-website.onrender.com/events',
+      );
+      const data = await response.json();
+      console.log(data.events);
+      setEvents(data.events);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
   };
 
-  // ---------- Original backend code to get events -------------------
-
-  //const [events, setEvents] = useState([]);
-
-  // const fetchEvents = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8080/events');
-  //     const data = await response.json();
-  //     console.log(data.events);
-  //     setEvents(data.events);
-  //   } catch (error) {
-  //     console.error('Error fetching events:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Fetch events from the backend
-  //   fetchEvents();
-  // }, []);
+  useEffect(() => {
+    // Fetch events from the backend
+    fetchEvents();
+  }, []);
 
   // ------------------------------------------------------------------
 
   // Sample Events for testing
 
-  const events = [
-    {
-      event_id: 1,
-      event_title: 'Event Example 1',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 2,
-      event_title: 'Event Example 2',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 3,
-      event_title: 'Event Example 3',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 4,
-      event_title: 'Event Example 4',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 5,
-      event_title: 'Event Example 5',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 6,
-      event_title: 'Event Example 6',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 7,
-      event_title: 'Event Example 7',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-  ];
+  // const events = [
+  //   {
+  //     event_id: 1,
+  //     event_title: 'Event Example 1',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 2,
+  //     event_title: 'Event Example 2',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 3,
+  //     event_title: 'Event Example 3',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 4,
+  //     event_title: 'Event Example 4',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 5,
+  //     event_title: 'Event Example 5',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 6,
+  //     event_title: 'Event Example 6',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 7,
+  //     event_title: 'Event Example 7',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  // ];
 
   const slideStart = currentSlide === 0;
   const slideEnd = currentSlide >= events.length - maxItems;
@@ -155,6 +152,10 @@ function EventsSection() {
     ],
   };
 
+  const handleEventClick = (event) => {
+    navigate(`/events/${event.event_id}`, { state: { event } }); // Navigate using dynamic eventId
+  };
+
   return (
     <div className={styles.eventsContainer}>
       <div className={styles.eventsHeader}>
@@ -173,7 +174,7 @@ function EventsSection() {
                 [styles.firstEvent]: index === 0,
                 [styles.lastEvent]: index === events.length - 1,
               })}
-              onClick={() => handleRegister(event.event_id)}
+              onClick={() => handleEventClick(event)}
             >
               <img
                 src={event.event_img_link}
