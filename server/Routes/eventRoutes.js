@@ -5,6 +5,7 @@ import {
   searchEvents,
   registerUser,
 } from "../Controllers/Events.js";
+import { fetchDailyNews } from "../Controllers/dailyNews.js";
 
 const router = express.Router();
 
@@ -14,7 +15,6 @@ router.post("/user", addUser);
 
 router.get("/", getEvents);
 router.get("/search", searchEvents);
-
 router.post("/register", registerUser);
 
 export default router;

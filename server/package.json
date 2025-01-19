@@ -11,9 +11,11 @@
   "author": "TechClub",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "node-cron": "^3.0.3",
     "nodemon": "^3.1.7",
     "pg": "^8.13.1"
   }
