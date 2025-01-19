@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './EventsPage.module.css';
 import eventimg from '../assets/events_img.png';
 import { useLocation } from 'react-router-dom';
+import PageLayout from '../layout/PageLayout';
 
 function EventsPage() {
   const [name, setName] = useState('');
@@ -77,69 +78,79 @@ function EventsPage() {
   };
 
   return (
-    <div className={styles.eventContainer}>
-      <div className={styles.eventImage}>
-        <img src={eventimg} alt="Event" />
+    <PageLayout>
+      <div className={styles.eventContainer}>
+        <div className={styles.eventImage}>
+          <img src={eventimg} alt="Event" />
+        </div>
+        <div className={styles.eventDetails}>
+          <h1>{event.event_title}</h1>
+          <h2>
+            {formattedDate},{event.event_time} - {event.event_location}
+          </h2>
+          <p>{event.event_details}</p>
+
+          <h3>Interested? Register Now</h3>
+          <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <label className={`${styles.customField} ${styles.one}`}>
+              <input
+                type="text"
+                className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+                placeholder=" "
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <span
+                className={`${styles.placeholder} ${styles.onePlaceholder}`}
+              >
+                Your Name
+              </span>
+              {errors.name && (
+                <span className={styles.error}>{errors.name}</span>
+              )}
+            </label>
+
+            <label className={`${styles.customField} ${styles.one}`}>
+              <input
+                type="text"
+                className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+                placeholder=" "
+                value={user_studentId}
+                onChange={(e) => setUser_studentId(e.target.value)}
+              />
+              <span
+                className={`${styles.placeholder} ${styles.onePlaceholder}`}
+              >
+                Student ID
+              </span>
+              {errors.user_studentId && (
+                <span className={styles.error}>{errors.user_studentId}</span>
+              )}
+            </label>
+
+            <label className={`${styles.customField} ${styles.one}`}>
+              <input
+                type="email"
+                className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+                placeholder=" "
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <span
+                className={`${styles.placeholder} ${styles.onePlaceholder}`}
+              >
+                University Email
+              </span>
+              {errors.email && (
+                <span className={styles.error}>{errors.email}</span>
+              )}
+            </label>
+
+            <button type="submit">Register</button>
+          </form>
+        </div>
       </div>
-      <div className={styles.eventDetails}>
-        <h1>{event.event_title}</h1>
-        <h2>
-          {formattedDate},{event.event_time} - {event.event_location}
-        </h2>
-        <p>{event.event_details}</p>
-
-        <h3>Interested? Register Now</h3>
-        <form className={styles.registrationForm} onSubmit={handleSubmit}>
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="text"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              Your Name
-            </span>
-            {errors.name && <span className={styles.error}>{errors.name}</span>}
-          </label>
-
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="text"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={user_studentId}
-              onChange={(e) => setUser_studentId(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              Student ID
-            </span>
-            {errors.user_studentId && (
-              <span className={styles.error}>{errors.user_studentId}</span>
-            )}
-          </label>
-
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="email"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              University Email
-            </span>
-            {errors.email && (
-              <span className={styles.error}>{errors.email}</span>
-            )}
-          </label>
-
-          <button type="submit">Register</button>
-        </form>
-      </div>
-    </div>
+    </PageLayout>
   );
 }
 
