@@ -49,16 +49,19 @@ function EventsPage() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch('http://localhost:8080/events/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'https://tech-club-website.onrender.com/events/register',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_studentId,
+              event_id: event.event_id, // Use the correct syntax here
+            }),
           },
-          body: JSON.stringify({
-            user_studentId,
-            event_id: event.event_id, // Use the correct syntax here
-          }),
-        });
+        );
         if (response.ok) {
           alert('Form submitted successfully!');
         } else {
