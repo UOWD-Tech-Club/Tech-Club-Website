@@ -13,6 +13,7 @@
     "prepare": "cd .. && husky client/.husky"
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.3.0",
     "react": "^18.3.1",
