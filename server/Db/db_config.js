@@ -12,7 +12,7 @@ const { Pool } = pg;
 
 
 const pool = new Pool({
-  connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?sslmode=require`,
+  connectionString: `postgresql://webDb_owner:U2aJIxM9VzGW@ep-bitter-rice-a2b531cf.eu-central-1.aws.neon.tech/webDb?sslmode=require`,
   ssl: {
     rejectUnauthorized: false,
   },

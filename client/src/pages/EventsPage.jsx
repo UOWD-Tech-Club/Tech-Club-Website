@@ -46,16 +46,6 @@ function EventsPage() {
     day: 'numeric',
   });
 
-  const registration_date = new Date().toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false, // Optional: Use 24-hour format
-  });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -70,7 +60,6 @@ function EventsPage() {
             body: JSON.stringify({
               user_studentid: user_studentid,
               event_id: event.event_id, // Use the correct syntax here
-              registration_date: registration_date,
             }),
           },
         );

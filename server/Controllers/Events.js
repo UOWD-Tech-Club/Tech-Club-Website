@@ -79,7 +79,7 @@ export const searchEvents = async (req, res) => {
 
 // Register users logic (POST request)
 export const registerUser = async (req, res) => {
-  const { user_studentid, event_id, registration_date } = req.body;
+  const { user_studentid, event_id } = req.body;
 
   if (!user_studentid || !event_id) {
     return res
@@ -89,8 +89,8 @@ export const registerUser = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO eventRegistration (user_studentid, event_id, registration_date) VALUES ($1, $2, $3) RETURNING *",
-      [user_studentid, event_id, registration_date]
+      "INSERT INTO eventRegistration (user_studentid, event_id) VALUES ($1, $2) RETURNING *",
+      [user_studentid, event_id]
     );
     res
       .status(201)
