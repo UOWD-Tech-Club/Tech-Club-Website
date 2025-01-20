@@ -101,31 +101,3 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// Get registrations logic (GET request)
-export const getRegisterUser = async (req, res) => {
-  const { event_id, user_studentid } = req.query;
-
-  try {
-    let query = "SELECT * FROM eventRegistration";
-    const params = [];
-
-    // Add filtering logic based on query parameters
-    if (event_id && user_studentid) {
-      query += " WHERE event_id = $1 AND user_studentid = $2";
-      params.push(event_id, user_studentid);
-    } else if (event_id) {
-      query += " WHERE event_id = $1";
-      params.push(event_id);
-    } else if (user_studentid) {
-      query += " WHERE user_studentid = $1";
-      params.push(user_studentid);
-    }
-
-    const result = await pool.query(query, params);
-
-    res.status(200).json({ message: "Registrations retrieved successfully", data: result.rows });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ message: "Server error" });
-  }
-};
