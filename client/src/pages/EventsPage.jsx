@@ -6,11 +6,11 @@ import PageLayout from '../layout/PageLayout';
 
 function EventsPage() {
   const [name, setName] = useState('');
-  const [user_studentId, setUser_studentId] = useState('');
+  const [user_studentid, setUser_studentId] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({
     name: '',
-    user_studentId: '',
+    user_studentid: '',
     email: '',
   });
 
@@ -30,8 +30,8 @@ function EventsPage() {
     if (!nameRegex.test(name)) {
       newErrors.name = 'Valid name required';
     }
-    if (!studentIdRegex.test(user_studentId)) {
-      newErrors.user_studentId = '7 digit university ID';
+    if (!studentIdRegex.test(user_studentid)) {
+      newErrors.user_studentid = '7 digit university ID';
     }
     if (!emailRegex.test(email)) {
       newErrors.email = 'University email format required';
@@ -46,6 +46,16 @@ function EventsPage() {
     day: 'numeric',
   });
 
+  const registration_date = new Date().toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false, // Optional: Use 24-hour format
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -58,8 +68,9 @@ function EventsPage() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              user_studentId,
+              user_studentid: user_studentid,
               event_id: event.event_id, // Use the correct syntax here
+              registration_date: registration_date,
             }),
           },
         );
@@ -115,7 +126,7 @@ function EventsPage() {
                 type="text"
                 className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
                 placeholder=" "
-                value={user_studentId}
+                value={user_studentid}
                 onChange={(e) => setUser_studentId(e.target.value)}
               />
               <span
@@ -123,8 +134,8 @@ function EventsPage() {
               >
                 Student ID
               </span>
-              {errors.user_studentId && (
-                <span className={styles.error}>{errors.user_studentId}</span>
+              {errors.user_studentid && (
+                <span className={styles.error}>{errors.user_studentid}</span>
               )}
             </label>
 

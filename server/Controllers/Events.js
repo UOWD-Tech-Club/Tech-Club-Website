@@ -79,9 +79,9 @@ export const searchEvents = async (req, res) => {
 
 // Register users logic (POST request)
 export const registerUser = async (req, res) => {
-  const { user_studentId, event_id } = req.body;
+  const { user_studentid, event_id, registration_date } = req.body;
 
-  if (!user_studentId || !event_id) {
+  if (!user_studentid || !event_id) {
     return res
       .status(400)
       .json({ message: "User Student ID and Event ID are required" });
@@ -89,12 +89,41 @@ export const registerUser = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO eventRegistration (user_studentId, event_id) VALUES ($1, $2) RETURNING *",
-      [user_studentId, event_id]
+      "INSERT INTO eventRegistration (user_studentid, event_id, registration_date) VALUES ($1, $2, $3) RETURNING *",
+      [user_studentid, event_id, registration_date]
     );
     res
       .status(201)
       .json({ message: "User registered successfully", data: result.rows[0] });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get registrations logic (GET request)
+export const getRegisterUser = async (req, res) => {
+  const { event_id, user_studentid } = req.query;
+
+  try {
+    let query = "SELECT * FROM eventRegistration";
+    const params = [];
+
+    // Add filtering logic based on query parameters
+    if (event_id && user_studentid) {
+      query += " WHERE event_id = $1 AND user_studentid = $2";
+      params.push(event_id, user_studentid);
+    } else if (event_id) {
+      query += " WHERE event_id = $1";
+      params.push(event_id);
+    } else if (user_studentid) {
+      query += " WHERE user_studentid = $1";
+      params.push(user_studentid);
+    }
+
+    const result = await pool.query(query, params);
+
+    res.status(200).json({ message: "Registrations retrieved successfully", data: result.rows });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "Server error" });
