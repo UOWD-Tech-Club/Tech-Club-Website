@@ -5,16 +5,19 @@ import 'slick-carousel/slick/slick-theme.css';
 import classNames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
-import eventImage from '../assets/eventspic.jpg';
+// import eventImage from '../assets/eventspic.jpg';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function EventsSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [maxItems, setMaxItems] = useState(3); // Default max items
-
+  const [loading, setLoading] = useState(true);
   const sliderContainerRef = useRef(null); // Reference to parent container
+
+  const isDesktop = window.innerWidth >= 960;
 
   const handleMouseEnter = (eventId) => {
     setHoveredEvent(eventId);
@@ -31,86 +34,87 @@ function EventsSection() {
 
   // ---------- Original backend code to get events -------------------
 
-  //const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
 
-  // const fetchEvents = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8080/events');
-  //     const data = await response.json();
-  //     console.log(data.events);
-  //     setEvents(data.events);
-  //   } catch (error) {
-  //     console.error('Error fetching events:', error);
-  //   }
-  // };
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/events');
+      const data = await response.json();
+      console.log(data.events);
+      setEvents(data.events);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
-  // useEffect(() => {
-  //   // Fetch events from the backend
-  //   fetchEvents();
-  // }, []);
+  useEffect(() => {
+    // Fetch events from the backend
+    fetchEvents();
+  }, []);
 
   // ------------------------------------------------------------------
 
   // Sample Events for testing
 
-  const events = [
-    {
-      event_id: 1,
-      event_title: 'Event Example 1',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 2,
-      event_title: 'Event Example 2',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 3,
-      event_title: 'Event Example 3',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 4,
-      event_title: 'Event Example 4',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 5,
-      event_title: 'Event Example 5',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 6,
-      event_title: 'Event Example 6',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-    {
-      event_id: 7,
-      event_title: 'Event Example 7',
-      event_date: '2024-10-25',
-      event_time: '3:00pm - 4:30pm',
-      event_location: '@2.55',
-      event_img_link: eventImage,
-    },
-  ];
+  // let events = [
+  //   {
+  //     event_id: 1,
+  //     event_title: 'Event Example 1',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 2,
+  //     event_title: 'Event Example 2',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 3,
+  //     event_title: 'Event Example 3',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 4,
+  //     event_title: 'Event Example 4',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 5,
+  //     event_title: 'Event Example 5',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 6,
+  //     event_title: 'Event Example 6',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  //   {
+  //     event_id: 7,
+  //     event_title: 'Event Example 7',
+  //     event_date: '2024-10-25',
+  //     event_time: '3:00pm - 4:30pm',
+  //     event_location: '@2.55',
+  //     event_img_link: eventImage,
+  //   },
+  // ];
 
   const slideStart = currentSlide === 0;
   const slideEnd = currentSlide >= events.length - maxItems;
@@ -133,7 +137,7 @@ function EventsSection() {
   }, []);
 
   const settings = {
-    arrows: true,
+    arrows: loading ? false : true,
     infinite: false,
     speed: 300,
     draggable: false,
@@ -165,43 +169,61 @@ function EventsSection() {
         className={`${styles.events} ${slideStart ? styles.start : ''} ${slideEnd ? styles.end : ''}`}
         ref={sliderContainerRef}
       >
-        <Slider {...settings}>
-          {events.map((event, index) => (
-            <div
-              key={event.event_id}
-              className={classNames(styles.eventsItem, {
-                [styles.firstEvent]: index === 0,
-                [styles.lastEvent]: index === events.length - 1,
-              })}
-              onClick={() => handleRegister(event.event_id)}
-            >
-              <img
-                src={event.event_img_link}
-                alt={event.event_title}
-                className={classNames(styles.eventImage, {
-                  [styles.zoomed]: hoveredEvent === event.event_id,
-                })}
-              />
-              <div
-                className={classNames(styles.eventContent, {
-                  [styles.hovered]: hoveredEvent === event.event_id,
-                })}
-                onMouseEnter={() => handleMouseEnter(event.event_id)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <h3 className={styles.eventTitle}>{event.event_title}</h3>
-                <div className={styles.eventInfo}>
-                  <p className={styles.eventDate}>
-                    {format(new Date(event.event_date), 'd MMMM, yyyy')}
-                  </p>
-                  <p className={styles.eventTime}>{event.event_time}</p>
-                  <p className={styles.eventLocation}>{event.event_location}</p>
+        {loading || !events[1].event_img_link ? (
+          <SkeletonTheme baseColor="#434343" highlightColor="#686868">
+            <Slider {...settings} className={styles.skeletonSlider}>
+              {Array.from({ length: isDesktop ? 8 : 3 }).map((_, index) => (
+                <div key={index}>
+                  <Skeleton
+                    width={isDesktop ? 310 : 250}
+                    height={isDesktop ? 390 : 250}
+                    borderRadius="25px"
+                  />
                 </div>
-                <span className={styles.registerButton}>Register</span>
+              ))}
+            </Slider>
+          </SkeletonTheme>
+        ) : (
+          <Slider {...settings}>
+            {events.map((event, index) => (
+              <div
+                key={event.event_id}
+                className={classNames(styles.eventsItem, {
+                  [styles.firstEvent]: index === 0,
+                  [styles.lastEvent]: index === events.length - 1,
+                })}
+                onClick={() => handleRegister(event.event_id)}
+              >
+                <img
+                  src={event.event_img_link}
+                  alt={event.event_title}
+                  className={classNames(styles.eventImage, {
+                    [styles.zoomed]: hoveredEvent === event.event_id,
+                  })}
+                />
+                <div
+                  className={classNames(styles.eventContent, {
+                    [styles.hovered]: hoveredEvent === event.event_id,
+                  })}
+                  onMouseEnter={() => handleMouseEnter(event.event_id)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <h3 className={styles.eventTitle}>{event.event_title}</h3>
+                  <div className={styles.eventInfo}>
+                    <p className={styles.eventDate}>
+                      {format(new Date(event.event_date), 'd MMMM, yyyy')}
+                    </p>
+                    <p className={styles.eventTime}>{event.event_time}</p>
+                    <p className={styles.eventLocation}>
+                      {event.event_location}
+                    </p>
+                  </div>
+                  <span className={styles.registerButton}>Register</span>
+                </div>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+        )}
       </div>
 
       <div className={styles.buttonContainer}>
