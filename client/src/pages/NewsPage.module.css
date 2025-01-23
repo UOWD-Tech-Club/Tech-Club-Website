@@ -1,7 +1,7 @@
 .newsContainer {
   display: flex;
   flex-direction: column;
-  padding: 40px 46px;
+  padding: 40px 46px 100px;
   width: 100%;
   background-color: var(--primary);
   color: var(--secondary);
