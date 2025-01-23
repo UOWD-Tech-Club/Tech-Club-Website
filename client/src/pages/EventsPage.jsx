@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './EventsPage.module.css';
 import eventimg from '../assets/events_img.png';
 import { useLocation } from 'react-router-dom';
+import PageLayout from '../layout/PageLayout';
 
 function EventsPage() {
   const [name, setName] = useState('');
@@ -49,16 +50,19 @@ function EventsPage() {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch('http://localhost:8080/events/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'https://tech-club-website.onrender.com/events/register',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_studentId,
+              event_id: event.event_id, // Use the correct syntax here
+            }),
           },
-          body: JSON.stringify({
-            user_studentId,
-            event_id: event.event_id, // Use the correct syntax here
-          }),
-        });
+        );
         if (response.ok) {
           alert('Form submitted successfully!');
         } else {
@@ -74,69 +78,79 @@ function EventsPage() {
   };
 
   return (
-    <div className={styles.eventContainer}>
-      <div className={styles.eventImage}>
-        <img src={eventimg} alt="Event" />
+    <PageLayout>
+      <div className={styles.eventContainer}>
+        <div className={styles.eventImage}>
+          <img src={eventimg} alt="Event" />
+        </div>
+        <div className={styles.eventDetails}>
+          <h1>{event.event_title}</h1>
+          <h2>
+            {formattedDate},{event.event_time} - {event.event_location}
+          </h2>
+          <p>{event.event_details}</p>
+
+          <h3>Interested? Register Now</h3>
+          <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <label className={`${styles.customField} ${styles.one}`}>
+              <input
+                type="text"
+                className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+                placeholder=" "
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <span
+                className={`${styles.placeholder} ${styles.onePlaceholder}`}
+              >
+                Your Name
+              </span>
+              {errors.name && (
+                <span className={styles.error}>{errors.name}</span>
+              )}
+            </label>
+
+            <label className={`${styles.customField} ${styles.one}`}>
+              <input
+                type="text"
+                className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+                placeholder=" "
+                value={user_studentId}
+                onChange={(e) => setUser_studentId(e.target.value)}
+              />
+              <span
+                className={`${styles.placeholder} ${styles.onePlaceholder}`}
+              >
+                Student ID
+              </span>
+              {errors.user_studentId && (
+                <span className={styles.error}>{errors.user_studentId}</span>
+              )}
+            </label>
+
+            <label className={`${styles.customField} ${styles.one}`}>
+              <input
+                type="email"
+                className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
+                placeholder=" "
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <span
+                className={`${styles.placeholder} ${styles.onePlaceholder}`}
+              >
+                University Email
+              </span>
+              {errors.email && (
+                <span className={styles.error}>{errors.email}</span>
+              )}
+            </label>
+
+            <button type="submit">Register</button>
+          </form>
+        </div>
       </div>
-      <div className={styles.eventDetails}>
-        <h1>{event.event_title}</h1>
-        <h2>
-          {formattedDate},{event.event_time} - {event.event_location}
-        </h2>
-        <p>{event.event_details}</p>
-
-        <h3>Interested? Register Now</h3>
-        <form className={styles.registrationForm} onSubmit={handleSubmit}>
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="text"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              Your Name
-            </span>
-            {errors.name && <span className={styles.error}>{errors.name}</span>}
-          </label>
-
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="text"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={user_studentId}
-              onChange={(e) => setUser_studentId(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              Student ID
-            </span>
-            {errors.user_studentId && (
-              <span className={styles.error}>{errors.user_studentId}</span>
-            )}
-          </label>
-
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="email"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              University Email
-            </span>
-            {errors.email && (
-              <span className={styles.error}>{errors.email}</span>
-            )}
-          </label>
-
-          <button type="submit">Register</button>
-        </form>
-      </div>
-    </div>
+    </PageLayout>
   );
 }
 

@@ -5,10 +5,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import classNames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
-// import eventImage from '../assets/eventspic.jpg';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useNavigate } from 'react-router-dom';
 
 function EventsSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -19,6 +19,8 @@ function EventsSection() {
 
   const isDesktop = window.innerWidth >= 960;
 
+  const navigate = useNavigate();
+
   const handleMouseEnter = (eventId) => {
     setHoveredEvent(eventId);
   };
@@ -27,18 +29,13 @@ function EventsSection() {
     setHoveredEvent(null);
   };
 
-  const handleRegister = (eventId) => {
-    // Handle register for event
-    console.log('Register for event ' + eventId);
-  };
-
-  // ---------- Original backend code to get events -------------------
-
   const [events, setEvents] = useState([]);
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:8080/events');
+      const response = await fetch(
+        'https://tech-club-website.onrender.com/events',
+      );
       const data = await response.json();
       console.log(data.events);
       setEvents(data.events);
@@ -57,7 +54,7 @@ function EventsSection() {
 
   // Sample Events for testing
 
-  // let events = [
+  // const events = [
   //   {
   //     event_id: 1,
   //     event_title: 'Event Example 1',
@@ -159,6 +156,10 @@ function EventsSection() {
     ],
   };
 
+  const handleEventClick = (event) => {
+    navigate(`/events/${event.event_id}`, { state: { event } }); // Navigate using dynamic eventId
+  };
+
   return (
     <div className={styles.eventsContainer}>
       <div className={styles.eventsHeader}>
@@ -169,7 +170,7 @@ function EventsSection() {
         className={`${styles.events} ${slideStart ? styles.start : ''} ${slideEnd ? styles.end : ''}`}
         ref={sliderContainerRef}
       >
-        {loading || !events[1].event_img_link ? (
+        {loading ? (
           <SkeletonTheme baseColor="#434343" highlightColor="#686868">
             <Slider {...settings} className={styles.skeletonSlider}>
               {Array.from({ length: isDesktop ? 8 : 3 }).map((_, index) => (
@@ -192,7 +193,7 @@ function EventsSection() {
                   [styles.firstEvent]: index === 0,
                   [styles.lastEvent]: index === events.length - 1,
                 })}
-                onClick={() => handleRegister(event.event_id)}
+                onClick={() => handleEventClick(event)}
               >
                 <img
                   src={event.event_img_link}

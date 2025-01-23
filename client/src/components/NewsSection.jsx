@@ -1,18 +1,93 @@
-import { useState, useEffect, useRef } from 'react';
-import classNames from 'classnames';
 import Slider from 'react-slick';
-import styles from './NewsSection.module.css';
+import styles from './Newsletter.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-// import newsImage from '../assets/newsletter-bg.png';
+import classNames from 'classnames';
+import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-function Newsletter() {
+const Newsletter = () => {
+  const [loading, setLoading] = useState(true);
+
+  // Settings for the first carousel
+  const settings1 = {
+    dots: false,
+    arrows: loading ? false : true,
+    infinite: true,
+    speed: 300,
+    adaptiveHeight: false,
+    variableWidth: true,
+    draggable: false,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 960,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  // Settings for the second carousel
+  const settings2 = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 300,
+    variableWidth: true,
+    adaptiveHeight: false,
+    slidesToScroll: 1,
+    draggable: false,
+  };
+
+  const [newsPart1, setNewsPart1] = useState([]);
+  const [newsPart2, setNewsPart2] = useState([]);
+
+  const fetchDailyNews = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/news/dailynews');
+      const data = await response.json();
+
+      const allNews = data.news;
+      // Split news into two parts
+      const midIndex = Math.ceil(allNews.length / 2);
+      setNewsPart1(allNews.slice(0, midIndex));
+      setNewsPart2(allNews.slice(midIndex));
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching news:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDailyNews();
+  }, []);
+
   const [car1, setCar1] = useState(null);
   const [car2, setCar2] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const sliderRef1 = useRef(null);
   const sliderRef2 = useRef(null);
@@ -35,149 +110,6 @@ function Newsletter() {
     setCar1(sliderRef1.current);
     setCar2(sliderRef2.current);
   }, []);
-
-  const handleClick = (newsId) => {
-    // Handle click on news card
-    console.log('News ' + newsId);
-  };
-
-  // ------------------------ Fetching News ---------------------------
-
-  const [news, setNews] = useState([]);
-
-  const fetchNews = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/news');
-      const data = await response.json();
-      console.log(data.news);
-      setNews(data.news);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching news:', error);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch news from the backend
-    fetchNews();
-  }, []);
-
-  // ------------------------------------------------------------------
-
-  // Sample News for testing
-
-  // const news = [
-  //   {
-  //     news_id: 1,
-  //     news_title: 'News Headline 1',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 2,
-  //     news_title: 'News Headline 2',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 3,
-  //     news_title: 'News Headline 3',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 4,
-  //     news_title: 'News Headline 4',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 5,
-  //     news_title: 'News Headline 5',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 6,
-  //     news_title: 'News Headline 6',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 7,
-  //     news_title: 'News Headline 7',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 8,
-  //     news_title: 'News Headline 8',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 9,
-  //     news_title: 'News Headline 9',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  //   {
-  //     news_id: 10,
-  //     news_title: 'News Headline 10',
-  //     news_date: '2024-10-25',
-  //     news_img_link: newsImage,
-  //   },
-  // ];
-
-  // Settings for the first carousel
-  const settings1 = {
-    dots: false,
-    arrows: loading ? false : true,
-    infinite: true,
-    speed: 300,
-    adaptiveHeight: false,
-    variableWidth: true,
-    draggable: false,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    prevArrow: <PrevArrow news={true} />,
-    nextArrow: <NextArrow news={true} />,
-    responsive: [
-      {
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: tabletSize,
-        settings: {
-          arrows: false,
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: mobileSize,
-        settings: {
-          arrows: false,
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
-  // Settings for the second carousel
-  const settings2 = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    speed: 300,
-    variableWidth: true,
-    adaptiveHeight: false,
-    slidesToScroll: 1,
-    draggable: false,
-    responsive: [],
-  };
 
   const renderLoadingComponent = (settings, first) => (
     <SkeletonTheme baseColor="#434343" highlightColor="#686868">
@@ -202,7 +134,6 @@ function Newsletter() {
       </div>
 
       {/* First Carousel */}
-
       <div className={styles.carousel}>
         {loading ? (
           renderLoadingComponent(settings1, true)
@@ -214,27 +145,25 @@ function Newsletter() {
               sliderRef1.current = slider;
             }} // Correctly set ref
           >
-            {news
-              .slice(0, Math.floor(news.length * (isMobile ? 1 : 0.5)))
-              .map((item) => (
-                <div
-                  key={item.news_id}
-                  className={styles.carouselItem}
-                  onClick={() => handleClick(item.news_id)}
-                >
-                  <img
-                    src={item.news_img_link}
-                    alt={item.news_title}
-                    className={styles.newsImage}
-                  />
-                  <div className={styles.newsContent}>
-                    <h2>{item.news_title}</h2>
-                    <p className={styles.newsDate}>
-                      {format(new Date(item.news_date), 'd MMMM, yyyy')}
-                    </p>
-                  </div>
+            {newsPart1.map((news, index) => (
+              <div
+                key={index}
+                className={styles.carouselItem}
+                // onClick={() => handleClick(news.news_id)}
+              >
+                <img
+                  src={news.news_img_link}
+                  // alt={news.news_title}
+                  className={styles.newsImage}
+                />
+                <div className={styles.newsContent}>
+                  <h2>{news.news_title}</h2>
+                  <p className={styles.newsDate}>
+                    {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
+                  </p>
                 </div>
-              ))}
+              </div>
+            ))}
           </Slider>
         )}
       </div>
@@ -253,21 +182,21 @@ function Newsletter() {
                 sliderRef2.current = slider;
               }}
             >
-              {news.slice(Math.floor(news.length * 0.5)).map((item) => (
+              {newsPart2.map((news, index) => (
                 <div
-                  key={item.news_id}
+                  key={index}
                   className={styles.secondCarouselItem}
-                  onClick={() => handleClick(item.news_id)}
+                  // onClick={() => handleClick(item.news_id)}
                 >
                   <img
-                    src={item.news_img_link}
-                    alt={item.news_title}
+                    src={news.news_img_link}
+                    // alt={news.news_title}
                     className={styles.newsImage}
                   />
                   <div className={styles.newsContent}>
-                    <h2>{item.news_title}</h2>
+                    <h2>{news.news_title}</h2>
                     <p className={styles.newsDate}>
-                      {format(new Date(item.news_date), 'd MMMM, yyyy')}
+                      {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
                     </p>
                   </div>
                 </div>
@@ -303,6 +232,6 @@ function Newsletter() {
       </div>
     </div>
   );
-}
+};
 
 export default Newsletter;
