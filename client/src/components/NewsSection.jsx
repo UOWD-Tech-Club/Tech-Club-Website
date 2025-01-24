@@ -1,5 +1,5 @@
 import Slider from 'react-slick';
-import styles from './Newsletter.module.css';
+import styles from './NewsSection.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import classNames from 'classnames';
@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-const Newsletter = () => {
+function NewsSection() {
   const [loading, setLoading] = useState(true);
 
   // Settings for the first carousel
@@ -232,6 +232,6 @@ const Newsletter = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Newsletter;
+export default NewsSection;
