@@ -1,6 +1,7 @@
 .eventContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: 40px 40px;
 }
 
@@ -19,6 +20,7 @@
 
 .eventDetails {
   max-width: 100%;
+  text-align: center;
 }
 
 .eventDetails h1 {
@@ -28,7 +30,6 @@
 .eventDetails p {
   font-size: 1rem;
   margin: 15px 0;
-  padding-right: 140px;
 }
 
 .eventDetails h3 {
@@ -66,6 +67,7 @@
   border-radius: 20px;
   cursor: pointer;
   display: flex;
+  align-self: center;
   align-items: center;
   width: 105px;
 }
