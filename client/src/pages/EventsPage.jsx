@@ -6,11 +6,11 @@ import PageLayout from '../layout/PageLayout';
 
 function EventsPage() {
   const [name, setName] = useState('');
-  const [user_studentId, setUser_studentId] = useState('');
+  const [user_studentid, setUser_studentId] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({
     name: '',
-    user_studentId: '',
+    user_studentid: '',
     email: '',
   });
 
@@ -30,8 +30,8 @@ function EventsPage() {
     if (!nameRegex.test(name)) {
       newErrors.name = 'Valid name required';
     }
-    if (!studentIdRegex.test(user_studentId)) {
-      newErrors.user_studentId = '7 digit university ID';
+    if (!studentIdRegex.test(user_studentid)) {
+      newErrors.user_studentid = '7 digit university ID';
     }
     if (!emailRegex.test(email)) {
       newErrors.email = 'University email format required';
@@ -48,32 +48,71 @@ function EventsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await fetch(
-          'https://tech-club-website.onrender.com/events/register',
+    if (!validateForm()) {
+      alert('Please fix the errors in the form.');
+      return;
+    }
+
+    try {
+      // Step 1: Check if user exists
+      const userCheckResponse = await fetch(
+        `https://tech-club-website.onrender.com/events/users/${event.event_id}`,
+      );
+
+      if (!userCheckResponse.ok) {
+        throw new Error('Failed to fetch users list');
+      }
+
+      const usersList = await userCheckResponse.json();
+      const userExists = usersList.some(
+        (user) => user.user_studentid === user_studentid,
+      );
+
+      if (!userExists) {
+        // Step 2: Add user to the users table
+        const addUserResponse = await fetch(
+          'https://tech-club-website.onrender.com/events/user',
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              user_studentId,
-              event_id: event.event_id, // Use the correct syntax here
+              name,
+              user_studentId: user_studentid,
+              email,
             }),
           },
         );
-        if (response.ok) {
-          alert('Form submitted successfully!');
-        } else {
-          alert('Failed to submit form. Please try again.');
+
+        if (!addUserResponse.ok) {
+          throw new Error('Failed to add user');
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
       }
-    } else {
-      alert('Please fix the errors in the form.');
+
+      // Step 3: Register user for the event
+      const registerResponse = await fetch(
+        'https://tech-club-website.onrender.com/events/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_studentId: user_studentid,
+            event_id: event.event_id,
+          }),
+        },
+      );
+
+      if (registerResponse.ok) {
+        alert('Registration successful!');
+      } else {
+        alert('Failed to register for event.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
     }
   };
 
@@ -115,7 +154,7 @@ function EventsPage() {
                 type="text"
                 className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
                 placeholder=" "
-                value={user_studentId}
+                value={user_studentid}
                 onChange={(e) => setUser_studentId(e.target.value)}
               />
               <span
@@ -123,8 +162,8 @@ function EventsPage() {
               >
                 Student ID
               </span>
-              {errors.user_studentId && (
-                <span className={styles.error}>{errors.user_studentId}</span>
+              {errors.user_studentid && (
+                <span className={styles.error}>{errors.user_studentid}</span>
               )}
             </label>
 

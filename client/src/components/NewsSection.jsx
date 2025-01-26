@@ -1,21 +1,29 @@
 import Slider from 'react-slick';
-import styles from './Newsletter.module.css';
+import styles from './NewsSection.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useState, useEffect } from 'react';
+import classNames from 'classnames';
+import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
+import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-const Newsletter = () => {
+function NewsSection() {
+  const [loading, setLoading] = useState(true);
+
   // Settings for the first carousel
   const settings1 = {
     dots: false,
-    arrows: false,
+    arrows: loading ? false : true,
     infinite: true,
-    speed: 500,
-    autoplay: true,
-    autoplaySpeed: 3000,
+    speed: 300,
+    adaptiveHeight: false,
+    variableWidth: true,
+    draggable: false,
     slidesToShow: 3,
     slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1000,
@@ -48,36 +56,11 @@ const Newsletter = () => {
     dots: false,
     arrows: false,
     infinite: true,
-    speed: 500,
-    autoplay: true,
-    autoplaySpeed: 2500,
-    slidesToShow: 4,
+    speed: 300,
+    variableWidth: true,
+    adaptiveHeight: false,
     slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 960,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+    draggable: false,
   };
 
   const [newsPart1, setNewsPart1] = useState([]);
@@ -93,6 +76,7 @@ const Newsletter = () => {
       const midIndex = Math.ceil(allNews.length / 2);
       setNewsPart1(allNews.slice(0, midIndex));
       setNewsPart2(allNews.slice(midIndex));
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching news:', error);
     }
@@ -102,6 +86,47 @@ const Newsletter = () => {
     fetchDailyNews();
   }, []);
 
+  const [car1, setCar1] = useState(null);
+  const [car2, setCar2] = useState(null);
+
+  const sliderRef1 = useRef(null);
+  const sliderRef2 = useRef(null);
+
+  const mobileSize = 599;
+  const tabletSize = 959;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= mobileSize);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= tabletSize);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= mobileSize);
+      setIsTablet(window.innerWidth <= tabletSize);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    setCar1(sliderRef1.current);
+    setCar2(sliderRef2.current);
+  }, []);
+
+  const renderLoadingComponent = (settings, first) => (
+    <SkeletonTheme baseColor="#434343" highlightColor="#686868">
+      <Slider {...settings}>
+        {Array.from({ length: isMobile ? 2 : 6 }).map((_, index) => (
+          <div key={index}>
+            <Skeleton
+              width={isMobile || !first ? 290 : 400}
+              height={185}
+              borderRadius="25px"
+            />
+          </div>
+        ))}
+      </Slider>
+    </SkeletonTheme>
+  );
+
   return (
     <div className={styles.newsletterContainer}>
       <div className={styles.newsletter}>
@@ -110,53 +135,76 @@ const Newsletter = () => {
 
       {/* First Carousel */}
       <div className={styles.carousel}>
-        <Slider {...settings1}>
-          {newsPart1.map((news, index) => (
-            <div
-              key={index}
-              className={styles.carouselItem}
-              // onClick={() => handleClick(news.news_id)}
-            >
-              <img
-                src={news.news_img_link}
-                // alt={news.news_title}
-                className={styles.newsImage}
-              />
-              <div className={styles.newsContent}>
-                <h2>{news.news_title}</h2>
-                <p className={styles.newsDate}>
-                  {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
-                </p>
+        {loading ? (
+          renderLoadingComponent(settings1, true)
+        ) : (
+          <Slider
+            {...settings1}
+            asNavFor={isTablet ? null : car2} // Conditionally set asNavFor
+            ref={(slider) => {
+              sliderRef1.current = slider;
+            }} // Correctly set ref
+          >
+            {newsPart1.map((news, index) => (
+              <div
+                key={index}
+                className={styles.carouselItem}
+                // onClick={() => handleClick(news.news_id)}
+              >
+                <img
+                  src={news.news_img_link}
+                  // alt={news.news_title}
+                  className={styles.newsImage}
+                />
+                <div className={styles.newsContent}>
+                  <h2>{news.news_title}</h2>
+                  <p className={styles.newsDate}>
+                    {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+        )}
       </div>
 
-      {/* Second Carousel */}
-      <div className={styles.carousel}>
-        <Slider {...settings2}>
-          {newsPart2.map((news, index) => (
-            <div
-              key={index}
-              className={styles.carouselItem}
-              // onClick={() => handleClick(news.news_id)}
+      {/* Second Carousel for Desktop/Tablet */}
+
+      {isMobile ? null : (
+        <div className={classNames(styles.carousel, styles.secondCarousel)}>
+          {loading ? (
+            renderLoadingComponent(settings2, false)
+          ) : (
+            <Slider
+              {...settings2}
+              asNavFor={isTablet ? null : car1} // Conditionally set asNavFor
+              ref={(slider) => {
+                sliderRef2.current = slider;
+              }}
             >
-              <img
-                src={news.news_img_link}
-                // alt={news.news_title}
-                className={styles.newsImage}
-              />
-              <div className={styles.newsContent}>
-                <h2>{news.news_title}</h2>
-                <p className={styles.newsDate}>
-                  {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
-                </p>
-              </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
+              {newsPart2.map((news, index) => (
+                <div
+                  key={index}
+                  className={styles.secondCarouselItem}
+                  // onClick={() => handleClick(item.news_id)}
+                >
+                  <img
+                    src={news.news_img_link}
+                    // alt={news.news_title}
+                    className={styles.newsImage}
+                  />
+                  <div className={styles.newsContent}>
+                    <h2>{news.news_title}</h2>
+                    <p className={styles.newsDate}>
+                      {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          )}
+        </div>
+      )}
 
       <div className={styles.buttonContainer}>
         <button className={styles.seeMoreButton}>
@@ -184,6 +232,6 @@ const Newsletter = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Newsletter;
+export default NewsSection;

@@ -6,15 +6,18 @@ import classNames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
 
 function EventsSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [maxItems, setMaxItems] = useState(3); // Default max items
-
+  const [loading, setLoading] = useState(true);
   const sliderContainerRef = useRef(null); // Reference to parent container
+
+  const isDesktop = window.innerWidth >= 960;
 
   const navigate = useNavigate();
 
@@ -36,6 +39,7 @@ function EventsSection() {
       const data = await response.json();
       console.log(data.events);
       setEvents(data.events);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
@@ -130,7 +134,7 @@ function EventsSection() {
   }, []);
 
   const settings = {
-    arrows: true,
+    arrows: loading ? false : true,
     infinite: false,
     speed: 300,
     draggable: false,
@@ -166,43 +170,61 @@ function EventsSection() {
         className={`${styles.events} ${slideStart ? styles.start : ''} ${slideEnd ? styles.end : ''}`}
         ref={sliderContainerRef}
       >
-        <Slider {...settings}>
-          {events.map((event, index) => (
-            <div
-              key={event.event_id}
-              className={classNames(styles.eventsItem, {
-                [styles.firstEvent]: index === 0,
-                [styles.lastEvent]: index === events.length - 1,
-              })}
-              onClick={() => handleEventClick(event)}
-            >
-              <img
-                src={event.event_img_link}
-                alt={event.event_title}
-                className={classNames(styles.eventImage, {
-                  [styles.zoomed]: hoveredEvent === event.event_id,
-                })}
-              />
-              <div
-                className={classNames(styles.eventContent, {
-                  [styles.hovered]: hoveredEvent === event.event_id,
-                })}
-                onMouseEnter={() => handleMouseEnter(event.event_id)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <h3 className={styles.eventTitle}>{event.event_title}</h3>
-                <div className={styles.eventInfo}>
-                  <p className={styles.eventDate}>
-                    {format(new Date(event.event_date), 'd MMMM, yyyy')}
-                  </p>
-                  <p className={styles.eventTime}>{event.event_time}</p>
-                  <p className={styles.eventLocation}>{event.event_location}</p>
+        {loading ? (
+          <SkeletonTheme baseColor="#434343" highlightColor="#686868">
+            <Slider {...settings} className={styles.skeletonSlider}>
+              {Array.from({ length: isDesktop ? 8 : 3 }).map((_, index) => (
+                <div key={index}>
+                  <Skeleton
+                    width={isDesktop ? 310 : 250}
+                    height={isDesktop ? 390 : 250}
+                    borderRadius="25px"
+                  />
                 </div>
-                <span className={styles.registerButton}>Register</span>
+              ))}
+            </Slider>
+          </SkeletonTheme>
+        ) : (
+          <Slider {...settings}>
+            {events.map((event, index) => (
+              <div
+                key={event.event_id}
+                className={classNames(styles.eventsItem, {
+                  [styles.firstEvent]: index === 0,
+                  [styles.lastEvent]: index === events.length - 1,
+                })}
+                onClick={() => handleEventClick(event)}
+              >
+                <img
+                  src={event.event_img_link}
+                  alt={event.event_title}
+                  className={classNames(styles.eventImage, {
+                    [styles.zoomed]: hoveredEvent === event.event_id,
+                  })}
+                />
+                <div
+                  className={classNames(styles.eventContent, {
+                    [styles.hovered]: hoveredEvent === event.event_id,
+                  })}
+                  onMouseEnter={() => handleMouseEnter(event.event_id)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <h3 className={styles.eventTitle}>{event.event_title}</h3>
+                  <div className={styles.eventInfo}>
+                    <p className={styles.eventDate}>
+                      {format(new Date(event.event_date), 'd MMMM, yyyy')}
+                    </p>
+                    <p className={styles.eventTime}>{event.event_time}</p>
+                    <p className={styles.eventLocation}>
+                      {event.event_location}
+                    </p>
+                  </div>
+                  <span className={styles.registerButton}>Register</span>
+                </div>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+        )}
       </div>
 
       <div className={styles.buttonContainer}>

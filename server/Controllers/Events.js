@@ -79,9 +79,9 @@ export const searchEvents = async (req, res) => {
 
 // Register users logic (POST request)
 export const registerUser = async (req, res) => {
-  const { user_studentId, event_id } = req.body;
+  const { user_studentid, event_id } = req.body;
 
-  if (!user_studentId || !event_id) {
+  if (!user_studentid || !event_id) {
     return res
       .status(400)
       .json({ message: "User Student ID and Event ID are required" });
@@ -89,8 +89,8 @@ export const registerUser = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO eventRegistration (user_studentId, event_id) VALUES ($1, $2) RETURNING *",
-      [user_studentId, event_id]
+      "INSERT INTO eventRegistration (user_studentid, event_id) VALUES ($1, $2) RETURNING *",
+      [user_studentid, event_id]
     );
     res
       .status(201)
@@ -100,3 +100,4 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
