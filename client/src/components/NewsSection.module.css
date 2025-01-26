@@ -46,10 +46,6 @@ div {
   cursor: pointer;
 }
 
-.secondCarouselItem {
-  width: 290px;
-}
-
 .newsContent {
   position: relative;
   background-size: cover;
@@ -121,6 +117,7 @@ div {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  z-index: 10;
 }
 
 .seeMoreButton {
@@ -223,5 +220,23 @@ div {
     font-size: 19px;
     margin-top: 40px;
     padding: 16px 21px;
+  }
+}
+
+/* for smaller screens */
+@media (min-width: 600px) and (max-width: 959px) {
+  .newsletterContainer {
+    align-items: stretch;
+  }
+  .secondCarousel {
+    margin-top: 5px;
+  }
+
+  .newsletter h1 {
+    padding-left: 18px;
+  }
+
+  .carouselItem {
+    width: 400px !important;
   }
 }
