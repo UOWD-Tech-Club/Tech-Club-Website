@@ -89,7 +89,7 @@ export const registerUser = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO eventRegistration (user_studentid, event_id) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO eventRegistration (user_studentId, event_id) VALUES ($1, $2) RETURNING *",
       [user_studentid, event_id]
     );
     res
