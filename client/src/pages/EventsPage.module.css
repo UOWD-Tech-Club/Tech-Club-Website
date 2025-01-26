@@ -2,25 +2,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 40px 40px;
+  margin: 40px 40px 100px;
 }
 
 .eventImage {
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   overflow: hidden;
   margin-right: 40px;
 }
 
 .eventImage img {
   width: 100%;
-  height: 500px;
+  max-height: 600px;
   border-radius: 20px;
 }
 
 .eventDetails {
-  max-width: 100%;
-  text-align: center;
+  max-width: 600px;
+  /* text-align: center; */
 }
 
 .eventDetails h1 {
@@ -67,7 +67,7 @@
   border-radius: 20px;
   cursor: pointer;
   display: flex;
-  align-self: center;
+  /* align-self: center; */
   align-items: center;
   width: 105px;
 }
