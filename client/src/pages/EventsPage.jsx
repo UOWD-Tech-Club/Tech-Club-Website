@@ -77,7 +77,11 @@ function EventsPage() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, user_studentid, email }),
+            body: JSON.stringify({
+              name,
+              user_studentId: user_studentid,
+              email,
+            }),
           },
         );
 
@@ -95,7 +99,7 @@ function EventsPage() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            user_studentid: user_studentid,
+            user_studentId: user_studentid,
             event_id: event.event_id,
           }),
         },
