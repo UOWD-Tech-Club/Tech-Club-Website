@@ -46,30 +46,33 @@ function EventsPage() {
     day: 'numeric',
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit1 = async (e) => {
     e.preventDefault();
+
     if (!validateForm()) {
-      alert('Please fix the errors in the form.');
+      alert('Please Enter the Details as per the format.');
       return;
     }
-
     try {
-      // Step 1: Check if user exists
-      const userCheckResponse = await fetch(
-        `https://tech-club-website.onrender.com/events/users/${event.event_id}`,
+      //This is the approach for the submission
+      //check if the user is a user in the db
+      //if not, then add him.
+      //if he is a user, check if he is in the registered users list
+      //if he is, return already registered
+      //if he is not then register him
+
+      const fetchUserDetails = await fetch(
+        `https://tech-club-website.onrender.com/events/user/${user_studentid}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       );
 
-      if (!userCheckResponse.ok) {
-        throw new Error('Failed to fetch users list');
-      }
-
-      const usersList = await userCheckResponse.json();
-      const userExists = usersList.some(
-        (user) => user.user_studentid === user_studentid,
-      );
-
-      if (!userExists) {
-        // Step 2: Add user to the users table
+      const userExists = await fetchUserDetails.json();
+      if (!userExists.exists) {
         const addUserResponse = await fetch(
           'https://tech-club-website.onrender.com/events/user',
           {
@@ -78,41 +81,57 @@ function EventsPage() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              name,
-              user_studentId: user_studentid,
-              email,
+              user: {
+                studentId: user_studentid,
+                name: name,
+                studentEmail: email,
+              },
+            }),
+          },
+        );
+        const responseData = await addUserResponse.json();
+        if (!addUserResponse.ok) {
+          throw new Error(responseData.message || 'Failed to add user');
+        }
+      }
+
+      //check for registered users.
+
+      const registeredUsers = await fetch(
+        `https://tech-club-website.onrender.com/events/users/${event.event_id}`,
+      );
+
+      const regUsers = await registeredUsers.json();
+      const registeredUser = regUsers.users.find(
+        (user) => Number(user.user_studentid) === Number(user_studentid),
+      );
+
+      if (registeredUser) {
+        console.log('You have already registered for this event');
+        alert('You have already registered for the event');
+      } else {
+        const registerResponse = await fetch(
+          'https://tech-club-website.onrender.com/events/register',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_studentid: user_studentid,
+              event_id: event.event_id,
             }),
           },
         );
 
-        if (!addUserResponse.ok) {
-          throw new Error('Failed to add user');
+        if (registerResponse.ok) {
+          alert('Registration successful!');
+        } else {
+          alert('Failed to register for event.');
         }
       }
-
-      // Step 3: Register user for the event
-      const registerResponse = await fetch(
-        'https://tech-club-website.onrender.com/events/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_studentId: user_studentid,
-            event_id: event.event_id,
-          }),
-        },
-      );
-
-      if (registerResponse.ok) {
-        alert('Registration successful!');
-      } else {
-        alert('Failed to register for event.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again later.');
+    } catch (err) {
+      console.error('Error:', err);
     }
   };
 
@@ -130,7 +149,7 @@ function EventsPage() {
           <p>{event.event_details}</p>
 
           <h3>Interested? Register Now</h3>
-          <form className={styles.registrationForm} onSubmit={handleSubmit}>
+          <form className={styles.registrationForm} onSubmit={handleSubmit1}>
             <label className={`${styles.customField} ${styles.one}`}>
               <input
                 type="text"
@@ -153,8 +172,8 @@ function EventsPage() {
               <input
                 type="text"
                 className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-                placeholder=" "
                 value={user_studentid}
+                placeholder=""
                 onChange={(e) => setUser_studentId(e.target.value)}
               />
               <span

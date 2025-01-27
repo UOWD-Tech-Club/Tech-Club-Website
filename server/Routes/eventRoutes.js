@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, getRegisteredUsers } from "../Controllers/Users.js";
+import { addUser, getRegisteredUsers, getUser } from "../Controllers/Users.js";
 import {
   getEvents,
   searchEvents,
@@ -10,8 +10,9 @@ import { fetchDailyNews } from "../Controllers/dailyNews.js";
 const router = express.Router();
 
 //routes for adding and fetching event data
-router.get("users/:eventId", getRegisteredUsers);
+router.get("/users/:eventId", getRegisteredUsers);
 router.post("/user", addUser);
+router.get("/user/:studentId" , getUser)
 
 router.get("/", getEvents);
 router.get("/search", searchEvents);
