@@ -37,7 +37,7 @@ function EventsSection() {
         'https://tech-club-website.onrender.com/events',
       );
       const data = await response.json();
-      console.log(data.events);
+
       setEvents(data.events);
       setLoading(false);
     } catch (error) {
@@ -49,69 +49,6 @@ function EventsSection() {
     // Fetch events from the backend
     fetchEvents();
   }, []);
-
-  // ------------------------------------------------------------------
-
-  // Sample Events for testing
-
-  // const events = [
-  //   {
-  //     event_id: 1,
-  //     event_title: 'Event Example 1',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  //   {
-  //     event_id: 2,
-  //     event_title: 'Event Example 2',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  //   {
-  //     event_id: 3,
-  //     event_title: 'Event Example 3',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  //   {
-  //     event_id: 4,
-  //     event_title: 'Event Example 4',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  //   {
-  //     event_id: 5,
-  //     event_title: 'Event Example 5',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  //   {
-  //     event_id: 6,
-  //     event_title: 'Event Example 6',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  //   {
-  //     event_id: 7,
-  //     event_title: 'Event Example 7',
-  //     event_date: '2024-10-25',
-  //     event_time: '3:00pm - 4:30pm',
-  //     event_location: '@2.55',
-  //     event_img_link: eventImage,
-  //   },
-  // ];
 
   const slideStart = currentSlide === 0;
   const slideEnd = currentSlide >= events.length - maxItems;

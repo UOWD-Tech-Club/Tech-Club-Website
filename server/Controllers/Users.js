@@ -9,6 +9,40 @@ Things to be included
 */
 }
 
+export const getUser = async (req, res) => {
+  const db = await pool.connect();
+
+  const { studentId } = req.params;
+  try {
+    const existingUserResult = await db.query(
+      `SELECT * FROM users WHERE user_studentId = $1`,
+      [studentId]
+    );
+
+    if (existingUserResult.rows.length > 0) {
+      return res.status(200).json({
+        message: "User already exists",
+        exists: true,
+      });
+    }
+
+    else {
+      res.status(200).json({
+        message: "User does not exist",
+        exists: false,
+      });
+    }
+
+  } catch (err) {
+    console.log("Error Fetching User", err.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  } finally {
+    db.release();
+  }
+};
+
 export const addUser = async (req, res) => {
   const db = await pool.connect();
   try {
@@ -40,7 +74,7 @@ export const getRegisteredUsers = async (req, res) => {
   const db = await pool.connect();
   try {
     const { eventId } = req.params;
-    console.log(eventId)
+    console.log(eventId);
 
     if (!eventId) {
       return res.status(400).json({
@@ -55,21 +89,18 @@ export const getRegisteredUsers = async (req, res) => {
 
     const users = result.rows;
 
-    if (users.length === 0 ){
-        return res.status(400)
-        .json({
-            message: "No users registered for the event"
-        })
+    if (users.length === 0) {
+      return res.status(400).json({
+        message: "No users registered for the event",
+      });
     }
 
-    return res.status(200)
-    .json({
-        message: "Users registered for this event",
-        users: users
-    })
-
+    return res.status(200).json({
+      message: "Users registered for this event",
+      users: users,
+    });
   } catch (err) {
-    console.log("Error Fetching users for the event:", err.message);
+    console.log("Error Fetching users rudraa for the event:", err.message);
     return res.status(500).json({
       message: "Internal server error",
     });
