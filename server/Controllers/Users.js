@@ -86,11 +86,11 @@ export const getRegisteredUsers = async (req, res) => {
 
 		const users = result.rows;
 
-		if (users.length === 0) {
-			return res.status(200).json({
-				message: 'No users registered for the event',
-			});
-		}
+		// if (users.length === 0) {
+		// 	return res.status(200).json({
+		// 		message: 'No users registered for the event',
+		// 	});
+		// }
 
 		return res.status(200).json({
 			message: 'Users registered for this event',
