@@ -164,7 +164,7 @@ function EventsSection() {
         )}
       </div>
 
-      <div className={styles.buttonContainer}>
+      {/* <div className={styles.buttonContainer}>
         <button className={styles.allEventsButton}>
           All events
           <svg
@@ -187,7 +187,7 @@ function EventsSection() {
             />
           </svg>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
