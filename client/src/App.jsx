@@ -2,6 +2,7 @@ import EventsPage from './pages/EventsPage';
 import Homepage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
+import NewsArticle from './pages/NewsArticle';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/events/:eventId" element={<EventsPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/newsletter" element={<NewsPage />} />
+        <Route path="/newsarticle" element={<NewsArticle />} />
       </Routes>
     </>
   );
