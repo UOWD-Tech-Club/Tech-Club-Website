@@ -1,31 +1,62 @@
 import PageLayout from '../layout/PageLayout';
 import styles from './NewsPage.module.css';
-import newsletterBg from '../assets/newsletter-bg.png';
 import { format } from 'date-fns';
+import { useState, useEffect } from 'react';
 
 function NewsPage() {
-  // replace with backend data
-  const newsItems = [...Array(6)].map((_, i) => ({
-    id: i + 1,
-    title: `A Very Interesting Title For Some Very Interesting News ${i + 1}`,
-    category: 'Tech Club',
-    author: 'Jeff',
-    date: new Date(),
-    image: newsletterBg,
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus tortor, auctor in tempus nec, congue in odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec ullamcorper tellus. ',
-  }));
+  const [newsItems, setNewsItems] = useState([]);
+  const [filter, setFilter] = useState('dailyNews');
+  const [latestNews, setLatestNews] = useState([]); // Initialize as empty array instead of null
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
-  const latestNews = {
-    id: 0,
-    title: 'Headline of the Latest News',
-    category: 'Tech Club',
-    author: 'Jeff',
-    date: new Date(),
-    image: newsletterBg,
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus tortor, auctor in tempus nec, congue in odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec ullamcorper tellus. ',
+  const fetchNews = async () => {
+    try {
+      setIsLoading(true);
+      const apiUrl =
+        filter === 'techClubNews'
+          ? 'http://localhost:8080/news/techClubNews'
+          : 'http://localhost:8080/news/dailynews';
+
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      const allNews = data.news;
+
+      if (allNews && allNews.length > 0) {
+        setLatestNews(allNews.slice(0, 1));
+        setNewsItems(allNews.slice(1));
+      } else {
+        setLatestNews([]);
+        setNewsItems([]);
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      setLatestNews([]);
+      setNewsItems([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchNews();
+  }, [filter]); // Add filter as dependency
+
+  if (isLoading) {
+    return (
+      <PageLayout>
+        <div className={styles.newsContainer}>
+          <div>Loading...</div>
+        </div>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout>
@@ -33,54 +64,77 @@ function NewsPage() {
         <div className={styles.newsHeader}>
           <h3>Filter : </h3>
           <div className={styles.filterOptions}>
-            <button className={styles.filterButton}>Tech Club</button>
-            <button className={styles.filterButton}>Daily News</button>
+            <button
+              className={styles.filterButton}
+              onClick={() => setFilter('techClubNews')}
+            >
+              Tech Club
+            </button>
+            <button
+              className={styles.filterButton}
+              onClick={() => setFilter('dailyNews')}
+            >
+              Daily News
+            </button>
           </div>
         </div>
 
         <div className={styles.featuredNews}>
-          <div className={styles.imageWrapper}>
-            <img
-              src={latestNews.image}
-              alt={latestNews.title}
-              className={styles.featuredImage}
-            />
-          </div>
-          <div className={styles.featuredContent}>
-            <span className={styles.tag}>{latestNews.category}</span>
-            <h2 className={styles.featuredTitle}>{latestNews.title}</h2>
-            <p className={styles.featuredExcerpt}>{latestNews.content}</p>
-            <div className={styles.meta}>
-              <span className={styles.date}>
-                {format(latestNews.date, 'd MMMM, yyyy')}
-              </span>
-              <span className={styles.author}>• by {latestNews.author}</span>
-            </div>
-          </div>
+          {latestNews.length > 0 &&
+            latestNews.map((news) => (
+              <div key={news.news_id} className={styles.newsItem}>
+                <div className={styles.imageWrapper}>
+                  <img
+                    src={news.news_img}
+                    alt={news.news_title}
+                    className={styles.featuredImage}
+                  />
+                </div>
+                <div className={styles.featuredContent}>
+                  <span className={styles.tag}>
+                    {news.news_category || ' '}
+                  </span>
+                  <h2 className={styles.featuredTitle}>{news.news_title}</h2>
+                  <p className={styles.featuredExcerpt}>
+                    {news.news_description}
+                  </p>
+                  <div className={styles.meta}>
+                    <span className={styles.date}>
+                      {new Date(news.news_pubdate).toLocaleDateString()}
+                    </span>
+                    <span className={styles.author}>
+                      • by {news.news_source}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
 
         <h1 className={styles.sectionTitle}>Latest News</h1>
 
         <div className={styles.newsGrid}>
           {newsItems.map((news) => (
-            <article key={news.id} className={styles.newsCard}>
+            <article key={news.news_id} className={styles.newsCard}>
               <div className={styles.imageWrapper}>
                 <img
-                  src={news.image}
-                  alt={news.title}
+                  src={news.news_img}
+                  alt={news.news_title}
                   className={styles.newsImage}
                 />
-                <span className={styles.readMore}>Read More</span>
+                <a href={news.news_url} className={styles.readMore}>
+                  Read More
+                </a>
               </div>
               <div className={styles.newsContent}>
-                <span className={styles.tag}>{news.category}</span>
-                <h3 className={styles.newsTitle}>{news.title}</h3>
-                <p className={styles.newsExcerpt}>{news.excerpt}</p>
+                <span className={styles.tag}>{news.news_category || ' '}</span>
+                <h3 className={styles.newsTitle}>{news.news_title}</h3>
+                <p className={styles.newsExcerpt}>{news.news_description}</p>
                 <div className={styles.meta}>
                   <span className={styles.date}>
-                    {format(news.date, 'd MMMM, yyyy')}
+                    {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
                   </span>
-                  <span className={styles.author}>• by {news.author}</span>
+                  <span className={styles.author}>• by {news.news_source}</span>
                 </div>
               </div>
             </article>
