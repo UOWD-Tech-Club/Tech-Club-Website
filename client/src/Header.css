@@ -1,0 +1,35 @@
+#root {
+  width: 100%;
+  margin: 0;
+}
+
+.header {
+  background-color: rgb(54, 47, 61);
+  color: rgb(104, 239, 96);
+  width: 100%;
+  height: auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+.container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 5rem;
+}
+
+.nav-links li a {
+  font-size: 25px;
+  color: rgb(182, 220, 251);
+}
+
+.nav-links li a:hover {
+  color: rgb(104, 239, 96);
+}
