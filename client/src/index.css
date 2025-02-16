@@ -171,3 +171,13 @@ textarea:not([rows]) {
 a {
   text-decoration: none;
 }
+
+.banner {
+  text-align: center;
+  width: 100%;
+  display: block;
+  background-color: var(--secondary);
+  color: var(--primary);
+  font-family: Nacelle-Bold;
+  font-size: 12px;
+}

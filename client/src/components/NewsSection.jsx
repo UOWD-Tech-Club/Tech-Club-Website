@@ -1,110 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
-import classNames from 'classnames';
 import Slider from 'react-slick';
 import styles from './NewsSection.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import newsImage from '../assets/newsletter-bg.png';
+import classNames from 'classnames';
+import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-function Newsletter() {
-  const [car1, setCar1] = useState(null);
-  const [car2, setCar2] = useState(null);
-  let sliderRef1 = useRef(null);
-  let sliderRef2 = useRef(null);
-  const mobileSize = 599;
-  const tabletSize = 959;
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= mobileSize);
-  const [isTablet, setIsTablet] = useState(window.innerWidth <= tabletSize);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= mobileSize);
-      setIsTablet(window.innerWidth <= tabletSize);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    setCar1(sliderRef1);
-    setCar2(sliderRef2);
-  }, []);
-
-  const handleClick = (newsId) => {
-    // Handle click on news card
-    console.log('News ' + newsId);
-  };
-
-  const news = [
-    {
-      news_id: 1,
-      news_title: 'News Headline 1',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 2,
-      news_title: 'News Headline 2',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 3,
-      news_title: 'News Headline 3',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 4,
-      news_title: 'News Headline 4',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 5,
-      news_title: 'News Headline 5',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 6,
-      news_title: 'News Headline 6',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 7,
-      news_title: 'News Headline 7',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 8,
-      news_title: 'News Headline 8',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 9,
-      news_title: 'News Headline 9',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-    {
-      news_id: 10,
-      news_title: 'News Headline 10',
-      news_date: '2024-10-25',
-      news_img_link: newsImage,
-    },
-  ];
+function NewsSection() {
+  const [loading, setLoading] = useState(true);
 
   // Settings for the first carousel
   const settings1 = {
     dots: false,
-    arrows: true,
+    arrows: loading ? false : true,
     infinite: true,
     speed: 300,
     adaptiveHeight: false,
@@ -112,27 +22,30 @@ function Newsletter() {
     draggable: false,
     slidesToShow: 3,
     slidesToScroll: 1,
-    prevArrow: <PrevArrow news={true} />,
-    nextArrow: <NextArrow news={true} />,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1000,
         settings: {
           slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
         },
       },
       {
-        breakpoint: tabletSize,
+        breakpoint: 960,
         settings: {
-          arrows: false,
           slidesToShow: 2,
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: mobileSize,
+        breakpoint: 600,
         settings: {
-          arrows: false,
           slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
@@ -148,8 +61,71 @@ function Newsletter() {
     adaptiveHeight: false,
     slidesToScroll: 1,
     draggable: false,
-    responsive: [],
   };
+
+  const [newsPart1, setNewsPart1] = useState([]);
+  const [newsPart2, setNewsPart2] = useState([]);
+
+  const fetchDailyNews = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/news/dailynews');
+      const data = await response.json();
+
+      const allNews = data.news;
+      // Split news into two parts
+      const midIndex = Math.ceil(allNews.length / 2);
+      setNewsPart1(allNews.slice(0, midIndex));
+      setNewsPart2(allNews.slice(midIndex));
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching news:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDailyNews();
+  }, []);
+
+  const [car1, setCar1] = useState(null);
+  const [car2, setCar2] = useState(null);
+
+  const sliderRef1 = useRef(null);
+  const sliderRef2 = useRef(null);
+
+  const mobileSize = 599;
+  const tabletSize = 959;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= mobileSize);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= tabletSize);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= mobileSize);
+      setIsTablet(window.innerWidth <= tabletSize);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    setCar1(sliderRef1.current);
+    setCar2(sliderRef2.current);
+  }, []);
+
+  const renderLoadingComponent = (settings, first) => (
+    <SkeletonTheme baseColor="#434343" highlightColor="#686868">
+      <Slider {...settings}>
+        {Array.from({ length: isMobile ? 2 : 6 }).map((_, index) => (
+          <div key={index}>
+            <Skeleton
+              width={isMobile || !first ? 290 : 400}
+              height={185}
+              borderRadius="25px"
+            />
+          </div>
+        ))}
+      </Slider>
+    </SkeletonTheme>
+  );
 
   return (
     <div className={styles.newsletterContainer}>
@@ -158,66 +134,75 @@ function Newsletter() {
       </div>
 
       {/* First Carousel */}
-
       <div className={styles.carousel}>
-        <Slider
-          {...settings1}
-          asNavFor={isTablet ? null : car2} // Conditionally set asNavFor
-          ref={(slider) => !isTablet && (sliderRef1 = slider)} // Conditionally set ref
-        >
-          {news
-            .slice(0, Math.floor(news.length * (isMobile ? 1 : 0.5)))
-            .map((item) => (
+        {loading ? (
+          renderLoadingComponent(settings1, true)
+        ) : (
+          <Slider
+            {...settings1}
+            asNavFor={isTablet ? null : car2} // Conditionally set asNavFor
+            ref={(slider) => {
+              sliderRef1.current = slider;
+            }} // Correctly set ref
+          >
+            {newsPart1.map((news, index) => (
               <div
-                key={item.news_id}
+                key={index}
                 className={styles.carouselItem}
-                onClick={() => handleClick(item.news_id)}
+                onClick={() => window.open(news.new_url, '_blank')}
               >
                 <img
-                  src={item.news_img_link}
-                  alt={item.news_title}
+                  src={news.news_img}
+                  // alt={news.news_title}
                   className={styles.newsImage}
                 />
                 <div className={styles.newsContent}>
-                  <h2>{item.news_title}</h2>
+                  <h2>{news.news_title}</h2>
                   <p className={styles.newsDate}>
-                    {format(new Date(item.news_date), 'd MMMM, yyyy')}
+                    {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
                   </p>
                 </div>
               </div>
             ))}
-        </Slider>
+          </Slider>
+        )}
       </div>
 
       {/* Second Carousel for Desktop/Tablet */}
 
       {isMobile ? null : (
         <div className={classNames(styles.carousel, styles.secondCarousel)}>
-          <Slider
-            {...settings2}
-            asNavFor={isTablet ? null : car1} // Conditionally set asNavFor
-            ref={(slider) => !isTablet && (sliderRef2 = slider)} // Conditionally set ref
-          >
-            {news.slice(Math.floor(news.length * 0.5)).map((item) => (
-              <div
-                key={item.news_id}
-                className={styles.secondCarouselItem}
-                onClick={() => handleClick(item.news_id)}
-              >
-                <img
-                  src={item.news_img_link}
-                  alt={item.news_title}
-                  className={styles.newsImage}
-                />
-                <div className={styles.newsContent}>
-                  <h2>{item.news_title}</h2>
-                  <p className={styles.newsDate}>
-                    {format(new Date(item.news_date), 'd MMMM, yyyy')}
-                  </p>
+          {loading ? (
+            renderLoadingComponent(settings2, false)
+          ) : (
+            <Slider
+              {...settings2}
+              asNavFor={isTablet ? null : car1} // Conditionally set asNavFor
+              ref={(slider) => {
+                sliderRef2.current = slider;
+              }}
+            >
+              {newsPart2.map((news, index) => (
+                <div
+                  key={index}
+                  className={styles.secondCarouselItem}
+                  onClick={() => window.open(news.new_url, '_blank')}
+                >
+                  <img
+                    src={news.news_img}
+                    // alt={news.news_title}
+                    className={styles.newsImage}
+                  />
+                  <div className={styles.newsContent}>
+                    <h2>{news.news_title}</h2>
+                    <p className={styles.newsDate}>
+                      {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </Slider>
+              ))}
+            </Slider>
+          )}
         </div>
       )}
 
@@ -249,4 +234,4 @@ function Newsletter() {
   );
 }
 
-export default Newsletter;
+export default NewsSection;

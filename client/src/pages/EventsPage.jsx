@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import styles from './EventsPage.module.css';
-import eventimg from '../assets/events_img.png';
 import { useLocation } from 'react-router-dom';
+import PageLayout from '../layout/PageLayout';
 
 function EventsPage() {
   const [name, setName] = useState('');
-  const [user_studentId, setUser_studentId] = useState('');
+  const [user_studentid, setUser_studentId] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState({ text: '', type: '' });
+  const [showOverlay, setShowOverlay] = useState(false);
   const [errors, setErrors] = useState({
     name: '',
-    user_studentId: '',
+    user_studentid: '',
     email: '',
   });
 
@@ -20,123 +23,190 @@ function EventsPage() {
     return <p>No event data available.</p>;
   }
 
-  const nameRegex = /^[A-Za-z\s]{3,50}$/;
-  const studentIdRegex = /^\d{7}$/;
-  const emailRegex = /^[^\s@]+@uowmail\.edu\.au$/;
-
   const validateForm = () => {
     const newErrors = {};
-    if (!nameRegex.test(name)) {
+    if (!/^[A-Za-z\s]{3,50}$/.test(name)) {
       newErrors.name = 'Valid name required';
     }
-    if (!studentIdRegex.test(user_studentId)) {
-      newErrors.user_studentId = '7 digit university ID';
+    if (!/^\d{7}$/.test(user_studentid)) {
+      newErrors.user_studentid = '7 digit university ID';
     }
-    if (!emailRegex.test(email)) {
+    if (!/^[^\s@]+@uowmail\.edu\.au$/.test(email)) {
       newErrors.email = 'University email format required';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const formattedDate = new Date(event.event_date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await fetch('http://localhost:8080/events/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+    if (!validateForm()) {
+      setStatusMessage({
+        text: 'Please enter details in the correct format.',
+        type: 'error',
+      });
+      return;
+    }
+
+    setLoading(true);
+    setStatusMessage({ text: '', type: '' });
+
+    try {
+      const fetchUserDetails = await fetch(
+        `https://tech-club-website.onrender.com/events/user/${user_studentid}`,
+        { method: 'GET', headers: { 'Content-Type': 'application/json' } },
+      );
+
+      const userExists = await fetchUserDetails.json();
+      if (!userExists.exists) {
+        const addUserResponse = await fetch(
+          'https://tech-club-website.onrender.com/events/user',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user: { studentId: user_studentid, name, studentEmail: email },
+            }),
           },
-          body: JSON.stringify({
-            user_studentId,
-            event_id: event.event_id, // Use the correct syntax here
-          }),
-        });
-        if (response.ok) {
-          alert('Form submitted successfully!');
-        } else {
-          alert('Failed to submit form. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
+        );
+        if (!addUserResponse.ok) throw new Error('Failed to add user');
       }
-    } else {
-      alert('Please fix the errors in the form.');
+
+      const registeredUsers = await fetch(
+        `https://tech-club-website.onrender.com/events/users/${event.event_id}`,
+      );
+      const regUsers = await registeredUsers.json();
+      const registeredUser = regUsers.users.find(
+        (user) => Number(user.user_studentid) === Number(user_studentid),
+      );
+
+      if (registeredUser) {
+        setStatusMessage({
+          text: 'You have already registered for this event.',
+          type: 'info',
+        });
+      } else {
+        const registerResponse = await fetch(
+          'https://tech-club-website.onrender.com/events/register',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_studentid, event_id: event.event_id }),
+          },
+        );
+
+        if (registerResponse.ok) {
+          setStatusMessage({
+            text: 'Registration successful!',
+            type: 'success',
+          });
+          setShowOverlay(true);
+        } else {
+          setStatusMessage({
+            text: 'Failed to register for the event.',
+            type: 'error',
+          });
+        }
+      }
+    } catch {
+      setStatusMessage({
+        text: 'An error occurred. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className={styles.eventContainer}>
-      <div className={styles.eventImage}>
-        <img src={eventimg} alt="Event" />
+    <PageLayout>
+      <div className={styles.eventContainer}>
+        <div className={styles.eventImage}>
+          <img src={event.event_img_link} alt="Event" />
+        </div>
+        <div className={styles.eventDetails}>
+          <h1>{event.event_title}</h1>
+          <p>{event.event_details}</p>
+          <h3>Interested? Register Now</h3>
+          {statusMessage.text && !showOverlay && (
+            <div
+              className={`${styles.statusMessage} ${styles['status' + statusMessage.type]}`}
+            >
+              {statusMessage.text}
+            </div>
+          )}
+          <div className={styles.formContainer}>
+            <form className={styles.registrationForm} onSubmit={handleSubmit}>
+              <div
+                className={styles.inputFields}
+                style={{
+                  pointerEvents: showOverlay ? 'none' : 'auto',
+                }}
+              >
+                {showOverlay && (
+                  <div className={styles.overlay}>
+                    <div className={styles.successModal}>
+                      <svg
+                        width="50px"
+                        height="50px"
+                        viewBox="0 -0.5 25 25"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5.5 12.5L10.167 17L19.5 8"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span>You&apos;re in!</span>
+                      <p>Thanks for registering! Enjoy the event.</p>
+                    </div>
+                  </div>
+                )}
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={showOverlay}
+                />
+                {errors.name && (
+                  <span className={styles.error}>{errors.name}</span>
+                )}
+
+                <input
+                  type="text"
+                  placeholder="Student ID"
+                  value={user_studentid}
+                  onChange={(e) => setUser_studentId(e.target.value)}
+                  disabled={showOverlay}
+                />
+                {errors.user_studentid && (
+                  <span className={styles.error}>{errors.user_studentid}</span>
+                )}
+
+                <input
+                  type="email"
+                  placeholder="University Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={showOverlay}
+                />
+                {errors.email && (
+                  <span className={styles.error}>{errors.email}</span>
+                )}
+              </div>
+
+              <button type="submit" disabled={loading || showOverlay}>
+                Register {loading && <span className={styles.loader}></span>}
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
-      <div className={styles.eventDetails}>
-        <h1>{event.event_title}</h1>
-        <h2>
-          {formattedDate},{event.event_time} - {event.event_location}
-        </h2>
-        <p>{event.event_details}</p>
-
-        <h3>Interested? Register Now</h3>
-        <form className={styles.registrationForm} onSubmit={handleSubmit}>
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="text"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              Your Name
-            </span>
-            {errors.name && <span className={styles.error}>{errors.name}</span>}
-          </label>
-
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="text"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={user_studentId}
-              onChange={(e) => setUser_studentId(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              Student ID
-            </span>
-            {errors.user_studentId && (
-              <span className={styles.error}>{errors.user_studentId}</span>
-            )}
-          </label>
-
-          <label className={`${styles.customField} ${styles.one}`}>
-            <input
-              type="email"
-              className={`${styles.customFieldInput} ${styles.oneCustomFieldInput}`}
-              placeholder=" "
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <span className={`${styles.placeholder} ${styles.onePlaceholder}`}>
-              University Email
-            </span>
-            {errors.email && (
-              <span className={styles.error}>{errors.email}</span>
-            )}
-          </label>
-
-          <button type="submit">Register</button>
-        </form>
-      </div>
-    </div>
+    </PageLayout>
   );
 }
 

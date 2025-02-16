@@ -46,10 +46,6 @@ div {
   cursor: pointer;
 }
 
-.secondCarouselItem {
-  width: 290px;
-}
-
 .newsContent {
   position: relative;
   background-size: cover;
