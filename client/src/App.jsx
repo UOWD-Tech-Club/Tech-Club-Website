@@ -1,33 +1,28 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import EventsPage from './pages/EventsPage';
+import Homepage from './pages/HomePage';
+// import NewsPage from './pages/NewsPage';
+// import NewsArticle from './pages/NewsArticle';
+import { Routes, Route } from 'react-router-dom';
+// import AboutPage from './pages/AboutPage';
+import PageNotBuilt from './pages/PageNotBuilt';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <span className="banner">
+        This site is in beta—expect improvements and occasional bugs
+      </span>
+      <Routes>
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="/events/:eventId" element={<EventsPage />} />
+        <Route path="/about" element={<PageNotBuilt />} />
+        <Route path="/news" element={<PageNotBuilt />} />
+        <Route path="/events" element={<PageNotBuilt />} />
+        {/* <Route path="/newsletter" element={<NewsPage />} /> */}
+        {/* <Route path="/newsarticle" element={<NewsArticle />} /> */}
+      </Routes>
     </>
   );
 }

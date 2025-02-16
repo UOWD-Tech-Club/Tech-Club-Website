@@ -1,0 +1,375 @@
+.eventContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 40px 100px;
+}
+
+.eventImage {
+  width: 100%;
+  height: 593px;
+  max-width: 600px;
+  overflow: hidden;
+  margin-right: 40px;
+}
+
+.eventImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.eventDetails {
+  width: 100%;
+  max-width: 600px;
+}
+
+.eventDetails h1 {
+  margin: 10px 0;
+}
+
+.eventDetails p {
+  font-size: 1rem;
+  margin: 15px 0;
+}
+
+.eventDetails h3 {
+  margin: 30px 0 20px 0;
+  font-weight: bold;
+}
+
+.formContainer {
+  width: 410px;
+  position: relative;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.registrationForm {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 5;
+  border-radius: 8px;
+}
+
+.registrationForm input {
+  color: var(--secondary);
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 1rem;
+  border: 1px solid var(--secondary);
+  border-radius: 20px;
+  background-color: var(--primary);
+}
+
+.registrationForm input::placeholder {
+  color: var(--secondary);
+}
+
+.registrationForm input:disabled {
+  opacity: 0.5;
+}
+
+.registrationForm button {
+  width: fit-content;
+  height: 41px;
+  margin-top: 20px;
+  padding: 0 20px;
+  background-color: var(--accent);
+  color: var(--primary);
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color ease-in 0.2s;
+}
+
+.registrationForm button:hover {
+  background-color: var(--secondary);
+}
+
+.registrationForm button:disabled {
+  background-color: #bdbdbd;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.inputFields {
+  padding: 0;
+  position: relative;
+}
+
+.loader {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--primary);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  /* height: 0; */
+  margin-top: 2px;
+  display: block;
+  font-size: 15px;
+  margin-left: 15px;
+  color: #dc3545;
+}
+
+/* Scoped global resets */
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: border-box;
+}
+
+.customField {
+  position: relative;
+  font-size: 14px;
+  /* border-top: 20px solid transparent; */
+  margin-bottom: 5px;
+  display: inline-block;
+  --field-padding: 12px;
+}
+
+.customFieldInput {
+  border: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #f2f2f2;
+  padding: var(--field-padding);
+  border-radius: 3px;
+  width: 250px;
+  outline: none;
+  font-size: 14px;
+}
+
+.placeholder {
+  position: absolute;
+  left: var(--field-padding);
+  width: calc(100% - (var(--field-padding) * 2));
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  top: 22px;
+  line-height: 100%;
+  transform: translateY(-50%);
+  color: #aaa;
+  transition:
+    top 0.3s ease,
+    color 0.3s ease,
+    font-size 0.3s ease;
+}
+
+.customFieldInputDirty + .placeholder,
+.customFieldInput:focus + .placeholder,
+.customFieldInput:not(:placeholder-shown) + .placeholder {
+  top: -10px;
+  font-size: 10px;
+  color: #222;
+}
+
+.errorMessage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  background: #dc3545;
+  color: #fff;
+  height: 24px;
+}
+
+.errorMessage:empty {
+  opacity: 0;
+}
+
+/* ONE */
+.oneCustomFieldInput {
+  background: none;
+  border: 2px solid #ddd;
+  transition: border-color 0.3s ease;
+}
+
+.onePlaceholder {
+  left: 8px;
+  padding: 0 5px;
+}
+
+.oneCustomFieldInputDirty,
+.oneCustomFieldInput:not(:placeholder-shown),
+.oneCustomFieldInput:focus {
+  border-color: #222;
+  transition-delay: 0.1s;
+}
+
+.oneCustomFieldInputDirty + .onePlaceholder,
+.oneCustomFieldInput:not(:placeholder-shown) + .onePlaceholder,
+.oneCustomFieldInput:focus + .onePlaceholder {
+  top: 0;
+  font-size: 10px;
+  color: #fff;
+  width: auto;
+}
+
+.statusMessage {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.statuserror {
+  background-color: #2c0b0e;
+  color: #dc3545;
+}
+
+.statusinfo {
+  background-color: #332701;
+  color: #ffc107;
+}
+
+.statusMessage .overlayButton {
+  display: inline;
+  margin: 0 0 0 10px;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.5);
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.successModal {
+  width: 360px;
+  height: fit-content;
+  background-color: #243031;
+  border-radius: 15px;
+  padding: 10px 25px 15px 25px;
+  margin: 10px 0 0 0;
+  color: #2dbe93;
+  stroke: #2dbe93;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+.successModal span {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.successModal p {
+  font-size: 0.9rem;
+  margin: 2px 0;
+}
+
+@media (max-width: 480px) {
+  .eventContainer {
+    flex-direction: column;
+    margin: 20px 5px;
+  }
+
+  .eventImage {
+    height: 200px;
+  }
+
+  .eventImage img {
+    width: 600px;
+    border-radius: 0px;
+  }
+
+  .eventImage {
+    margin: 0 0px;
+  }
+
+  .eventDetails h1 {
+    font-size: 1.7rem;
+    margin-top: 30px;
+  }
+
+  .eventDetails h2 {
+    font-size: 1.2rem;
+  }
+
+  .eventDetails p {
+    font-size: 0.9rem;
+    padding-right: 0;
+  }
+
+  .formContainer {
+    width: 100%;
+  }
+
+  .registrationForm input {
+    width: 100%;
+    padding: 8px 16px;
+    margin: 4px 0;
+  }
+
+  .registrationForm button {
+    width: 100%;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+
+  .statusMessage {
+    margin-bottom: 15px;
+  }
+
+  .error {
+    height: 0;
+    margin-top: 0px;
+    display: block;
+    font-size: 10px;
+    margin-left: 15px;
+    color: #dc3545;
+  }
+
+  .successModal {
+    width: 80%;
+    padding: 5px 20px 10px 20px;
+    margin: 0;
+  }
+
+  .successModal span {
+    font-size: 1.1rem;
+  }
+
+  .successModal p {
+    font-size: 0.8rem;
+  }
+}

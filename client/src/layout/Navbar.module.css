@@ -1,0 +1,234 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 1rem;
+}
+
+.logo {
+  display: flex;
+  gap: 10px;
+  font-family: Nacelle-Black;
+  font-size: 2rem;
+}
+
+.logo_club {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent);
+  text-stroke: 2px var(--accent);
+}
+
+.logo_tech {
+  color: var(--secondary);
+}
+
+.nav_action {
+  display: flex;
+  gap: 50px;
+}
+
+.nav_links {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  /* background-color: var(--primary); */
+  left: 0;
+  top: 80px;
+  width: 0;
+  height: calc(100vh - 80px);
+  transition: all 0.3s ease-in;
+  overflow: hidden;
+  font-size: 24px;
+  padding: 0;
+}
+
+.nav_links.active {
+  width: 100vw !important;
+}
+
+.nav_link {
+  padding: 1rem;
+  color: var(--secondary);
+  transition: color 0.2s ease-in;
+}
+
+.nav_links.active .nav_link:active {
+  color: var(--accent);
+  transition: none;
+}
+
+.joinus {
+  margin: 10px 0;
+  padding: 8px 10px;
+  border-radius: 50px;
+  color: var(--primary);
+  background-color: var(--accent);
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+}
+
+.logo {
+  font-size: 28px;
+}
+
+.input_checkbox {
+  display: none;
+}
+
+.toggle {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition-duration: 0.5s;
+}
+
+.bars {
+  width: 100%;
+  height: 2px;
+  background-color: var(--secondary);
+  border-radius: 4px;
+}
+
+#bar2 {
+  transition-duration: 0.8s;
+}
+
+#bar1,
+#bar3 {
+  width: 70%;
+}
+
+.input_checkbox:checked + .toggle .bars {
+  position: absolute;
+  transition-duration: 0.5s;
+}
+
+.input_checkbox:checked + .toggle #bar2 {
+  transform: scaleX(0);
+  transition-duration: 0.5s;
+}
+
+.input_checkbox:checked + .toggle #bar1 {
+  width: 100%;
+  transform: rotate(45deg);
+  transition-duration: 0.5s;
+}
+
+.input_checkbox:checked + .toggle #bar3 {
+  width: 100%;
+  transform: rotate(-45deg);
+  transition-duration: 0.5s;
+}
+
+.input_checkbox:checked + .toggle {
+  transition-duration: 0.5s;
+  transform: rotate(180deg);
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 620px) {
+  .nav_links {
+    background-color: var(--primary);
+  }
+}
+
+/* Tablet Styles */
+@media screen and (min-width: 620px) and (max-width: 960px) {
+  .joinus {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .logo {
+    font-size: 35px;
+  }
+
+  .toggle {
+    height: 30px;
+    width: 30px;
+    gap: 7.5px;
+  }
+
+  .bars {
+    height: 4px;
+  }
+
+  .nav_links {
+    background-color: var(--primary);
+  }
+}
+
+/* Small Desktop Styles */
+@media screen and (min-width: 960px) and (max-width: 1200px) {
+  .joinus {
+    padding: 0px 10px;
+    font-size: 20px;
+  }
+
+  .logo {
+    font-size: 35px;
+  }
+
+  .navbar {
+    justify-content: space-between;
+    padding: 40px;
+  }
+}
+
+/* Large Desktop Styles */
+@media screen and (min-width: 1200px) {
+  .joinus {
+    padding: 13px 20px;
+    font-size: 20px;
+  }
+
+  .logo {
+    font-size: 42px;
+  }
+
+  .navbar {
+    justify-content: space-between;
+    padding: 50px;
+  }
+}
+
+/* both large and small desktops */
+@media screen and (min-width: 960px) {
+  .nav_links {
+    position: relative;
+    top: 0;
+    width: unset;
+    height: unset;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 50px;
+    font-size: 20px;
+  }
+
+  .menu_icon {
+    display: none;
+  }
+
+  .nav_link:hover {
+    color: var(--accent);
+  }
+
+  .joinus:hover {
+    background-color: var(--secondary);
+  }
+}
+
+* {
+  transition: none;
+}
