@@ -7,9 +7,12 @@ import { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { useNavigate } from 'react-router-dom';
 
 function NewsSection() {
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   // Settings for the first carousel
   const settings1 = {
@@ -133,6 +136,10 @@ function NewsSection() {
         <h1>News</h1>
       </div>
 
+      <div className={styles.overlay}>
+        <p>Under Construction</p>
+      </div>
+
       {/* First Carousel */}
       <div className={styles.carousel}>
         {loading ? (
@@ -207,7 +214,10 @@ function NewsSection() {
       )}
 
       <div className={styles.buttonContainer}>
-        <button className={styles.seeMoreButton}>
+        <button
+          className={styles.seeMoreButton}
+          onClick={() => navigate(`/news`)}
+        >
           All news
           <svg
             className={styles.arrow}

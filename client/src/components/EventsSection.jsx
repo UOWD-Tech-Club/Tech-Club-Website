@@ -164,8 +164,11 @@ function EventsSection() {
         )}
       </div>
 
-      {/* <div className={styles.buttonContainer}>
-        <button className={styles.allEventsButton}>
+      <div className={styles.buttonContainer}>
+        <button
+          className={styles.allEventsButton}
+          onClick={() => navigate(`/events`)}
+        >
           All events
           <svg
             className={styles.arrow}
@@ -187,7 +190,7 @@ function EventsSection() {
             />
           </svg>
         </button>
-      </div> */}
+      </div>
     </div>
   );
 }
