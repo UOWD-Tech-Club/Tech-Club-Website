@@ -7,7 +7,7 @@ import ScrollToTop from './utils/ScrollToTop.js';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/Tech-Club-Website">
+    <BrowserRouter>
       <ScrollToTop />
       <App />
     </BrowserRouter>
