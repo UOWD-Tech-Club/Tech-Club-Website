@@ -68,7 +68,9 @@ function NewsSection() {
 
   const fetchDailyNews = async () => {
     try {
-      const response = await fetch('http://localhost:8080/news/dailynews');
+      const response = await fetch(
+        'https://tech-club-website.onrender.com/news/dailynews',
+      );
       const data = await response.json();
 
       const allNews = data.news;
