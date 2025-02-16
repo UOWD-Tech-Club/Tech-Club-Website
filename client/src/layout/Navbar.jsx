@@ -45,20 +45,22 @@ function Navbar() {
           {/* <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
             Events
           </Link> */}
-          <Link to="/about" className={styles.nav_link} onClick={closeNavbar}>
-            About Us
+          <Link
+            to="/projects"
+            className={styles.nav_link}
+            onClick={closeNavbar}
+          >
+            Projects
           </Link>
-          <Link to="/news" className={styles.nav_link} onClick={closeNavbar}>
-            Tech News
+          <Link
+            to="/newsletter"
+            className={styles.nav_link}
+            onClick={closeNavbar}
+          >
+            Newsletter
           </Link>
         </div>
-        <a
-          href="https://chat.whatsapp.com/EIKeuIKUuEaDBSOpwDWEq4"
-          target="_blank"
-          className={styles.joinus}
-        >
-          Join Us
-        </a>
+        <button className={styles.joinus}>Join Us</button>
       </div>
     </nav>
   );

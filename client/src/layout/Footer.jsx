@@ -26,12 +26,16 @@ function Footer() {
             Home
           </Link>
 
-          <Link to="/about" className={styles.footer__link}>
-            About Us
+          {/* <li>
+            <a href="">Events</a>
+          </li> */}
+
+          <Link to="/projects" className={styles.footer__link}>
+            Projects
           </Link>
 
-          <Link to="/news" className={styles.footer__link}>
-            Tech News
+          <Link to="/newsletter" className={styles.footer__link}>
+            Newsletter
           </Link>
         </div>
       </div>
