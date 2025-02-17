@@ -14,8 +14,8 @@ function NewsPage() {
       setIsLoading(true);
       const apiUrl =
         filter === 'techClubNews'
-          ? 'http://localhost:8080/news/techClubNews'
-          : 'http://localhost:8080/news/dailynews';
+          ? 'https://tech-club-website.onrender.com/news/techClubNews'
+          : 'https://tech-club-website.onrender.com/news/dailynews';
 
       const response = await fetch(apiUrl, {
         method: 'GET',
