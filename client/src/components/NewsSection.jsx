@@ -11,6 +11,20 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 function NewsSection() {
   const [loading, setLoading] = useState(true);
 
+  const mobileSize = 599;
+  const tabletSize = 959;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= mobileSize);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= tabletSize);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= mobileSize);
+      setIsTablet(window.innerWidth <= tabletSize);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Settings for the first carousel
   const settings1 = {
     dots: false,
@@ -37,15 +51,19 @@ function NewsSection() {
       {
         breakpoint: 960,
         settings: {
+          draggable: true,
           slidesToShow: 2,
           slidesToScroll: 1,
+          arrows: false,
         },
       },
       {
         breakpoint: 600,
         settings: {
+          draggable: true,
           slidesToShow: 1,
           slidesToScroll: 1,
+          arrows: false,
         },
       },
     ],
@@ -65,6 +83,9 @@ function NewsSection() {
 
   const [newsPart1, setNewsPart1] = useState([]);
   const [newsPart2, setNewsPart2] = useState([]);
+
+  const sliderRef1 = useRef(null);
+  const sliderRef2 = useRef(null);
 
   const fetchDailyNews = async () => {
     try {
@@ -88,30 +109,12 @@ function NewsSection() {
     fetchDailyNews();
   }, []);
 
-  const [car1, setCar1] = useState(null);
-  const [car2, setCar2] = useState(null);
-
-  const sliderRef1 = useRef(null);
-  const sliderRef2 = useRef(null);
-
-  const mobileSize = 599;
-  const tabletSize = 959;
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= mobileSize);
-  const [isTablet, setIsTablet] = useState(window.innerWidth <= tabletSize);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= mobileSize);
-      setIsTablet(window.innerWidth <= tabletSize);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    setCar1(sliderRef1.current);
-    setCar2(sliderRef2.current);
-  }, []);
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  };
 
   const renderLoadingComponent = (settings, first) => (
     <SkeletonTheme baseColor="#434343" highlightColor="#686868">
@@ -142,10 +145,8 @@ function NewsSection() {
         ) : (
           <Slider
             {...settings1}
-            asNavFor={isTablet ? null : car2} // Conditionally set asNavFor
-            ref={(slider) => {
-              sliderRef1.current = slider;
-            }} // Correctly set ref
+            asNavFor={isTablet ? null : sliderRef2.current} // Only sync if not a tablet
+            ref={sliderRef1}
           >
             {newsPart1.map((news, index) => (
               <div
@@ -155,11 +156,11 @@ function NewsSection() {
               >
                 <img
                   src={news.news_img}
-                  // alt={news.news_title}
+                  alt={news.news_title}
                   className={styles.newsImage}
                 />
                 <div className={styles.newsContent}>
-                  <h2>{news.news_title}</h2>
+                  <h2>{truncateText(news.news_title, 100)}</h2>
                   <p className={styles.newsDate}>
                     {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
                   </p>
@@ -171,18 +172,15 @@ function NewsSection() {
       </div>
 
       {/* Second Carousel for Desktop/Tablet */}
-
-      {isMobile ? null : (
+      {!isMobile && (
         <div className={classNames(styles.carousel, styles.secondCarousel)}>
           {loading ? (
             renderLoadingComponent(settings2, false)
           ) : (
             <Slider
               {...settings2}
-              asNavFor={isTablet ? null : car1} // Conditionally set asNavFor
-              ref={(slider) => {
-                sliderRef2.current = slider;
-              }}
+              asNavFor={isTablet ? null : sliderRef1.current} // Only sync if not a tablet
+              ref={sliderRef2}
             >
               {newsPart2.map((news, index) => (
                 <div
@@ -192,11 +190,11 @@ function NewsSection() {
                 >
                   <img
                     src={news.news_img}
-                    // alt={news.news_title}
+                    alt={news.news_title}
                     className={styles.newsImage}
                   />
                   <div className={styles.newsContent}>
-                    <h2>{news.news_title}</h2>
+                    <h2>{truncateText(news.news_title, 90)}</h2>
                     <p className={styles.newsDate}>
                       {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
                     </p>
