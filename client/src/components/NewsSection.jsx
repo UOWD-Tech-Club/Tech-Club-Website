@@ -4,12 +4,14 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import classNames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 function NewsSection() {
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const mobileSize = 599;
   const tabletSize = 959;
@@ -207,7 +209,10 @@ function NewsSection() {
       )}
 
       <div className={styles.buttonContainer}>
-        <button className={styles.seeMoreButton}>
+        <button
+          className={styles.seeMoreButton}
+          onClick={() => navigate('/newsletter')}
+        >
           All news
           <svg
             className={styles.arrow}
