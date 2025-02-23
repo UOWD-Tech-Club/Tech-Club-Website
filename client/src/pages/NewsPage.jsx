@@ -2,12 +2,15 @@ import PageLayout from '../layout/PageLayout';
 import styles from './NewsPage.module.css';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function NewsPage() {
   const [newsItems, setNewsItems] = useState([]);
   const [filter, setFilter] = useState('dailyNews');
   const [latestNews, setLatestNews] = useState([]); // Initialize as empty array instead of null
   const [isLoading, setIsLoading] = useState(true); // Add loading state
+
+  const navigate = useNavigate();
 
   const fetchNews = async () => {
     try {
@@ -58,6 +61,14 @@ function NewsPage() {
     );
   }
 
+  const handleArticleClick = (article, filter) => {
+    if (filter === 'techClubNews') {
+      navigate(`/news/${article.news_id}`, { state: { article } });
+    } else {
+      window.open(article.news_url, '_blank');
+    }
+  };
+
   return (
     <PageLayout>
       <div className={styles.newsContainer}>
@@ -82,7 +93,11 @@ function NewsPage() {
         <div className={styles.featuredNews}>
           {latestNews.length > 0 &&
             latestNews.map((news) => (
-              <div key={news.news_id} className={styles.newsItem}>
+              <div
+                key={news.news_id}
+                className={styles.newsItem}
+                onClick={() => handleArticleClick(news, filter)}
+              >
                 <div className={styles.imageWrapper}>
                   <img
                     src={news.news_img}
@@ -122,7 +137,10 @@ function NewsPage() {
                   alt={news.news_title}
                   className={styles.newsImage}
                 />
-                <a href={news.news_url} className={styles.readMore}>
+                <a
+                  onClick={() => handleArticleClick(news, filter)}
+                  className={styles.readMore}
+                >
                   Read More
                 </a>
               </div>
