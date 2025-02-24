@@ -2,12 +2,15 @@ import PageLayout from '../layout/PageLayout';
 import styles from './NewsPage.module.css';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function NewsPage() {
   const [newsItems, setNewsItems] = useState([]);
   const [filter, setFilter] = useState('dailyNews');
   const [latestNews, setLatestNews] = useState([]); // Initialize as empty array instead of null
   const [isLoading, setIsLoading] = useState(true); // Add loading state
+
+  const navigate = useNavigate();
 
   const fetchNews = async () => {
     try {
@@ -48,6 +51,14 @@ function NewsPage() {
     fetchNews();
   }, [filter]); // Add filter as dependency
 
+  const handleArticleClick = (article, filter) => {
+    if (filter === 'techClubNews') {
+      navigate(`/news/${article.news_id}`, { state: { article } });
+    } else {
+      window.open(article.news_url, '_blank');
+    }
+  };
+
   return (
     <PageLayout>
       <div className={styles.newsContainer}>
@@ -75,10 +86,8 @@ function NewsPage() {
             {/* Featured News Section */}
             <a
               key={latestNews.news_id}
-              href={latestNews.news_url}
               className={styles.featuredNews}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => handleArticleClick(latestNews, filter)}
             >
               <div className={styles.imageWrapper}>
                 <img
@@ -86,7 +95,12 @@ function NewsPage() {
                   alt={latestNews.news_title}
                   className={styles.featuredImage}
                 />
-                <div className={styles.readMore}>Read More</div>
+                <div
+                  className={styles.readMore}
+                  onClick={() => handleArticleClick(latestNews, filter)}
+                >
+                  Read More
+                </div>
               </div>
               <div className={styles.featuredContent}>
                 <span className={styles.tag}>
@@ -116,10 +130,8 @@ function NewsPage() {
               {newsItems.map((news) => (
                 <a
                   key={news.news_id}
-                  href={news.news_url}
                   className={styles.newsCard}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() => handleArticleClick(news, filter)}
                 >
                   <div className={styles.imageWrapper}>
                     <img
@@ -127,7 +139,12 @@ function NewsPage() {
                       alt={news.news_title}
                       className={styles.newsImage}
                     />
-                    <div className={styles.readMore}>Read More</div>
+                    <div
+                      className={styles.readMore}
+                      onClick={() => handleArticleClick(latestNews, filter)}
+                    >
+                      Read More
+                    </div>
                   </div>
                   <div className={styles.newsContent}>
                     <span className={styles.tag}>
