@@ -5,6 +5,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import eventsRoutes from "./Routes/eventRoutes.js";
 import newsRoutes from "./Routes/newsRoutes.js";
+import eventManagementRoutes from "./Routes/eventManagementRoutes.js";
+
 import "./Tasks/scheduled.js";
 
 //ES6 equivalent to __dirname
@@ -21,6 +23,7 @@ app.use(express.json());
 
 app.use("/events", eventsRoutes);
 app.use("/news", newsRoutes);
+app.use("/adminEevents", eventManagementRoutes)
 
 app.get("/", (req, res) => {
   res.json({
