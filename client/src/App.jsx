@@ -4,6 +4,8 @@ import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
 import NewsArticle from './pages/NewsArticle';
 import { Routes, Route } from 'react-router-dom';
+import EventsManagementPage from './pages/EventsManagementPage';
+import Attendees from './pages/AttendeesList';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       </span>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/eventsmanagement/attendees" element={<Attendees />} />
+        <Route path="/eventsmanagement" element={<EventsManagementPage />} />
         <Route path="/events/:eventId" element={<EventsPage />} />
         <Route path="/news/:newsID" element={<NewsArticle />} />
         <Route path="/projects" element={<ProjectsPage />} />

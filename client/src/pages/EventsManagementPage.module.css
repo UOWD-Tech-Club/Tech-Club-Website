@@ -1,0 +1,75 @@
+/* EventsManagementPage.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.eventsContainer {
+  background-color: #121212;
+  max-height: 100vh;
+  font-family: 'Work Sans', sans-serif;
+  margin-left: 50px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 110px;
+  font-family: Nacelle, sans-serif;
+}
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  width: 100%;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 48% 23% 10% 8% 11%;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 15px;
+  background: var(--Tertiary, #e1f264);
+  color: #000;
+  margin-bottom: 10px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tableBody {
+  overflow-y: auto;
+  max-height: calc(100vh - 260px);
+  padding-right: 10px; /* Provide space for custom scrollbar */
+}
+
+.tableBody::-webkit-scrollbar {
+  width: 2px;
+}
+
+.tableBody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tableBody::-webkit-scrollbar-thumb {
+  background: #e1f264;
+}
+
+.tableBody {
+  scrollbar-width: thin;
+  scrollbar-color: #e1f264 transparent;
+}
+
+.tableBody {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}

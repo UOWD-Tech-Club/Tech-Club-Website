@@ -1,0 +1,59 @@
+/* Sidebar.module.css */
+.sidebar {
+  background-color: #121212;
+  width: 200px;
+  height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  border-right: 1px solid #e1f264;
+}
+
+.sidebar_logo {
+  margin-bottom: 40px;
+  padding-left: 10px;
+}
+
+.logo_tech {
+  font-size: 50px;
+  font-weight: 700;
+  color: white;
+  display: block;
+  line-height: 1;
+}
+
+.logo_club {
+  font-size: 50px;
+  font-weight: 700;
+  color: #e1f264;
+  display: block;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--accent);
+  text-stroke: 1px var(--accent);
+}
+
+.nav_links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nav_item {
+  color: #fafafa;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav_item:hover {
+  color: #e1f264;
+}
+
+.active {
+  color: #e1f264;
+  font-weight: 600;
+}

@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.attendeesContainer {
+  background-color: #121212;
+  max-height: 100vh;
+  font-family: 'Work Sans', sans-serif;
+  margin-left: 50px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 110px;
+  font-family: Nacelle, sans-serif;
+}
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 30% 30% 25% 20%;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 15px;
+  background: var(--Tertiary, #e1f264);
+  color: #000;
+  margin-bottom: 10px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tableHeader > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.tableBody {
+  display: grid;
+  grid-template-columns: 45% 25% 10% 15% 5%;
+  align-items: center;
+  border: 1px solid #fafafa;
+  border-radius: 15px;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+  color: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.fName,
+.lName,
+.sID,
+.email {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.tableBody:hover {
+  color: #e1f264;
+  border: 1px solid #e1f264;
+  cursor: pointer;
+}
