@@ -245,6 +245,17 @@ a {
   color: #888;
 }
 
+.skeletonWrapper {
+  display: flex;
+  /* align-items: center; */
+  gap: 40px;
+}
+
+.skeletonTextContainer {
+  margin-top: 70px;
+  flex: 1;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .newsGrid {
@@ -270,6 +281,19 @@ a {
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
+  }
+
+  .skeletonWrapper > span {
+    flex-direction: column;
+  }
+
+  .skeletonWrapper > span > span {
+    width: 90vw;
+    max-width: 90vw;
+  }
+
+  .skeletonTextContainer {
+    display: none;
   }
 }
 
