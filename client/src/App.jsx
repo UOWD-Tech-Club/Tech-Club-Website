@@ -5,6 +5,7 @@ import NewsPage from './pages/NewsPage';
 import NewsArticle from './pages/NewsArticle';
 import { Routes, Route } from 'react-router-dom';
 import ScrollToTop from './utils/ScrollToTop';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -16,9 +17,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/events/:eventId" element={<EventsPage />} />
+        <Route path="/news/:newsID" element={<NewsArticle />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/newsletter" element={<NewsPage />} />
         <Route path="/newsarticle" element={<NewsArticle />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>
   );
