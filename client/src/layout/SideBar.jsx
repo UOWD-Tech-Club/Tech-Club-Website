@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import styles from './Sidebar.module.css';
+import styles from './SideBar.module.css';
 
 function Sidebar() {
   const location = useLocation();
