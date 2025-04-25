@@ -4,6 +4,7 @@ import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
 import NewsArticle from './pages/NewsArticle';
 import { Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/newsletter" element={<NewsPage />} />
         <Route path="/newsarticle" element={<NewsArticle />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>
   );
