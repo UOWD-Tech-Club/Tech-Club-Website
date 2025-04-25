@@ -59,6 +59,9 @@ function Navbar() {
           >
             Newsletter
           </Link>
+          <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>
+            Login
+          </Link>
         </div>
         <button className={styles.joinus}>Join Us</button>
       </div>
