@@ -4,6 +4,7 @@ import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
 import NewsArticle from './pages/NewsArticle';
 import { Routes, Route } from 'react-router-dom';
+import ScrollToTop from './utils/ScrollToTop';
 import LoginPage from './pages/LoginPage';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <span className="banner">
         This site is in beta—expect improvements and occasional bugs
       </span>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/events/:eventId" element={<EventsPage />} />
