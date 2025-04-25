@@ -31,7 +31,6 @@
   line-height: 1;
   color: transparent;
   -webkit-text-stroke: 1px var(--accent);
-  text-stroke: 1px var(--accent);
 }
 
 .nav_links {
