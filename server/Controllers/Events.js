@@ -9,6 +9,7 @@ Things to be included
 }
 
 import pool from "../Db/db_config.js";
+import { addRegistrationToSheet } from "../Utils/googleSheetsUtil.js";
 
 export const getEvents = async (req, res) => {
   const db = await pool.connect();
@@ -80,6 +81,7 @@ export const searchEvents = async (req, res) => {
 // Register users logic (POST request)
 export const registerUser = async (req, res) => {
   const { user_studentid, event_id } = req.body;
+  const db = await pool.connect();
 
   if (!user_studentid || !event_id) {
     return res
@@ -88,16 +90,133 @@ export const registerUser = async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
+    // 1. Insert into eventRegistration
+    const registrationResult = await db.query(
       "INSERT INTO eventRegistration (user_studentId, event_id) VALUES ($1, $2) RETURNING *",
       [user_studentid, event_id]
     );
-    res
-      .status(201)
-      .json({ message: "User registered successfully", data: result.rows[0] });
+
+    // 2. Get event details
+    const eventResult = await db.query(
+      "SELECT event_title FROM events WHERE event_id = $1",
+      [event_id]
+    );
+
+    // 3. Get user details
+    const userResult = await db.query(
+      "SELECT user_name, user_studentEmail FROM users WHERE user_studentId = $1",
+      [user_studentid]
+    );
+
+    const eventTitle = eventResult.rows[0].event_title;
+    const userName = userResult.rows[0].user_name;
+    const userEmail = userResult.rows[0].user_studentemail;
+    const registrationDate = registrationResult.rows[0].registration_date;
+    
+    // Format date to DD-MM-YYYY
+    const formattedDate = new Date(registrationDate).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+    
+    console.log(eventTitle, userName, userEmail, registrationDate);
+    // 4. Export to Google Sheets
+    try {
+      await addRegistrationToSheet(eventTitle, {
+        studentId: user_studentid,
+        name: userName,
+        email: userEmail,
+        registrationDate: formattedDate
+      });
+    } catch (sheetError) {
+      console.error("Error exporting to Google Sheets:", sheetError.message);
+      // Continue with the registration even if Google Sheets export fails
+    }
+
+    res.status(201).json({ 
+      message: "User registered successfully",
+      data: registrationResult.rows[0]
+    });
   } catch (err) {
-    console.error(err.message);
+    console.error("Error registering user:", err.message);
     res.status(500).json({ message: "Server error" });
+  } finally {
+    db.release();
   }
 };
 
+// Export all registrations for a specific event to Google Sheets
+// For Admin
+export const exportEventRegistrationsToSheet = async (req, res) => {
+  const { event_id } = req.params;
+  const db = await pool.connect();
+  
+  if (!event_id) {
+    return res.status(400).json({ message: "Event ID is required" });
+  }
+  
+  try {
+    // 1. Get event details
+    const eventResult = await db.query(
+      "SELECT event_title FROM events WHERE event_id = $1",
+      [event_id]
+    );
+    
+    if (eventResult.rows.length === 0) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    
+    const eventTitle = eventResult.rows[0].event_title;
+    
+    // 2. Get all registrations for this event with user details
+    const registrationsResult = await db.query(
+      `SELECT er.registration_id, er.user_studentId, er.registration_date, 
+              u.user_name, u.user_studentEmail
+       FROM eventRegistration er
+       JOIN users u ON er.user_studentId = u.user_studentId
+       WHERE er.event_id = $1
+       ORDER BY er.registration_date ASC`,
+      [event_id]
+    );
+    
+    const registrations = registrationsResult.rows;
+    
+    if (registrations.length === 0) {
+      return res.status(404).json({ message: "No registrations found for this event" });
+    }
+    
+    // 3. Add all registrations to the Google Sheet
+    let successCount = 0;
+    
+    for (const registration of registrations) {
+      try {
+        // Format date to DD-MM-YYYY
+        const formattedDate = new Date(registration.registration_date).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        
+        await addRegistrationToSheet(eventTitle, {
+          studentId: registration.user_studentid,
+          name: registration.user_name,
+          email: registration.user_studentemail,
+          registrationDate: formattedDate
+        });
+        successCount++;
+      } catch (error) {
+        console.error(`Error adding registration ${registration.registration_id} to sheet:`, error.message);
+      }
+    }
+    
+    res.status(200).json({ 
+      message: `Successfully exported ${successCount} out of ${registrations.length} registrations to Google Sheets`
+    });
+  } catch (err) {
+    console.error("Error exporting registrations:", err.message);
+    res.status(500).json({ message: "Server error" });
+  } finally {
+    db.release();
+  }
+};
