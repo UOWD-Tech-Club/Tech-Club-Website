@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './EventsModal.module.css';
-import { format } from 'date-fns';
-import { FaUpload } from 'react-icons/fa';
+import { FaTimes, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 export default function EventsModal({ event, onClose }) {
@@ -12,9 +11,11 @@ export default function EventsModal({ event, onClose }) {
     event_id: event.event_id,
     event_title: event.event_title,
     event_location: event.event_location,
-    event_date: format(new Date(event.event_date), 'dd/MM/yyyy'),
-    event_time: String(event.event_time).split(':').slice(0, 2).join(':'),
-    event_description: event.event_details,
+    event_date: event.event_date
+      ? new Date(event.event_date).toISOString().split('T')[0]
+      : '',
+    event_time: event.event_time || '',
+    event_description: event.event_details || '',
   });
 
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ export default function EventsModal({ event, onClose }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
+        console.log(image);
       };
       reader.readAsDataURL(file);
     }
@@ -38,6 +40,13 @@ export default function EventsModal({ event, onClose }) {
     navigate('/eventsmanagement/attendees', { state: { event: event } });
   };
 
+  const handleDeleteEvent = () => {
+    // Add delete functionality here
+    console.log('Delete event:', event.event_id);
+    // After deletion, close modal
+    onClose();
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -45,88 +54,122 @@ export default function EventsModal({ event, onClose }) {
       }
     };
 
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [onClose]);
 
   return (
     <div className={styles.modal} ref={modalRef}>
-      <div className={styles.modalClose} onClick={onClose}>
-        X
-      </div>
+      <button className={styles.modalClose} onClick={onClose}>
+        <FaTimes />
+      </button>
       <div className={styles.modalContent}>
-        <div className={styles.imageWrapper}>
-          <div
-            className={styles.imageContainer}
-            onClick={() => fileInputRef.current.click()}
-          >
-            {image ? <img src={image} className={styles.eventImage} /> : null}
-          </div>
-          <FaUpload
-            className={styles.uploadIcon}
+        <div className={styles.formGroup}>
+          <label>Event Name</label>
+          <input
+            type="text"
+            name="event_title"
+            value={formData.event_title}
+            onChange={handleChange}
+            placeholder="Event name"
+            className={styles.inputField}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Image URL</label>
+          <input
+            type="text"
+            name="image_url"
+            placeholder="Paste image link here..."
+            className={styles.inputField}
             onClick={() => fileInputRef.current.click()}
           />
           <input
             type="file"
-            id="imageUpload"
             ref={fileInputRef}
             style={{ display: 'none' }}
             accept="image/*"
             onChange={handleImageChange}
           />
         </div>
-        <div className={styles.editForm}>
-          <input
-            type="text"
-            name="event_title"
-            value={formData.event_title}
-            onChange={handleChange}
-            placeholder="Event Title"
-            className={styles.eventTitle}
-          />
-          <div>
+
+        <div className={styles.rowContainer}>
+          <div className={styles.formGroup}>
+            <label>Date</label>
             <input
-              type="text"
+              type="date"
               name="event_date"
               value={formData.event_date}
               onChange={handleChange}
-              placeholder="Event Date"
-              className={styles.eventDate}
+              className={styles.inputField}
+              placeholder="Date"
             />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Time</label>
             <input
-              type="text"
+              type="time"
               name="event_time"
               value={formData.event_time}
               onChange={handleChange}
-              placeholder="Event Time"
-              className={styles.eventTime}
+              className={styles.inputField}
             />
           </div>
-          <div>
-            <input
-              type="text"
-              name="event_location"
-              value={formData.event_location}
-              onChange={handleChange}
-              placeholder="Event Location"
-              className={styles.eventLocation}
-            />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Location</label>
+          <input
+            type="text"
+            name="event_location"
+            value={formData.event_location}
+            onChange={handleChange}
+            placeholder="Location"
+            className={styles.inputField}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <div className={styles.attendeesContainer}>
             <button
               className={styles.attendeesButton}
               onClick={handleAttendeesClick}
             >
-              Attendees List
+              Attendees list
             </button>
           </div>
+        </div>
+
+        <div className={styles.formGroup}>
+          <label>Description</label>
           <textarea
             name="event_description"
             value={formData.event_description}
             onChange={handleChange}
-            placeholder="Event Description"
-            className={styles.eventDescription}
+            placeholder="Description"
+            className={styles.descriptionField}
           />
+        </div>
+
+        <div className={styles.formGroup}>
+          <div className={styles.deleteContainer}>
+            <button className={styles.deleteButton} onClick={handleDeleteEvent}>
+              Delete Event <FaTrash />
+            </button>
+          </div>
         </div>
       </div>
     </div>

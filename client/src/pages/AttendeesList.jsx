@@ -9,7 +9,7 @@ export default function Attendees() {
   const [attendees, setAttendees] = useState([]);
 
   useEffect(() => {
-    if (!event) return; // Prevent fetching if event is undefined
+    if (!event) return;
 
     const fetchAttendees = async () => {
       try {
@@ -24,10 +24,16 @@ export default function Attendees() {
     };
 
     fetchAttendees();
-  }, [event]); // Depend on event to prevent unnecessary calls
+  }, [event]);
 
   if (!event) {
-    return <p>No Attendees data available.</p>;
+    return (
+      <AdminLayout>
+        <div className={styles.attendeesContainer}>
+          <p>No event data available.</p>
+        </div>
+      </AdminLayout>
+    );
   }
 
   return (
@@ -36,18 +42,18 @@ export default function Attendees() {
         <h2 className={styles.header}>Attendees</h2>
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>
-            <div className={styles.fName}>First Name</div>
-            <div className={styles.lName}>Last Name</div>
-            <div className={styles.sID}>Student ID</div>
-            <div className={styles.email}>Email</div>
+            <div>First Name</div>
+            <div>Last Name</div>
+            <div>Student ID</div>
+            <div>Email</div>
           </div>
           <div className={styles.tableBody}>
             {attendees.map((attendee) => (
-              <div key={attendee.user_studentid}>
-                <div>{attendee.fname}</div>
-                <div>{attendee.lname}</div>
-                <div>{attendee.studentId}</div>
-                <div>{attendee.studentEmail}</div>
+              <div key={attendee.user_studentid} className={styles.tableRow}>
+                <div className={styles.tableCell}>{attendee.fname}</div>
+                <div className={styles.tableCell}>{attendee.lname}</div>
+                <div className={styles.tableCell}>{attendee.studentId}</div>
+                <div className={styles.tableCell}>{attendee.studentEmail}</div>
               </div>
             ))}
           </div>

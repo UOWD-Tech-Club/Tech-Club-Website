@@ -3,12 +3,12 @@
 
 .eventsContainer {
   background-color: #121212;
-  max-height: 100vh;
+  min-height: 100vh;
   font-family: 'Work Sans', sans-serif;
-  margin-left: 50px;
   padding: 40px;
   display: flex;
   flex-direction: column;
+  margin-left: 200px;
 }
 
 .header {
@@ -50,7 +50,7 @@
 .tableBody {
   overflow-y: auto;
   max-height: calc(100vh - 260px);
-  padding-right: 10px; /* Provide space for custom scrollbar */
+  padding-right: 10px;
 }
 
 .tableBody::-webkit-scrollbar {
@@ -72,4 +72,76 @@
 
 .tableBody {
   -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+/* Responsive styles */
+@media (max-width: 1400px) {
+  .tableHeader {
+    grid-template-columns: 45% 25% 12% 8% 10%;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .tableHeader {
+    grid-template-columns: 50% 25% 15% 10%;
+    font-size: 20px;
+  }
+
+  .tableHeader div:nth-child(5) {
+    /* Time column */
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .tableHeader {
+    grid-template-columns: 50% 30% 20%;
+    font-size: 18px;
+  }
+
+  .tableHeader div:nth-child(4) {
+    /* Location column */
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .eventsContainer {
+    margin-left: 0;
+    padding: 20px;
+    padding-top: 80px;
+  }
+
+  .header {
+    font-size: 40px;
+    line-height: 60px;
+  }
+
+  .tableHeader {
+    grid-template-columns: 60% 40%;
+    font-size: 16px;
+  }
+
+  .tableHeader div:nth-child(3) {
+    /* Date column */
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    font-size: 32px;
+    line-height: 50px;
+  }
+
+  .tableHeader {
+    grid-template-columns: 100%;
+    font-size: 14px;
+  }
+
+  .tableHeader div:nth-child(2) {
+    /* Attendees column */
+    display: none;
+  }
 }
