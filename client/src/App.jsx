@@ -3,9 +3,13 @@ import Homepage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import NewsPage from './pages/NewsPage';
 import NewsArticle from './pages/NewsArticle';
+import AboutUsPage from './pages/AboutUsPage';
+import AllExecutives from './pages/AllExecutives';
 import { Routes, Route } from 'react-router-dom';
 import EventsManagementPage from './pages/EventsManagementPage';
 import Attendees from './pages/AttendeesList';
+import ScrollToTop from './utils/ScrollToTop';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -13,6 +17,7 @@ function App() {
       <span className="banner">
         This site is in beta—expect improvements and occasional bugs
       </span>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/eventsmanagement/attendees" element={<Attendees />} />
@@ -22,6 +27,9 @@ function App() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/newsletter" element={<NewsPage />} />
         <Route path="/newsarticle" element={<NewsArticle />} />
+        <Route path="/aboutus" element={<AboutUsPage />} />
+        <Route path="/all-executives" element={<AllExecutives />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </>
   );
