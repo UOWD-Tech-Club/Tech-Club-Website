@@ -1,0 +1,137 @@
+.container {
+  min-height: 100vh;
+  background-color: var(--primary);
+  color: var(--secondary);
+  font-family: 'Inter', sans-serif;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.subHeading {
+  text-align: center;
+  font-size: 1.25rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.mainHeading {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0;
+}
+
+.divider {
+  position: relative;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid var(--accent);
+  z-index: 10;
+}
+
+.content {
+  padding-top: 1rem;
+}
+
+.teamSection {
+  margin-top: 5rem;
+  margin-bottom: 2.5rem;
+}
+
+.teamTitle {
+  margin-bottom: 2.5rem;
+}
+
+.teamTitle h3 {
+  font-size: 1.875rem;
+  text-align: center;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.carousel {
+  margin: 0 auto;
+}
+
+.carouselItem {
+  padding: 0 0.5rem;
+  width: 300px !important;
+}
+
+.memberImage {
+  border: 2px solid var(--secondary);
+  border-radius: 0.5rem;
+  height: 14rem;
+  margin-bottom: 1rem;
+}
+
+.memberName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.inactiveName {
+  color: #9ca3af;
+}
+
+.memberRole {
+  color: var(--accent);
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Slick carousel custom styling */
+.carousel :global(.slick-track) {
+  display: flex;
+  padding: 10px 0;
+}
+
+.carousel :global(.slick-list) {
+  overflow: visible;
+  margin: 0 -10px;
+}
+
+@media (max-width: 767px) {
+  .header {
+    text-align: center;
+  }
+
+  .subHeading {
+    font-size: 1rem;
+  }
+
+  .mainHeading {
+    font-size: 2rem;
+  }
+
+  .carouselItem {
+    width: 250px !important;
+  }
+
+  .memberImage {
+    height: 12rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .header {
+    text-align: left;
+  }
+
+  .mainHeading {
+    font-size: 3.75rem;
+  }
+
+  .subHeading {
+    font-size: 1.25rem;
+  }
+}

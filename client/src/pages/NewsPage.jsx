@@ -3,6 +3,7 @@ import styles from './NewsPage.module.css';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 function NewsPage() {
   const [newsItems, setNewsItems] = useState([]);
@@ -80,7 +81,19 @@ function NewsPage() {
           </div>
         </div>
         {isLoading ? (
-          <div>Loading...</div>
+          <SkeletonTheme baseColor="#434343" highlightColor="#686868">
+            <div className={styles.skeletonWrapper}>
+              <Skeleton
+                height={400}
+                width={600}
+                borderRadius="25px"
+                inline={true}
+              />
+              <div className={styles.skeletonTextContainer}>
+                <Skeleton count={3} height={30} />
+              </div>
+            </div>
+          </SkeletonTheme>
         ) : (
           <>
             {/* Featured News Section */}
