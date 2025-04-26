@@ -12,7 +12,7 @@ function Sidebar() {
 
   // Navigation items
   const navItems = [
-    { name: 'Overview', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Events', path: '/eventsmanagement' },
     { name: 'Tech News', path: '/news' },
     { name: 'Executives', path: '/executives' },

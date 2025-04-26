@@ -6,6 +6,7 @@ import NewsArticle from './pages/NewsArticle';
 import { Routes, Route } from 'react-router-dom';
 import EventsManagementPage from './pages/EventsManagementPage';
 import Attendees from './pages/AttendeesList';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       </span>
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/eventsmanagement/attendees" element={<Attendees />} />
         <Route path="/eventsmanagement" element={<EventsManagementPage />} />
         <Route path="/events/:eventId" element={<EventsPage />} />
