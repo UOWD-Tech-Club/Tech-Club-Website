@@ -6,6 +6,8 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [revealPassword, setRevealPassword] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
   const [emailError, setEmailError] = useState('');
@@ -33,15 +35,44 @@ function LoginPage() {
       setEmailError('Proper email format required');
       return false;
     } else {
+      setEmailError('');
       return true;
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail()) {
-      console.log({ email, password });
-      // TODO: Handle api request here
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Store the token in localStorage or your preferred storage method
+      localStorage.setItem('token', data.token);
+
+      // Redirect to dashboard or home page
+      window.location.href = '/dashboard';
+    } catch (err) {
+      setError(err.message || 'An error occurred during login');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +90,7 @@ function LoginPage() {
         <div>
           <form action="" onSubmit={handleSubmit}>
             <h3 className={styles.loginHeading}>Login</h3>
+            {error && <div className={styles.error}>{error}</div>}
             <div className={styles.formInputSection}>
               <div className={styles.usernameSection}>
                 <p>Email</p>
@@ -132,8 +164,9 @@ function LoginPage() {
               onMouseEnter={handleButtonHover}
               onMouseLeave={handleButtonLeave}
               type="submit"
+              disabled={loading}
             >
-              Log In
+              {loading ? 'Logging in...' : 'Log In'}
             </button>
           </form>
         </div>
