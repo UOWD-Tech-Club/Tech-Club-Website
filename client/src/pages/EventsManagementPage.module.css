@@ -1,0 +1,147 @@
+/* EventsManagementPage.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.eventsContainer {
+  background-color: #121212;
+  min-height: 100vh;
+  font-family: 'Work Sans', sans-serif;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+}
+
+.header {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 110px;
+  font-family: Nacelle, sans-serif;
+}
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  width: 100%;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 48% 23% 10% 8% 11%;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 15px;
+  background: var(--Tertiary, #e1f264);
+  color: #000;
+  margin-bottom: 10px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tableBody {
+  overflow-y: auto;
+  max-height: calc(100vh - 260px);
+  padding-right: 10px;
+}
+
+.tableBody::-webkit-scrollbar {
+  width: 2px;
+}
+
+.tableBody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tableBody::-webkit-scrollbar-thumb {
+  background: #e1f264;
+}
+
+.tableBody {
+  scrollbar-width: thin;
+  scrollbar-color: #e1f264 transparent;
+}
+
+.tableBody {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+/* Responsive styles */
+@media (max-width: 1400px) {
+  .tableHeader {
+    grid-template-columns: 45% 25% 12% 8% 10%;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .tableHeader {
+    grid-template-columns: 50% 25% 15% 10%;
+    font-size: 20px;
+  }
+
+  .tableHeader div:nth-child(5) {
+    /* Time column */
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .tableHeader {
+    grid-template-columns: 50% 30% 20%;
+    font-size: 18px;
+  }
+
+  .tableHeader div:nth-child(4) {
+    /* Location column */
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .eventsContainer {
+    margin-left: 0;
+    padding: 20px;
+    padding-top: 80px;
+  }
+
+  .header {
+    font-size: 40px;
+    line-height: 60px;
+  }
+
+  .tableHeader {
+    grid-template-columns: 60% 40%;
+    font-size: 16px;
+  }
+
+  .tableHeader div:nth-child(3) {
+    /* Date column */
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    font-size: 32px;
+    line-height: 50px;
+  }
+
+  .tableHeader {
+    grid-template-columns: 100%;
+    font-size: 14px;
+  }
+
+  .tableHeader div:nth-child(2) {
+    /* Attendees column */
+    display: none;
+  }
+}
