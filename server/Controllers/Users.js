@@ -46,8 +46,8 @@ export const addUser = async (req, res) => {
 		const user = req.body.user;
 
 		const result = await db.query(
-			`INSERT INTO users (user_studentId, user_name, user_studentEmail) VALUES ($1,$2,$3) RETURNING *`,
-			[user.studentId, user.name, user.studentEmail]
+			`INSERT INTO users (user_studentId, user_name, user_studentEmail, user_phone, user_degree) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+			[user.studentId, user.name, user.studentEmail, user.phone, user.degree]
 		);
 
 		const newUser = await result.rows[0];

@@ -61,7 +61,7 @@ export async function ensureEventSheetExists(eventTitle) {
                   title: eventTitle,
                   gridProperties: {
                     rowCount: 1000,
-                    columnCount: 5,
+                    columnCount: 6,
                   },
                 },
               },
@@ -73,10 +73,10 @@ export async function ensureEventSheetExists(eventTitle) {
       // Add headers to the new sheet
       await sheets.spreadsheets.values.update({
         spreadsheetId: MASTER_SPREADSHEET_ID,
-        range: `${eventTitle}!A1:D1`,
+        range: `${eventTitle}!A1:F1`,
         valueInputOption: 'RAW',
         resource: {
-          values: [['Student ID', 'Name', 'Email', 'Registration Date']],
+          values: [['Student ID', 'Name', 'Email', 'Phone', 'Degree', 'Registration Date']],
         },
       });
     }
@@ -100,7 +100,7 @@ export async function addRegistrationToSheet(eventTitle, registrationData) {
     // Get current values to find next empty row
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: MASTER_SPREADSHEET_ID,
-      range: `${eventTitle}!A:D`,
+      range: `${eventTitle}!A:F`,
     });
     
     const rows = response.data.values || [];
@@ -109,13 +109,15 @@ export async function addRegistrationToSheet(eventTitle, registrationData) {
     // Add the new registration
     await sheets.spreadsheets.values.update({
       spreadsheetId: MASTER_SPREADSHEET_ID,
-      range: `${eventTitle}!A${nextRow}:D${nextRow}`,
+      range: `${eventTitle}!A${nextRow}:F${nextRow}`,
       valueInputOption: 'RAW',
       resource: {
         values: [[
           registrationData.studentId,
           registrationData.name,
           registrationData.email,
+          registrationData.phone,
+          registrationData.degree,
           registrationData.registrationDate
         ]],
       },

@@ -104,13 +104,15 @@ export const registerUser = async (req, res) => {
 
     // 3. Get user details
     const userResult = await db.query(
-      "SELECT user_name, user_studentEmail FROM users WHERE user_studentId = $1",
+      "SELECT user_name, user_studentEmail, user_phone, user_degree FROM users WHERE user_studentId = $1",
       [user_studentid]
     );
 
     const eventTitle = eventResult.rows[0].event_title;
     const userName = userResult.rows[0].user_name;
     const userEmail = userResult.rows[0].user_studentemail;
+    const userPhone = userResult.rows[0].user_phone;
+    const userDegree = userResult.rows[0].user_degree;
     const registrationDate = registrationResult.rows[0].registration_date;
     
     // Format date to DD-MM-YYYY
@@ -120,13 +122,14 @@ export const registerUser = async (req, res) => {
       year: 'numeric'
     });
     
-    console.log(eventTitle, userName, userEmail, registrationDate);
     // 4. Export to Google Sheets
     try {
       await addRegistrationToSheet(eventTitle, {
         studentId: user_studentid,
         name: userName,
         email: userEmail,
+        phone: userPhone,
+        degree: userDegree,
         registrationDate: formattedDate
       });
     } catch (sheetError) {
@@ -172,7 +175,7 @@ export const exportEventRegistrationsToSheet = async (req, res) => {
     // 2. Get all registrations for this event with user details
     const registrationsResult = await db.query(
       `SELECT er.registration_id, er.user_studentId, er.registration_date, 
-              u.user_name, u.user_studentEmail
+              u.user_name, u.user_studentEmail, u.user_phone, u.user_degree
        FROM eventRegistration er
        JOIN users u ON er.user_studentId = u.user_studentId
        WHERE er.event_id = $1
@@ -202,6 +205,8 @@ export const exportEventRegistrationsToSheet = async (req, res) => {
           studentId: registration.user_studentid,
           name: registration.user_name,
           email: registration.user_studentemail,
+          phone: registration.user_phone,
+          degree: registration.user_degree,
           registrationDate: formattedDate
         });
         successCount++;
