@@ -5,11 +5,10 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log('ScrollToTop triggered for:', pathname);
-    window.scrollTo(0, 0); // Scroll to the top of the page
-  }, [pathname]); // Run this effect when the pathname changes
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-  return null; // No UI component is rendered
+  return null;
 }
 
 export default ScrollToTop;
