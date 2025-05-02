@@ -45,12 +45,8 @@ function Navbar() {
           {/* <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
             Events
           </Link> */}
-          <Link
-            to="/projects"
-            className={styles.nav_link}
-            onClick={closeNavbar}
-          >
-            Projects
+          <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
+            Events
           </Link>
           <Link
             to="/newsletter"
@@ -59,8 +55,13 @@ function Navbar() {
           >
             Newsletter
           </Link>
+          <Link to="/aboutus" className={styles.nav_link} onClick={closeNavbar}>
+            About Us
+          </Link>
         </div>
-        <button className={styles.joinus}>Join Us</button>
+        <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>
+          <button className={styles.joinus}>Login</button>
+        </Link>
       </div>
     </nav>
   );

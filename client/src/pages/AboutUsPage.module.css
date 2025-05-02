@@ -1,0 +1,368 @@
+/* Common styles */
+.container {
+  font-family: 'Work Sans', sans-serif;
+  background-color: var(--primary);
+  color: var(--secondary);
+  min-height: 100vh;
+}
+
+/* About Us Section */
+.aboutSection {
+  background-color: var(--primary);
+  padding: 3rem 1.5rem;
+  position: relative;
+  z-index: 0;
+}
+
+.aboutSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1440px;
+  height: 348px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) -27.69%,
+      var(--primary, #121212) 73.66%
+    ),
+    url('../assets/newsletter-bg.png') lightgray;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+@media (min-width: 768px) {
+  .aboutSection {
+    padding: 3rem 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .aboutSection {
+    padding: 3rem 6rem;
+  }
+}
+
+.mainTitle {
+  font-family: Nacelle-Black, sans-serif;
+  font-size: 3.75rem;
+  font-weight: 700;
+  margin: 7rem 0;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .aboutGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.accentText {
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.sectionTitle {
+  font-family: Nacelle-Bold, sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.625;
+}
+
+.missionCard {
+  background-color: var(--primary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 1px solid #fafafa;
+}
+
+.missionCardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .missionCardGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cardTitle {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.cardText {
+  font-size: 0.5rem;
+  font-weight: 400;
+  color: var(--secondary);
+}
+
+.membershipSection {
+  margin-top: 6rem;
+}
+
+.membershipTitle {
+  color: var(--accent);
+  font-family: Nacelle-Bold, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.membershipText {
+  text-align: center;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+/* Team Section */
+.teamSection {
+  padding: 2rem 1rem;
+  background-color: var(--primary);
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.teamHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.teamSubtitle {
+  color: var(--accent);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.teamTitle {
+  font-family: Nacelle-Black, sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.presidentContainer {
+  display: none;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .presidentContainer {
+    display: flex;
+  }
+}
+
+.executivesContainer {
+  display: none;
+  justify-content: center;
+  gap: 4rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .executivesContainer {
+    display: flex;
+  }
+}
+
+.departmentHeadsContainer {
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .departmentHeadsContainer {
+    display: grid;
+  }
+}
+
+.deputiesContainer {
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .deputiesContainer {
+    display: grid;
+  }
+}
+
+.mobileExecutives {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .mobileExecutives {
+    display: none;
+  }
+}
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photoContainer {
+  width: 8rem;
+  height: 8rem;
+  border: 1px solid var(--secondary);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.roleLabel {
+  background-color: var(--accent);
+  color: var(--primary);
+  text-align: center;
+  padding: 0.25rem 0;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  width: 8rem;
+}
+
+.roleText {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.personName {
+  margin-top: 0.5rem;
+  font-size: 1.125rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 24px 0 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.button {
+  background-color: var(--accent);
+  color: var(--primary);
+  font-size: 14px;
+  line-height: 23px;
+  font-weight: 400;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  transition: background-color ease-in 0.2s;
+}
+
+.button:hover {
+  background-color: var(--secondary);
+}
+
+.buttonIcon {
+  margin-left: 20px;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+/* Responsive design for the button */
+@media (min-width: 960px) {
+  .button {
+    font-size: 19px;
+    margin-top: 40px;
+    padding: 16px 21px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .button {
+    font-size: 19px;
+    margin-top: 30px;
+    padding: 14px 21px;
+  }
+}
+
+/* Responsive typography adjustments based on index.css */
+@media screen and (min-width: 620px) {
+  .paragraph,
+  .cardText,
+  .membershipText,
+  .roleText {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .paragraph,
+  .cardText,
+  .membershipText {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .paragraph,
+  .cardText,
+  .membershipText {
+    font-size: 1.4rem;
+  }
+
+  .mainTitle {
+    font-size: 4.5rem;
+  }
+
+  .sectionTitle,
+  .teamTitle {
+    font-size: 3.5rem;
+  }
+
+  .accentText,
+  .membershipTitle,
+  .teamSubtitle {
+    font-size: 1.8rem;
+  }
+
+  .cardTitle {
+    font-size: 1.6rem;
+  }
+
+  .personName {
+    font-size: 1.4rem;
+  }
+}
