@@ -13,6 +13,8 @@
   top: 0;
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
 .hamburger {
@@ -83,7 +85,7 @@
 .nav_item {
   color: #fafafa;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 24px;
   padding: 8px 10px;
   border-radius: 4px;
   transition: all 0.2s ease;

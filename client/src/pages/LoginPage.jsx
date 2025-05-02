@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
 import styles from './LoginPage.module.css';
 
 function LoginPage() {
@@ -11,6 +12,7 @@ function LoginPage() {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
   const [emailError, setEmailError] = useState('');
+  const { login } = useAuth();
 
   const handlePasswordToggle = () => {
     setRevealPassword((prev) => !prev);
@@ -50,27 +52,10 @@ function LoginPage() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      // Store the token in localStorage or your preferred storage method
-      localStorage.setItem('token', data.token);
-
-      // Redirect to dashboard or home page
-      window.location.href = '/dashboard';
+      await login(email, password);
     } catch (err) {
-      setError(err.message || 'An error occurred during login');
+      setError('Invalid email or password');
+      console.log(err);
     } finally {
       setLoading(false);
     }

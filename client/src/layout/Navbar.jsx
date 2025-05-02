@@ -1,10 +1,11 @@
 import styles from './Navbar.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
-
+  const { isAuthenticated } = useAuth(); //add logout
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
@@ -59,9 +60,21 @@ function Navbar() {
             About Us
           </Link>
         </div>
-        <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>
-          <button className={styles.joinus}>Login</button>
-        </Link>
+        {isAuthenticated ? (
+          <>
+            <Link
+              to="/dashboard"
+              className={styles.nav_link}
+              onClick={closeNavbar}
+            >
+              <button className={styles.joinus}>Dashboard</button>
+            </Link>
+          </>
+        ) : (
+          <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>
+            <button className={styles.joinus}>Login</button>
+          </Link>
+        )}
       </div>
     </nav>
   );

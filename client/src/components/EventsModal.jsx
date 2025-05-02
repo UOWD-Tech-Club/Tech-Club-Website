@@ -37,7 +37,7 @@ export default function EventsModal({ event, onClose }) {
   };
 
   const handleAttendeesClick = () => {
-    navigate('/eventsmanagement/attendees', { state: { event: event } });
+    navigate(`/eventsmanagement/attendees/${event.event_id}`);
   };
 
   const handleDeleteEvent = () => {
