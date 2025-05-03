@@ -11,6 +11,7 @@ import Attendees from './pages/AttendeesList';
 import DashboardPage from './pages/DashboardPage';
 import ScrollToTop from './utils/ScrollToTop';
 import LoginPage from './pages/LoginPage';
+import NewsManagementPage from './pages/NewsManagementPage';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="/all-executives" element={<AllExecutives />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/newsmanagement" element={<NewsManagementPage />} />
       </Routes>
     </>
   );

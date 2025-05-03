@@ -7,6 +7,7 @@ import eventsRoutes from "./Routes/eventRoutes.js";
 import newsRoutes from "./Routes/newsRoutes.js";
 import "./Tasks/scheduled.js";
 import newsManagementRoutes from "./Routes/newsManagementRoutes.js";
+import authRoutes from "./Routes/authRoutes.js";
 
 //ES6 equivalent to __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -14,10 +15,12 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, "./.env") });
 
+/*
 import eventsRoutes from "./Routes/eventRoutes.js";
 import newsRoutes from "./Routes/newsRoutes.js";
 import authRoutes from "./Routes/authRoutes.js";
 import "./Tasks/scheduled.js";
+*/
 
 const app = express();
 
@@ -35,7 +38,7 @@ app.get("/", (req, res) => {
   });
 });
 
-const PORT = process.env.LOCAL_PORT;
+const PORT = process.env.LOCAL_PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
