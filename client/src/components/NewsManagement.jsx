@@ -3,6 +3,7 @@ import styles from './NewsManagement.module.css';
 import NewsModal from './NewsModal.jsx';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { format } from 'date-fns';
 
 const NewsManagement = () => {
   const [newsList, setNewsList] = useState([]);
@@ -46,10 +47,12 @@ const NewsManagement = () => {
     fetchNews();
   }, []);
 
-  const handleModalClose = () => {
+  const handleModalClose = (dataChanged = false) => {
     setShowModal(false);
     setSelectedNews(null);
-    fetchNews();
+    if (dataChanged) {
+      fetchNews();
+    }
   };
 
   const handleAddNews = () => {
@@ -116,7 +119,7 @@ const NewsManagement = () => {
                 <div className={styles.newsTitle}>{news.news_title}</div>
                 <div className={styles.newsAuthor}>{news.news_source}</div>
                 <div className={styles.newsDate}>
-                  {news.news_pubdate.slice(0, 10)}
+                  {format(new Date(news.news_pubdate), 'dd/MM/yyyy')}
                 </div>
                 <div className={styles.newsDescription}>
                   {news.news_description}

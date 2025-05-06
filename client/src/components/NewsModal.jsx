@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './NewsModal.module.css';
+import { FaTimes, FaTrash, FaEdit } from 'react-icons/fa';
 
 export default function NewsModal({ news, onClose, action }) {
   const modalRef = useRef(null);
@@ -81,7 +82,7 @@ export default function NewsModal({ news, onClose, action }) {
 
       const data = await response.json();
       console.log('Response from server:', data);
-      onClose();
+      onClose(true);
     } catch (error) {
       console.error('Error saving changes:', error);
     }
@@ -102,7 +103,7 @@ export default function NewsModal({ news, onClose, action }) {
 
       const data = await response.json();
       console.log('Response from server:', data);
-      onClose();
+      onClose(true);
     } catch (error) {
       console.error('Error deleting news:', error);
     }
@@ -111,13 +112,13 @@ export default function NewsModal({ news, onClose, action }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
+        onClose(false);
       }
     };
 
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose(false);
       }
     };
 
@@ -134,38 +135,36 @@ export default function NewsModal({ news, onClose, action }) {
     <div className={styles.newsContainer}>
       <div className={styles.modal}>
         <div className={styles.modalContent} ref={modalRef}>
-          <button className={styles.modalClose} onClick={onClose}>
-            X
+          <button className={styles.modalClose} onClick={() => onClose(false)}>
+            <FaTimes />
           </button>
-          <div className={styles.modalRow}>
-            <div className={styles.formGroup}>
-              <label>News Title</label>
-              <input
-                type="text"
-                name="news_title"
-                value={selectedNews.news_title}
-                placeholder="News Title"
-                onChange={handleChange}
-                className={`${styles.inputField} ${errors.news_title ? styles.inputError : ''}`}
-              />
-              {errors.news_title && (
-                <span className={styles.errorText}>{errors.news_title}</span>
-              )}
-            </div>
-            <div className={styles.formGroup}>
-              <label>Image URL</label>
-              <input
-                type="text"
-                name="news_img"
-                value={selectedNews.news_img}
-                placeholder="Paste image link here..."
-                onChange={handleChange}
-                className={`${styles.inputField} ${errors.news_img ? styles.inputError : ''}`}
-              />
-              {errors.news_img && (
-                <span className={styles.errorText}>{errors.news_img}</span>
-              )}
-            </div>
+          <div className={styles.formGroup}>
+            <label>News Title</label>
+            <input
+              type="text"
+              name="news_title"
+              value={selectedNews.news_title}
+              placeholder="News Title"
+              onChange={handleChange}
+              className={`${styles.inputField} ${errors.news_title ? styles.inputError : ''}`}
+            />
+            {errors.news_title && (
+              <span className={styles.errorText}>{errors.news_title}</span>
+            )}
+          </div>
+          <div className={styles.formGroup}>
+            <label>Image URL</label>
+            <input
+              type="text"
+              name="news_img"
+              value={selectedNews.news_img}
+              placeholder="Paste image link here..."
+              onChange={handleChange}
+              className={`${styles.inputField} ${errors.news_img ? styles.inputError : ''}`}
+            />
+            {errors.news_img && (
+              <span className={styles.errorText}>{errors.news_img}</span>
+            )}
           </div>
           <div className={styles.modalRow}>
             <div className={styles.formGroup}>
@@ -196,16 +195,21 @@ export default function NewsModal({ news, onClose, action }) {
               )}
             </div>
           </div>
-          <textarea
-            name="news_description"
-            value={selectedNews.news_description}
-            placeholder="Short Description"
-            onChange={handleChange}
-            className={`${styles.textAreaField} ${errors.news_description ? styles.inputError : ''}`}
-          ></textarea>
-          {errors.news_description && (
-            <span className={styles.errorText}>{errors.news_description}</span>
-          )}
+          <div className={styles.formGroup}>
+            <label>Description</label>
+            <textarea
+              name="news_description"
+              value={selectedNews.news_description}
+              placeholder="Short Description"
+              onChange={handleChange}
+              className={`${styles.textAreaField} ${errors.news_description ? styles.inputError : ''}`}
+            ></textarea>
+            {errors.news_description && (
+              <span className={styles.errorText}>
+                {errors.news_description}
+              </span>
+            )}
+          </div>
 
           {action === 'edit' ? (
             <div className={styles.modalActions}>
@@ -213,10 +217,10 @@ export default function NewsModal({ news, onClose, action }) {
                 className={styles.deleteButton}
                 onClick={handleDeleteNews}
               >
-                Delete News
+                Delete News <FaTrash />
               </button>
               <button className={styles.editButton} onClick={handleSaveChanges}>
-                Edit News
+                Edit News <FaEdit />
               </button>
             </div>
           ) : (
