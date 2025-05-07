@@ -3,7 +3,7 @@ import {
   createClubNews,
   updateClubNews,
   deleteClubNews,
-} from "../Controllers/newsManagement";
+} from "../Controllers/newsManagement.js";
 
 const router = express.Router();
 
