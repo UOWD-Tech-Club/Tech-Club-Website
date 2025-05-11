@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from 'cookie-parser';
+import eventsRoutes from "./Routes/eventRoutes.js";
+import newsRoutes from "./Routes/newsRoutes.js";
+import "./Tasks/scheduled.js";
+import newsManagementRoutes from "./Routes/newsManagementRoutes.js";
+import authRoutes from "./Routes/authRoutes.js";
 
 //ES6 equivalent to __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -11,10 +16,12 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, "./.env") });
 
+/*
 import eventsRoutes from "./Routes/eventRoutes.js";
 import newsRoutes from "./Routes/newsRoutes.js";
 import authRoutes from "./Routes/authRoutes.js";
 import "./Tasks/scheduled.js";
+*/
 
 const app = express();
 
@@ -27,10 +34,12 @@ app.use(cors({
 }));
 
 app.use(cookieParser());
+
 app.use(express.json());
 
 app.use("/events", eventsRoutes);
 app.use("/news", newsRoutes);
+app.use("/newsManagement", newsManagementRoutes);
 app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
@@ -39,7 +48,7 @@ app.get("/", (req, res) => {
   });
 });
 
-const PORT = process.env.LOCAL_PORT;
+const PORT = process.env.LOCAL_PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

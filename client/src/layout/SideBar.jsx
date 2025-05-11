@@ -15,7 +15,7 @@ function Sidebar() {
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Events', path: '/eventsmanagement' },
-    { name: 'Tech News', path: '/newsmanagament' },
+    { name: 'Tech News', path: '/newsmanagement' },
     { name: 'Executives', path: '/executives' },
   ];
 

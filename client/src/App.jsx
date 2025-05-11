@@ -15,6 +15,8 @@ import AllExecutives from './pages/AllExecutives';
 import Attendees from './pages/AttendeesList';
 import ScrollToTop from './utils/ScrollToTop';
 import AllEventsPage from './pages/AllEventsPage';
+import LoginPage from './pages/LoginPage';
+import NewsManagementPage from './pages/NewsManagementPage';
 
 function App() {
   return (
@@ -34,8 +36,9 @@ function App() {
         <Route path="news/:newsID" element={<NewsPage />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="newsletter/" element={<NewsPage />} />
-        <Route path="aboutus" element={<AboutUsPage />} />
+        <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="all-executives" element={<AllExecutives />} />
+        <Route path="/newsmanagement" element={<NewsManagementPage />} />
 
         {/* Protected Routes */}
         <Route
