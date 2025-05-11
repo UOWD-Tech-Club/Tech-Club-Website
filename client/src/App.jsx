@@ -15,7 +15,6 @@ import AllExecutives from './pages/AllExecutives';
 import Attendees from './pages/AttendeesList';
 import ScrollToTop from './utils/ScrollToTop';
 import AllEventsPage from './pages/AllEventsPage';
-import LoginPage from './pages/LoginPage';
 import NewsManagementPage from './pages/NewsManagementPage';
 
 function App() {
