@@ -77,10 +77,12 @@ function AllExecutives() {
         <div className={styles.divider}></div>
 
         <div className={styles.content}>
-          <TeamSlider title="The Events Team" />
-          <TeamSlider title="The Media Team" />
-          <TeamSlider title="The Web Dev Team" />
+          <TeamSlider title="The AI Team" />
+          <TeamSlider title="The CyberSecurity Team" />
           <TeamSlider title="The Engineering Team" />
+          <TeamSlider title="The Web Dev Team" />
+          <TeamSlider title="The Media Team" />
+          <TeamSlider title="The Events Team" />
         </div>
       </div>
     </PageLayout>

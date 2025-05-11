@@ -33,18 +33,33 @@ export const loginAdmin = async (req, res) => {
             return res.status(400).json({ message: 'Invalid email or password'});
         }
 
+        // Create JWT token
         const token = jwt.sign(
-            { admin_id: user.admin_id, email: user.email }, 
+            { 
+                admin_id: user.admin_id,
+                email: user.email,
+                role: 'admin'
+            }, 
             process.env.JWT_SECRET, 
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
         );
 
+        // Set cookie with token
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+
+        // Send response with user data and token
         res.status(200).json({
             message: 'Login Successful',
             token,
             user: {
                 admin_id: user.admin_id,
                 email: user.email,
+                role: 'admin',
                 createdAt: user.admin_createdAt
             }
         });
@@ -85,11 +100,32 @@ export const registerAdmin = async (req, res) => {
             [email, hashedPassword]
         );
 
+        // Create JWT token for new user
+        const token = jwt.sign(
+            { 
+                admin_id: newUser.rows[0].admin_id,
+                email: newUser.rows[0].email,
+                role: 'admin'
+            }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '24h' }
+        );
+
+        // Set cookie with token
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+
         res.status(201).json({
             message: "Admin user created successfully",
+            token,
             user: {
                 admin_id: newUser.rows[0].admin_id,
                 email: newUser.rows[0].email,
+                role: 'admin',
                 createdAt: newUser.rows[0].admin_createdAt
             }
         });

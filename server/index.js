@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from 'cookie-parser';
 import eventsRoutes from "./Routes/eventRoutes.js";
 import newsRoutes from "./Routes/newsRoutes.js";
 import "./Tasks/scheduled.js";
@@ -24,7 +25,16 @@ import "./Tasks/scheduled.js";
 
 const app = express();
 
-app.use(cors());
+// Configure CORS
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(cookieParser());
+
 app.use(express.json());
 
 app.use("/events", eventsRoutes);
