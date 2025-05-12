@@ -1,21 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './EventsModal.module.css';
-import { FaTimes, FaTrash } from 'react-icons/fa';
+import { FaTimes, FaTrash, FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-export default function EventsModal({ event, onClose }) {
-  const [image, setImage] = useState(null);
+const EventsModal = ({ event, onClose, action }) => {
   const modalRef = useRef(null);
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
-    event_id: event.event_id,
-    event_title: event.event_title,
-    event_location: event.event_location,
-    event_date: event.event_date
+    event_id: event?.event_id || '',
+    event_title: event?.event_title || '',
+    event_location: event?.event_location || '',
+    event_date: event?.event_date
       ? new Date(event.event_date).toISOString().split('T')[0]
       : '',
-    event_time: event.event_time || '',
-    event_description: event.event_details || '',
+    event_time: event?.event_time || '',
+    event_description: event?.event_details || '',
+    event_img: event?.event_img || '',
   });
 
   const navigate = useNavigate();
@@ -29,34 +29,72 @@ export default function EventsModal({ event, onClose }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
-        console.log(image);
+        setFormData({ ...formData, event_img: reader.result });
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleAttendeesClick = () => {
-    navigate(`/eventsmanagement/attendees/${event.event_id}`);
+    if (event?.event_id) {
+      navigate(`/eventsmanagement/attendees/${event.event_id}`);
+    }
   };
 
-  const handleDeleteEvent = () => {
-    // Add delete functionality here
-    console.log('Delete event:', event.event_id);
-    // After deletion, close modal
-    onClose();
+  const handleSaveChanges = async () => {
+    try {
+      const url =
+        action === 'edit'
+          ? `https://tech-club-website.onrender.com/admin/events/${event.event_id}`
+          : 'https://tech-club-website.onrender.com/admin/events';
+
+      const method = action === 'edit' ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log('Response from server:', data);
+      onClose(true);
+    } catch (error) {
+      console.error('Error saving event:', error);
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    if (!confirm('Are you sure you want to delete this event?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://tech-club-website.onrender.com/admin/events/${event.event_id}`,
+        {
+          method: 'DELETE',
+        },
+      );
+
+      const data = await response.json();
+      console.log('Response from server:', data);
+      onClose(true);
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
+        onClose(false);
       }
     };
 
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose(false);
       }
     };
 
@@ -71,7 +109,7 @@ export default function EventsModal({ event, onClose }) {
 
   return (
     <div className={styles.modal} ref={modalRef}>
-      <button className={styles.modalClose} onClick={onClose}>
+      <button className={styles.modalClose} onClick={() => onClose(false)}>
         <FaTimes />
       </button>
       <div className={styles.modalContent}>
@@ -91,7 +129,9 @@ export default function EventsModal({ event, onClose }) {
           <label>Image URL</label>
           <input
             type="text"
-            name="image_url"
+            name="event_img"
+            value={formData.event_img}
+            onChange={handleChange}
             placeholder="Paste image link here..."
             className={styles.inputField}
             onClick={() => fileInputRef.current.click()}
@@ -142,16 +182,18 @@ export default function EventsModal({ event, onClose }) {
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <div className={styles.attendeesContainer}>
-            <button
-              className={styles.attendeesButton}
-              onClick={handleAttendeesClick}
-            >
-              Attendees list
-            </button>
+        {action === 'edit' && (
+          <div className={styles.formGroup}>
+            <div className={styles.attendeesContainer}>
+              <button
+                className={styles.attendeesButton}
+                onClick={handleAttendeesClick}
+              >
+                Attendees list
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className={styles.formGroup}>
           <label>Description</label>
@@ -165,13 +207,32 @@ export default function EventsModal({ event, onClose }) {
         </div>
 
         <div className={styles.formGroup}>
-          <div className={styles.deleteContainer}>
-            <button className={styles.deleteButton} onClick={handleDeleteEvent}>
-              Delete Event <FaTrash />
-            </button>
+          <div className={styles.buttonContainer}>
+            {action === 'edit' ? (
+              <>
+                <button
+                  className={styles.deleteButton}
+                  onClick={handleDeleteEvent}
+                >
+                  Delete Event <FaTrash />
+                </button>
+                <button
+                  className={styles.saveButton}
+                  onClick={handleSaveChanges}
+                >
+                  Save Changes <FaEdit />
+                </button>
+              </>
+            ) : (
+              <button className={styles.saveButton} onClick={handleSaveChanges}>
+                Create Event
+              </button>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default EventsModal;

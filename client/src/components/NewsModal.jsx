@@ -220,7 +220,7 @@ export default function NewsModal({ news, onClose, action }) {
                 Delete News <FaTrash />
               </button>
               <button className={styles.editButton} onClick={handleSaveChanges}>
-                Edit News <FaEdit />
+                Save News <FaEdit />
               </button>
             </div>
           ) : (
