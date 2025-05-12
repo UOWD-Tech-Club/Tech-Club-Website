@@ -96,8 +96,15 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   width: 100%;
 }
 
-.attendeesContainer,
-.deleteContainer {
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.attendeesContainer {
   display: flex;
   justify-content: flex-end;
   width: 100%;
@@ -137,12 +144,37 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   min-width: 180px;
 }
 
+.saveButton {
+  background: #e1f264;
+  color: #000;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 30px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  min-width: 180px;
+  transition: all 0.3s ease;
+}
+
 .attendeesButton:hover,
-.deleteButton:hover {
+.deleteButton:hover,
+.saveButton:hover {
   background: #000;
   color: #e1f264;
   border: 1px solid #e1f264;
   transition: all 0.3s ease;
+}
+
+.attendeesButton:active,
+.deleteButton:active,
+.saveButton:active {
+  transform: translateY(1px);
 }
 
 @media (max-width: 768px) {
@@ -155,13 +187,18 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
     padding: 25px;
   }
 
-  .attendeesContainer,
-  .deleteContainer {
+  .buttonContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .attendeesContainer {
     justify-content: center;
   }
 
   .attendeesButton,
-  .deleteButton {
+  .deleteButton,
+  .saveButton {
     width: 100%;
   }
 }
