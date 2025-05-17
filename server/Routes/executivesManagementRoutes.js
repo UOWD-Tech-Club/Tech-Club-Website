@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.post("/executives/invite", inviteExecutive);
+// router.post("/executives/invite", inviteExecutive);
 router.get("/executives", getAllExecutives);
 router.get("/executives/:executiveID", getExecutive);
-router.put("/executives/:executiveID", updateExecutiveRole);
+// router.put("/executives/:executiveID", updateExecutiveRole);
 router.delete("/executives/:executiveID", deleteExecutive);
 
 export default router;
