@@ -48,6 +48,8 @@ export default function Attendees() {
             <div>Name</div>
             <div>Student ID</div>
             <div>Email</div>
+            <div>Phone</div>
+            <div>Degree</div>
           </div>
           <div className={styles.tableBody}>
             {attendees.length > 0 ? (
@@ -57,9 +59,14 @@ export default function Attendees() {
                   <div className={styles.tableCell}>
                     {attendee.user_studentid}
                   </div>
-                  <div className={styles.tableCell}>
+                  <div
+                    className={styles.tableCell}
+                    title={attendee.user_studentemail}
+                  >
                     {attendee.user_studentemail}
                   </div>
+                  <div className={styles.tableCell}>{attendee.user_phone}</div>
+                  <div className={styles.tableCell}>{attendee.user_degree}</div>
                 </div>
               ))
             ) : (
