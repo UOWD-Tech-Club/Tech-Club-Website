@@ -16,7 +16,7 @@ function Sidebar() {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Events', path: '/eventsmanagement' },
     { name: 'Tech News', path: '/newsmanagement' },
-    { name: 'Executives', path: '/executives' },
+    { name: 'Executives', path: '/executivesmanagement' },
   ];
 
   return (

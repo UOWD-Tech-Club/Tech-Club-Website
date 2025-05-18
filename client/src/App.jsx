@@ -16,8 +16,8 @@ import Attendees from './pages/AttendeesList';
 import ScrollToTop from './utils/ScrollToTop';
 import AllEventsPage from './pages/AllEventsPage';
 import NewsManagementPage from './pages/NewsManagementPage';
-import ExecutivesManagment from './pages/ExecutivesManagment';
 import AdminMagicLogin from './pages/AdminLoginPage';
+import ExecutivesManagementPage from './pages/ExecutivesManagementPage';
 
 function App() {
   return (
@@ -49,7 +49,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
 
+          path="/executivesmanagement"
+          element={<ExecutivesManagementPage />}
+        />
         {/* Protected Routes */}
         <Route
           path="dashboard/*"
