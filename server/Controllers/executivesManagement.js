@@ -99,7 +99,7 @@ export const updateExecutiveRole = async (req, res) => {
       });
     }
 
-    res.status(204);
+    res.status(204).send();
   } catch (error) {
     console.log("Error updating executive record", error.message);
     res.status(500).json({ message: "Server error" });
