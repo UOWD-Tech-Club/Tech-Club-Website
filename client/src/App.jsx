@@ -16,6 +16,7 @@ import Attendees from './pages/AttendeesList';
 import ScrollToTop from './utils/ScrollToTop';
 import AllEventsPage from './pages/AllEventsPage';
 import NewsManagementPage from './pages/NewsManagementPage';
+import ExecutivesManagementPage from './pages/ExecutivesManagementPage';
 
 function App() {
   return (
@@ -38,7 +39,10 @@ function App() {
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="all-executives" element={<AllExecutives />} />
         <Route path="/newsmanagement" element={<NewsManagementPage />} />
-
+        <Route
+          path="/executivesmanagement"
+          element={<ExecutivesManagementPage />}
+        />
         {/* Protected Routes */}
         <Route
           path="dashboard/*"
