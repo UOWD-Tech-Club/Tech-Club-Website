@@ -16,6 +16,7 @@ import Attendees from './pages/AttendeesList';
 import ScrollToTop from './utils/ScrollToTop';
 import AllEventsPage from './pages/AllEventsPage';
 import NewsManagementPage from './pages/NewsManagementPage';
+import AdminMagicLogin from './pages/AdminLoginPage';
 import ExecutivesManagementPage from './pages/ExecutivesManagementPage';
 
 function App() {
@@ -39,7 +40,17 @@ function App() {
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="all-executives" element={<AllExecutives />} />
         <Route path="/newsmanagement" element={<NewsManagementPage />} />
+        <Route path="/magic-login" element={<AdminMagicLogin />} />
         <Route
+          path="/executivesmanagement"
+          element={
+            <ProtectedRoute>
+              <ExecutivesManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+
           path="/executivesmanagement"
           element={<ExecutivesManagementPage />}
         />

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './ExecutivesModal.module.css';
 import { FaTimes, FaTrash } from 'react-icons/fa';
+import axios from 'axios'; // Add this at the top with other imports
 
 export default function ExecutivesModal({ exec, onClose, action }) {
   const modalRef = useRef(null);
@@ -32,40 +33,21 @@ export default function ExecutivesModal({ exec, onClose, action }) {
   };
 
   const handleSaveChanges = async () => {
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
-    /*const url = action === 'edit' 
-      ? `${API_BASE_URL}/executives/${selectedExecutive.admin_id}` 
-      : `${API_BASE_URL}/executives/invite`;
-    */
-    const url = `${API_BASE_URL}/executives/invite`;
-    //const method = action === 'edit' ? 'PUT' : 'POST';
-    const method = 'POST';
-    /*const requestBody = action === 'edit' 
-    ? { newRole: selectedExecutive.role } 
-    : selectedExecutive;
-    */
-    const requestBody = selectedExecutive;
+    setErrors({});
     try {
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-      });
+      await axios.post(
+        'http://localhost:5000/auth/invite-admin', // Update to production URL if needed
+        { email: selectedExecutive.email },
+        { withCredentials: true },
+      );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to save changes');
-      }
-
-      const data = await response.json();
-      console.log('Response from server:', data);
-      onClose(true);
-    } catch (error) {
-      console.error('Error saving changes:', error);
-      setErrors({ general: 'Error adding executive' });
+      console.log('Magic link sent!');
+      onClose(true); // close modal on success
+    } catch (err) {
+      console.error('Failed to send magic link:', err);
+      setErrors({ general: 'Failed to send magic link. Please try again.' });
     }
   };
 
