@@ -155,8 +155,8 @@ const sendMagicLinkEmail = async (email, token) => {
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'Your Admin Magic Link',
-        html: `<p>Click <a href="${magicLink}">here</a> to sign in as admin.</p>`,
+        subject: 'Your Admin User Login For the Tech Club',
+        html: `<p>Click <a href="${magicLink}">here</a> to sign in as admin for the University of Wollong In Dubai Tech Club Website.</p><br> After Logging in, please set your password.`,
     });
 };
 
