@@ -75,29 +75,33 @@ export const getRegisteredUsers = async (req, res) => {
 
 		if (!eventId) {
 			return res.status(400).json({
-				message: 'Event name or event Id is required',
+				message: 'Event ID is required',
 			});
 		}
 
 		const result = await db.query(
-			`SELECT * FROM eventRegistration WHERE event_id = $1`,
+			`SELECT 
+				er.*,
+				u.user_name,
+				u.user_studentid,
+				u.user_studentemail,
+				u.user_phone,
+				u.user_department
+			FROM eventRegistration er
+			JOIN users u ON er.user_id = u.user_id
+			WHERE er.event_id = $1
+			ORDER BY er.registration_date DESC`,
 			[eventId]
 		);
 
 		const users = result.rows;
-
-		// if (users.length === 0) {
-		// 	return res.status(200).json({
-		// 		message: 'No users registered for the event',
-		// 	});
-		// }
 
 		return res.status(200).json({
 			message: 'Users registered for this event',
 			users: users,
 		});
 	} catch (err) {
-		console.log('Error Fetching users rudraa for the event:', err.message);
+		console.log('Error Fetching users for the event:', err.message);
 		return res.status(500).json({
 			message: 'Internal server error',
 		});

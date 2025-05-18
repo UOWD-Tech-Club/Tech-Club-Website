@@ -4,6 +4,7 @@ import {
   getEvents,
   searchEvents,
   registerUser,
+  getEventById,
 } from "../Controllers/Events.js";
 import { fetchDailyNews } from "../Controllers/dailyNews.js";
 
@@ -15,6 +16,7 @@ router.post("/user", addUser);
 router.get("/user/:studentId" , getUser)
 
 router.get("/", getEvents);
+router.get("/:eventId", getEventById);
 router.get("/search", searchEvents);
 router.post("/register", registerUser);
 

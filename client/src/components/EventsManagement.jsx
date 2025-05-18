@@ -17,9 +17,7 @@ const EventsManagement = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        'https://tech-club-website.onrender.com/events',
-      );
+      const response = await fetch('http://localhost:3000/events');
 
       if (!response.ok) {
         throw new Error('Failed to fetch events.');
@@ -32,7 +30,7 @@ const EventsManagement = () => {
         data.events.map(async (event) => {
           try {
             const attendeesResponse = await fetch(
-              `https://tech-club-website.onrender.com/events/users/${event.event_id}`,
+              `http://localhost:3000/events/users/${event.event_id}`,
             );
             if (!attendeesResponse.ok) {
               throw new Error('Failed to fetch attendees');

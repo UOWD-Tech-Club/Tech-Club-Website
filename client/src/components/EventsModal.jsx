@@ -45,8 +45,8 @@ const EventsModal = ({ event, onClose, action }) => {
     try {
       const url =
         action === 'edit'
-          ? `https://tech-club-website.onrender.com/admin/events/${event.event_id}`
-          : 'https://tech-club-website.onrender.com/admin/events';
+          ? `http://localhost:3000/admin/events/${event.event_id}`
+          : 'http://localhost:3000/admin/events';
 
       const method = action === 'edit' ? 'PUT' : 'POST';
 
@@ -71,7 +71,7 @@ const EventsModal = ({ event, onClose, action }) => {
 
     try {
       const response = await fetch(
-        `https://tech-club-website.onrender.com/admin/events/${event.event_id}`,
+        `http://localhost:3000/admin/events/${event.event_id}`,
         {
           method: 'DELETE',
         },
