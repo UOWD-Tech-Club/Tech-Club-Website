@@ -49,7 +49,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
 
+          path="/executivesmanagement"
+          element={<ExecutivesManagementPage />}
+        />
         {/* Protected Routes */}
         <Route
           path="dashboard/*"

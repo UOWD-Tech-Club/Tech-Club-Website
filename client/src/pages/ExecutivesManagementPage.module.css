@@ -1,0 +1,10 @@
+.newsContainer {
+  background-color: #121212;
+  min-height: 100vh;
+  font-family: 'Work Sans', sans-serif;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  max-height: 100vh;
+}
