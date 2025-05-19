@@ -5,13 +5,17 @@ import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
-  const { isAuthenticated } = useAuth(); //add logout
+  const { isAuthenticated, logout } = useAuth();
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
 
   const closeNavbar = () => {
     setShowNavbar(false);
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
@@ -62,13 +66,16 @@ function Navbar() {
         </div>
         {isAuthenticated ? (
           <>
-            <Link
+            {/* <Link
               to="/dashboard"
               className={styles.nav_link}
               onClick={closeNavbar}
             >
               <button className={styles.joinus}>Dashboard</button>
-            </Link>
+            </Link> */}
+            <button className={styles.joinus} onClick={handleLogout}>
+              Logout
+            </button>
           </>
         ) : (
           <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>
