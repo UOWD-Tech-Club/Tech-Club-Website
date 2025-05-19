@@ -1,4 +1,6 @@
 import pool from "../Db/db_config.js";
+import supabase from '../utils/supabaseClient.js';
+
 
 function getTableName(targetTable) {
   if (targetTable === 'dailynews') return 'dailynews';
@@ -13,12 +15,35 @@ export const createClubNews = async (req, res) => {
       newsTitle,
       newsDescription,
       newsUrl,
-      newsImg,
       newsPubdate,
       newsCategory,
       targetTable,
     } = req.body;
     const table = getTableName(targetTable);
+
+    let newsImg = null;
+    if (req.file) {
+      const file = req.file;
+      const fileExt = file.originalname.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from('news') // your bucket name
+        .upload(`images/${fileName}`, file.buffer, {
+          contentType: file.mimetype,
+        });
+
+      if (error) {
+        return res.status(500).json({ message: 'Image upload failed', error });
+      }
+
+      const { data: publicUrl } = supabase
+        .storage
+        .from('news')
+        .getPublicUrl(`images/${fileName}`);
+
+        newsImg = publicUrl.publicUrl;
+    }
 
     const retrievedArticle = await db.query(
       `SELECT * from ${table} WHERE news_title = $1 AND news_source = $2`,
@@ -79,12 +104,35 @@ export const updateClubNews = async (req, res) => {
       newsTitle,
       newsDescription,
       newsUrl,
-      newsImg,
       newsPubdate,
       newsCategory,
       targetTable,
     } = req.body;
     const table = getTableName(targetTable);
+
+    let newsImg = null;
+    if (req.file) {
+      const file = req.file;
+      const fileExt = file.originalname.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+
+      const { error } = await supabase.storage
+        .from('news') // your bucket name
+        .upload(`images/${fileName}`, file.buffer, {
+          contentType: file.mimetype,
+        });
+
+      if (error) {
+        return res.status(500).json({ message: 'Image upload failed', error });
+      }
+
+      const { data: publicUrl } = supabase
+        .storage
+        .from('news')
+        .getPublicUrl(`images/${fileName}`);
+
+        newsImg = publicUrl.publicUrl;
+    }
 
     let updatedNewsArticle;
     if (table === 'techclubnews') {

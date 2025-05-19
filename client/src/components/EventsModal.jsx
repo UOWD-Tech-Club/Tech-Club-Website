@@ -15,7 +15,8 @@ const EventsModal = ({ event, onClose, action }) => {
       : '',
     event_time: event?.event_time || '',
     event_description: event?.event_details || '',
-    event_img: event?.event_img || '',
+    event_img: event?.event_img_link || '',
+    preview_url: event?.event_img_link || '',
   });
 
   const navigate = useNavigate();
@@ -27,11 +28,11 @@ const EventsModal = ({ event, onClose, action }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({ ...formData, event_img: reader.result });
-      };
-      reader.readAsDataURL(file);
+      setFormData({
+        ...formData,
+        event_img: file, // store file for backend
+        preview_url: URL.createObjectURL(file), // for preview only
+      });
     }
   };
 
@@ -43,7 +44,6 @@ const EventsModal = ({ event, onClose, action }) => {
 
   const handleSaveChanges = async () => {
     try {
-      console.log(event);
       const url =
         action === 'edit'
           ? `http://localhost:5000/eventManagement/admin/events/${event.event_id}`
@@ -51,15 +51,21 @@ const EventsModal = ({ event, onClose, action }) => {
 
       const method = action === 'edit' ? 'PUT' : 'POST';
 
+      const payload = new FormData();
+      payload.append('event_title', formData.event_title);
+      payload.append('event_location', formData.event_location);
+      payload.append('event_date', formData.event_date);
+      payload.append('event_time', formData.event_time);
+      payload.append('event_details', formData.event_description);
+      payload.append('event_img', formData.event_img); // image file
+
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: payload,
       });
 
       const data = await response.json();
       console.log('Response from server:', data);
-
       onClose(true);
     } catch (error) {
       console.error('Error saving event:', error);
@@ -128,23 +134,31 @@ const EventsModal = ({ event, onClose, action }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label>Image URL</label>
-          <input
-            type="text"
-            name="event_img"
-            value={formData.event_img}
-            onChange={handleChange}
-            placeholder="Paste image link here..."
-            className={styles.inputField}
-            onClick={() => fileInputRef.current.click()}
-          />
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: 'none' }}
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+          <label>Image Upload</label>
+          <div className={styles.imageUploadContainer}>
+            <button
+              onClick={() => fileInputRef.current.click()}
+              className={styles.uploadButton}
+            >
+              Choose Image
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            {formData.preview_url && (
+              <div className={styles.imagePreview}>
+                <img
+                  src={formData.preview_url}
+                  alt="Preview"
+                  className={styles.previewImage}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         <div className={styles.rowContainer}>

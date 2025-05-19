@@ -11,6 +11,8 @@ function formatDateYYYYMMDD(date) {
 
 export default function NewsModal({ news, onClose, action, isTechClubNews }) {
   const modalRef = useRef(null);
+  const fileInputRef = useRef(null);
+
   const [selectedNews, setSelectedNews] = useState(
     news
       ? {
@@ -28,19 +30,40 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
           news_category: '',
         },
   );
+
   const [errors, setErrors] = useState({});
+  const [previewImage, setPreviewImage] = useState(news?.news_img || '');
   const [targetTable, setTargetTable] = useState(
     news?.target_table
       ? news.target_table
       : news?.news_category !== undefined
         ? 'techclubnews'
-        : news?.news_id,
+        : 'dailynews',
   );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedNews({ ...selectedNews, [name]: value });
-    if (errors[name]) setErrors({ ...errors, [name]: '' });
+    setSelectedNews((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setPreviewImage(imageURL);
+      setSelectedNews((prev) => ({ ...prev, news_img: imageURL }));
+    }
+  };
+
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
   };
 
   const validateForm = () => {
@@ -53,46 +76,40 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
     if (!selectedNews.news_pubdate) newErrors.news_pubdate = 'Date is required';
     if (!selectedNews.news_description.trim())
       newErrors.news_description = 'Description is required';
-    if (!selectedNews.news_img.trim())
-      newErrors.news_img = 'Image URL is required';
+    if (!selectedNews.news_img.trim()) newErrors.news_img = 'Image is required';
     else if (!isValidUrl(selectedNews.news_img))
-      newErrors.news_img = 'Please enter a valid URL';
+      newErrors.news_img = 'Invalid image URL';
     if (!selectedNews.news_url.trim())
       newErrors.news_url = 'News URL is required';
     else if (!isValidUrl(selectedNews.news_url))
-      newErrors.news_url = 'Please enter a valid URL';
+      newErrors.news_url = 'Invalid news URL';
     if (isTechClubNews && !selectedNews.news_category.trim())
       newErrors.news_category = 'Category is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  const isValidUrl = (url) => {
-    try {
-      new URL(url);
-      return true;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-  };
 
   const handleSaveChanges = async () => {
-    if (!validateForm()) {
-      return;
+    if (!validateForm()) return;
+
+    const formData = new FormData();
+
+    formData.append('newsSource', selectedNews.news_source);
+    formData.append('newsTitle', selectedNews.news_title);
+    formData.append('newsDescription', selectedNews.news_description);
+    formData.append('newsUrl', selectedNews.news_url);
+    formData.append('newsPubdate', selectedNews.news_pubdate);
+    formData.append('targetTable', targetTable);
+
+    if (isTechClubNews) {
+      formData.append('newsCategory', selectedNews.news_category);
     }
 
-    const backendJSON = {
-      newsID: selectedNews.news_id,
-      newsSource: selectedNews.news_source,
-      newsTitle: selectedNews.news_title,
-      newsDescription: selectedNews.news_description,
-      newsUrl: selectedNews.news_url,
-      newsImg: selectedNews.news_img,
-      newsPubdate: selectedNews.news_pubdate,
-      newsCategory: isTechClubNews ? selectedNews.news_category : '',
-      targetTable: targetTable,
-    };
+    const file = fileInputRef.current.files[0];
+    if (file) {
+      formData.append('newsImage', file);
+    }
 
     const url =
       action === 'edit'
@@ -103,22 +120,19 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
     try {
       const response = await fetch(`http://localhost:5000${url}`, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(backendJSON),
+        body: formData,
       });
 
       const data = await response.json();
-      console.log('Response from server:', data);
+      console.log('Server response:', data);
       onClose(true);
     } catch (error) {
-      console.error('Error saving changes:', error);
+      console.error('Error saving news:', error);
     }
   };
 
   const handleDeleteNews = async () => {
-    if (!confirm('Are you sure you want to delete this news item?')) {
-      return;
-    }
+    if (!confirm('Are you sure you want to delete this news item?')) return;
 
     try {
       const response = await fetch(
@@ -130,10 +144,9 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
         },
       );
 
-      let data = null;
       if (response.status !== 204) {
-        data = await response.json();
-        console.log('Response from server:', data);
+        const data = await response.json();
+        console.log('Server response:', data);
       }
       onClose(true);
     } catch (error) {
@@ -142,21 +155,18 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
         onClose(false);
       }
     };
-
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
         onClose(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
@@ -170,13 +180,13 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
           <button className={styles.modalClose} onClick={() => onClose(false)}>
             <FaTimes />
           </button>
+
           <div className={styles.formGroup}>
             <label>News Title</label>
             <input
               type="text"
               name="news_title"
               value={selectedNews.news_title}
-              placeholder="News Title"
               onChange={handleChange}
               className={`${styles.inputField} ${errors.news_title ? styles.inputError : ''}`}
             />
@@ -184,23 +194,41 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
               <span className={styles.errorText}>{errors.news_title}</span>
             )}
           </div>
+
           <div className={styles.formGroup}>
-            <label>Image URL</label>
-            <input
-              type="text"
-              name="news_img"
-              value={selectedNews.news_img}
-              placeholder="Paste image link here..."
-              onChange={handleChange}
-              className={`${styles.inputField} ${errors.news_img ? styles.inputError : ''}`}
-            />
+            <label>Image Upload</label>
+            <div className={styles.imageUploadContainer}>
+              <button
+                onClick={() => fileInputRef.current.click()}
+                className={styles.uploadButton}
+              >
+                Choose Image
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              {previewImage && (
+                <div className={styles.imagePreview}>
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className={styles.previewImage}
+                  />
+                </div>
+              )}
+            </div>
             {errors.news_img && (
               <span className={styles.errorText}>{errors.news_img}</span>
             )}
           </div>
+
           <div className={styles.modalRow}>
             <div className={styles.formGroup}>
-              <label>News Date</label>
+              <label>Date</label>
               <input
                 type="date"
                 name="news_pubdate"
@@ -218,7 +246,6 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
                 type="text"
                 name="news_source"
                 value={selectedNews.news_source}
-                placeholder="Author Name"
                 onChange={handleChange}
                 className={`${styles.inputField} ${errors.news_source ? styles.inputError : ''}`}
               />
@@ -227,28 +254,28 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
               )}
             </div>
           </div>
+
           <div className={styles.formGroup}>
             <label>Description</label>
             <textarea
               name="news_description"
               value={selectedNews.news_description}
-              placeholder="Short Description"
               onChange={handleChange}
               className={`${styles.textAreaField} ${errors.news_description ? styles.inputError : ''}`}
-            ></textarea>
+            />
             {errors.news_description && (
               <span className={styles.errorText}>
                 {errors.news_description}
               </span>
             )}
           </div>
+
           <div className={styles.formGroup}>
             <label>News URL</label>
             <input
               type="text"
               name="news_url"
               value={selectedNews.news_url}
-              placeholder="Paste news article link here..."
               onChange={handleChange}
               className={`${styles.inputField} ${errors.news_url ? styles.inputError : ''}`}
             />
@@ -256,6 +283,7 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
               <span className={styles.errorText}>{errors.news_url}</span>
             )}
           </div>
+
           {isTechClubNews && (
             <div className={styles.formGroup}>
               <label>Category</label>
@@ -263,7 +291,6 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
                 type="text"
                 name="news_category"
                 value={selectedNews.news_category}
-                placeholder="Enter news category"
                 onChange={handleChange}
                 className={`${styles.inputField} ${errors.news_category ? styles.inputError : ''}`}
               />
@@ -272,6 +299,7 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
               )}
             </div>
           )}
+
           <div className={styles.formGroup}>
             <label>Target Table</label>
             <select
@@ -283,25 +311,31 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
               <option value="dailynews">Daily News</option>
             </select>
           </div>
-          {action === 'edit' ? (
-            <div className={styles.modalActions}>
+
+          <div className={styles.modalActions}>
+            {action === 'edit' && (
               <button
                 className={styles.deleteButton}
                 onClick={handleDeleteNews}
               >
                 Delete News <FaTrash />
               </button>
-              <button className={styles.editButton} onClick={handleSaveChanges}>
-                Save News <FaEdit />
-              </button>
-            </div>
-          ) : (
-            <div className={styles.modalActions}>
-              <button className={styles.saveButton} onClick={handleSaveChanges}>
-                Create News
-              </button>
-            </div>
-          )}
+            )}
+            <button
+              className={
+                action === 'edit' ? styles.editButton : styles.saveButton
+              }
+              onClick={handleSaveChanges}
+            >
+              {action === 'edit' ? (
+                <>
+                  Save News <FaEdit />
+                </>
+              ) : (
+                'Create News'
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>
