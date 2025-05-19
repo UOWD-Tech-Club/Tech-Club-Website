@@ -67,7 +67,9 @@ export default function NewsModal({ news, onClose, action }) {
     };
 
     const url =
-      action === 'edit' ? `/admin/news/${selectedNews.news_id}` : '/admin/news';
+      action === 'edit'
+        ? `/newsManagement/admin/news/${selectedNews.news_id}`
+        : '/admin/news';
     const method = action === 'edit' ? 'PUT' : 'POST';
 
     try {
@@ -95,7 +97,7 @@ export default function NewsModal({ news, onClose, action }) {
 
     try {
       const response = await fetch(
-        `https://tech-club-website.onrender.com/admin/news/${selectedNews.news_id}`,
+        `https://tech-club-website.onrender.com/newsManagement/admin/news/${selectedNews.news_id}`,
         {
           method: 'DELETE',
         },

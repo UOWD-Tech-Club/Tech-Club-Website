@@ -6,10 +6,10 @@ import dailyNewsInstance from "../utils/dailyNews.js";
 export const refreshDailyNews = async () => {
   const db = await pool.connect();
   try {
-    await db.query(`DELETE FROM dailyNews;`);
+    await db.query(`DELETE FROM dailynews;`);
     console.log("rows deleted");
 
-    const result = db.query(`SELECT * FROM dailyNews;`);
+    const result = db.query(`SELECT * FROM dailynews;`);
 
     console.log(result.rows);
     const res = await dailyNewsInstance.get("/top-headlines", {
@@ -23,7 +23,7 @@ export const refreshDailyNews = async () => {
     console.log(res.data.articles);
     const newDailyNews = res.data.articles;
     const insertQuery = `
-    INSERT INTO dailyNews (news_source, news_title ,news_description, news_url, news_img, news_pubDate)
+    INSERT INTO dailynews (news_source, news_title ,news_description, news_url, news_img, news_pubdate)
     VALUES ($1, $2, $3, $4, $5, $6)
     `;
 
@@ -62,7 +62,7 @@ export const fetchDailyNews = async (req, res) => {
   try {
     //Getting daily news through this
     const result = await db.query(`
-        SELECT * FROM dailyNews ORDER BY news_pubDate;
+        SELECT * FROM dailynews ORDER BY news_pubdate;
     `);
 
     const news = result.rows;

@@ -16,28 +16,50 @@ const NewsManagement = () => {
   const fetchNews = async () => {
     setLoading(true);
     try {
+      const parseJSONSafely = async (res, label) => {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new Error(
+            `${label} returned invalid JSON or HTML: ${text.slice(0, 100)}`,
+          );
+        }
+      };
+
       const [techClubNewsRes, dailyNewsRes] = await Promise.all([
         fetch('https://tech-club-website.onrender.com/news/techClubNews'),
         fetch('https://tech-club-website.onrender.com/news/dailynews'),
       ]);
 
-      if (!techClubNewsRes.ok || !dailyNewsRes.ok) {
-        throw new Error('Failed to fetch news.');
+      let techClubNews = [];
+      let dailyNews = [];
+
+      if (techClubNewsRes.ok) {
+        const parsed = await parseJSONSafely(techClubNewsRes, 'Tech Club News');
+        techClubNews = parsed.news || [];
+      } else if (techClubNewsRes.status === 404) {
+        console.warn('Tech Club News: No articles found.');
       }
 
-      const techClubNewsData = await techClubNewsRes.json();
-      const dailyNewsData = await dailyNewsRes.json();
+      if (dailyNewsRes.ok) {
+        const parsed = await parseJSONSafely(dailyNewsRes, 'Daily News');
+        dailyNews = parsed.news || [];
+      } else if (dailyNewsRes.status === 404) {
+        console.warn('Daily News: No articles found.');
+      }
 
-      const data = [
-        ...(techClubNewsData.news || []),
-        ...(dailyNewsData.news || []),
-      ];
+      const combinedNews = [...techClubNews, ...dailyNews];
 
-      setNewsList(data);
+      if (combinedNews.length === 0) {
+        throw new Error('No news available at the moment.');
+      }
+
+      setNewsList(combinedNews);
       setError(null);
     } catch (error) {
-      console.error('Error fetching news:', error);
-      setError('Failed to load news. Please try again later.');
+      console.error('News Fetching Error:', error.message);
+      setError(error.message || 'Failed to fetch news.');
     } finally {
       setLoading(false);
     }

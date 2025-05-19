@@ -43,10 +43,11 @@ const EventsModal = ({ event, onClose, action }) => {
 
   const handleSaveChanges = async () => {
     try {
+      console.log(event);
       const url =
         action === 'edit'
-          ? `https://tech-club-website.onrender.com/admin/events/${event.event_id}`
-          : 'https://tech-club-website.onrender.com/admin/events';
+          ? `http://localhost:5000/eventManagement/admin/events/${event.event_id}`
+          : 'http://localhost:5000/eventManagement/admin/events';
 
       const method = action === 'edit' ? 'PUT' : 'POST';
 
@@ -58,6 +59,7 @@ const EventsModal = ({ event, onClose, action }) => {
 
       const data = await response.json();
       console.log('Response from server:', data);
+
       onClose(true);
     } catch (error) {
       console.error('Error saving event:', error);
@@ -71,7 +73,7 @@ const EventsModal = ({ event, onClose, action }) => {
 
     try {
       const response = await fetch(
-        `https://tech-club-website.onrender.com/admin/events/${event.event_id}`,
+        `http://localhost:5000/eventManagement/admin/events/${event.event_id}`,
         {
           method: 'DELETE',
         },
