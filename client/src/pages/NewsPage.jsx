@@ -2,7 +2,6 @@ import PageLayout from '../layout/PageLayout';
 import styles from './NewsPage.module.css';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 function NewsPage() {
@@ -11,16 +10,14 @@ function NewsPage() {
   const [latestNews, setLatestNews] = useState([]); // Initialize as empty array instead of null
   const [isLoading, setIsLoading] = useState(true); // Add loading state
 
-  const navigate = useNavigate();
-
   const fetchNews = async () => {
     try {
       setIsLoading(true);
 
       const apiUrl =
         filter === 'dailyNews'
-          ? 'https://tech-club-website.onrender.com/news/dailynews'
-          : 'https://tech-club-website.onrender.com/news/techClubNews';
+          ? 'http://localhost:5000/news/dailynews'
+          : 'http://localhost:5000/news/techClubNews';
 
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -79,9 +76,13 @@ function NewsPage() {
   }, [filter]); // Add filter as dependency
 
   const handleArticleClick = (article, filter) => {
-    if (filter === 'techClubNews') {
-      navigate(`/news/${article.news_id}`, { state: { article } });
-    } else {
+    // if (filter === 'techClubNews') {
+    //   navigate(`/news/${article.news_id}`, { state: { article } });
+    // } else {
+    //   window.open(article.news_url, '_blank');
+    // }
+    console.log(filter);
+    if (article.news_url) {
       window.open(article.news_url, '_blank');
     }
   };

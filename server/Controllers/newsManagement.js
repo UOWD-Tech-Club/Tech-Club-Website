@@ -1,5 +1,10 @@
 import pool from "../Db/db_config.js";
 
+function getTableName(targetTable) {
+  if (targetTable === 'dailynews') return 'dailynews';
+  return 'techclubnews';
+}
+
 export const createClubNews = async (req, res) => {
   const db = await pool.connect();
   try {
@@ -11,10 +16,12 @@ export const createClubNews = async (req, res) => {
       newsImg,
       newsPubdate,
       newsCategory,
+      targetTable,
     } = req.body;
+    const table = getTableName(targetTable);
 
     const retrievedArticle = await db.query(
-      "SELECT * from techclubnews WHERE news_title = $1 AND news_source = $2",
+      `SELECT * from ${table} WHERE news_title = $1 AND news_source = $2`,
       [newsTitle, newsSource]
     );
 
@@ -24,18 +31,33 @@ export const createClubNews = async (req, res) => {
       });
     }
 
-    const newNewsArticle = await db.query(
-      "INSERT INTO techclubnews (news_source, news_title, news_description, news_url, news_img, news_pubdate, news_category) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [
-        newsSource,
-        newsTitle,
-        newsDescription,
-        newsUrl,
-        newsImg,
-        newsPubdate,
-        newsCategory,
-      ]
-    );
+    let newNewsArticle;
+    if (table === 'techclubnews') {
+      newNewsArticle = await db.query(
+        `INSERT INTO techclubnews (news_source, news_title, news_description, news_url, news_img, news_pubdate, news_category) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+        [
+          newsSource,
+          newsTitle,
+          newsDescription,
+          newsUrl,
+          newsImg,
+          newsPubdate,
+          newsCategory,
+        ]
+      );
+    } else {
+      newNewsArticle = await db.query(
+        `INSERT INTO dailynews (news_source, news_title, news_description, news_url, news_img, news_pubdate) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+        [
+          newsSource,
+          newsTitle,
+          newsDescription,
+          newsUrl,
+          newsImg,
+          newsPubdate,
+        ]
+      );
+    }
 
     res.status(201).json({
       message: "News article created successfully",
@@ -60,21 +82,39 @@ export const updateClubNews = async (req, res) => {
       newsImg,
       newsPubdate,
       newsCategory,
+      targetTable,
     } = req.body;
+    const table = getTableName(targetTable);
 
-    const updatedNewsArticle = await pool.query(
-      "UPDATE techclubnews set news_source = $1, news_title = $2, news_description = $3, news_url = $4, news_img = $5, news_pubdate = $6, news_category = $7 WHERE news_id = $8  RETURNING *",
-      [
-        newsSource,
-        newsTitle,
-        newsDescription,
-        newsUrl,
-        newsImg,
-        newsPubdate,
-        newsCategory,
-        newsID,
-      ]
-    );
+    let updatedNewsArticle;
+    if (table === 'techclubnews') {
+      updatedNewsArticle = await pool.query(
+        `UPDATE techclubnews set news_source = $1, news_title = $2, news_description = $3, news_url = $4, news_img = $5, news_pubdate = $6, news_category = $7 WHERE news_id = $8  RETURNING *`,
+        [
+          newsSource,
+          newsTitle,
+          newsDescription,
+          newsUrl,
+          newsImg,
+          newsPubdate,
+          newsCategory,
+          newsID,
+        ]
+      );
+    } else {
+      updatedNewsArticle = await pool.query(
+        `UPDATE dailynews set news_source = $1, news_title = $2, news_description = $3, news_url = $4, news_img = $5, news_pubdate = $6 WHERE news_id = $7  RETURNING *`,
+        [
+          newsSource,
+          newsTitle,
+          newsDescription,
+          newsUrl,
+          newsImg,
+          newsPubdate,
+          newsID,
+        ]
+      );
+    }
 
     if (updatedNewsArticle.rowCount === 0) {
       return res.status(404).json({
@@ -82,7 +122,7 @@ export const updateClubNews = async (req, res) => {
       });
     }
 
-    res.status(204).send();
+    res.status(200).json({ message: "News article updated successfully" });
   } catch (error) {
     console.log("Error updating news article", error.message);
     res.status(500).json({ message: "Server error" });
@@ -92,9 +132,11 @@ export const updateClubNews = async (req, res) => {
 export const deleteClubNews = async (req, res) => {
   try {
     const { newsID } = req.params;
+    const { targetTable } = req.body;
+    const table = getTableName(targetTable);
 
     const deletedNewsArticle = await pool.query(
-      "DELETE from techclubnews WHERE news_id = $1 RETURNING *",
+      `DELETE from ${table} WHERE news_id = $1 RETURNING *`,
       [newsID]
     );
 

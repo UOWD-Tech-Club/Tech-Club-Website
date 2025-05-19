@@ -62,7 +62,7 @@ export const fetchDailyNews = async (req, res) => {
   try {
     //Getting daily news through this
     const result = await db.query(`
-        SELECT * FROM dailynews ORDER BY news_pubdate;
+        SELECT * FROM dailynews ORDER BY news_pubdate DESC;
     `);
 
     const news = result.rows;

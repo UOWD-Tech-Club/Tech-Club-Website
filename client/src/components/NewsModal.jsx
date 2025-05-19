@@ -2,20 +2,40 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './NewsModal.module.css';
 import { FaTimes, FaTrash, FaEdit } from 'react-icons/fa';
 
-export default function NewsModal({ news, onClose, action }) {
+function formatDateYYYYMMDD(date) {
+  if (!date) return '';
+  const d = new Date(date);
+  if (isNaN(d)) return '';
+  return d.toISOString().slice(0, 10);
+}
+
+export default function NewsModal({ news, onClose, action, isTechClubNews }) {
   const modalRef = useRef(null);
   const [selectedNews, setSelectedNews] = useState(
-    news || {
-      news_id: '',
-      news_title: '',
-      news_img: '',
-      news_pubdate: new Date().toISOString().slice(0, 10),
-      news_source: '',
-      news_description: '',
-      news_article: '',
-    },
+    news
+      ? {
+          ...news,
+          news_pubdate: formatDateYYYYMMDD(news.news_pubdate),
+        }
+      : {
+          news_id: '',
+          news_title: '',
+          news_img: '',
+          news_pubdate: formatDateYYYYMMDD(new Date()),
+          news_source: '',
+          news_description: '',
+          news_url: '',
+          news_category: '',
+        },
   );
   const [errors, setErrors] = useState({});
+  const [targetTable, setTargetTable] = useState(
+    news?.target_table
+      ? news.target_table
+      : news?.news_category !== undefined
+        ? 'techclubnews'
+        : news?.news_id,
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +57,12 @@ export default function NewsModal({ news, onClose, action }) {
       newErrors.news_img = 'Image URL is required';
     else if (!isValidUrl(selectedNews.news_img))
       newErrors.news_img = 'Please enter a valid URL';
+    if (!selectedNews.news_url.trim())
+      newErrors.news_url = 'News URL is required';
+    else if (!isValidUrl(selectedNews.news_url))
+      newErrors.news_url = 'Please enter a valid URL';
+    if (isTechClubNews && !selectedNews.news_category.trim())
+      newErrors.news_category = 'Category is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -58,29 +84,28 @@ export default function NewsModal({ news, onClose, action }) {
 
     const backendJSON = {
       newsID: selectedNews.news_id,
+      newsSource: selectedNews.news_source,
       newsTitle: selectedNews.news_title,
-      author: selectedNews.news_source,
-      dateTime: selectedNews.news_pubdate,
-      imageUrl: selectedNews.news_img,
-      description: selectedNews.news_description,
-      articleBody: '',
+      newsDescription: selectedNews.news_description,
+      newsUrl: selectedNews.news_url,
+      newsImg: selectedNews.news_img,
+      newsPubdate: selectedNews.news_pubdate,
+      newsCategory: isTechClubNews ? selectedNews.news_category : '',
+      targetTable: targetTable,
     };
 
     const url =
       action === 'edit'
         ? `/newsManagement/admin/news/${selectedNews.news_id}`
-        : '/admin/news';
+        : '/newsManagement/admin/news';
     const method = action === 'edit' ? 'PUT' : 'POST';
 
     try {
-      const response = await fetch(
-        `https://tech-club-website.onrender.com${url}`,
-        {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(backendJSON),
-        },
-      );
+      const response = await fetch(`http://localhost:5000${url}`, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(backendJSON),
+      });
 
       const data = await response.json();
       console.log('Response from server:', data);
@@ -97,14 +122,19 @@ export default function NewsModal({ news, onClose, action }) {
 
     try {
       const response = await fetch(
-        `https://tech-club-website.onrender.com/newsManagement/admin/news/${selectedNews.news_id}`,
+        `http://localhost:5000/newsManagement/admin/news/${selectedNews.news_id}`,
         {
           method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ targetTable }),
         },
       );
 
-      const data = await response.json();
-      console.log('Response from server:', data);
+      let data = null;
+      if (response.status !== 204) {
+        data = await response.json();
+        console.log('Response from server:', data);
+      }
       onClose(true);
     } catch (error) {
       console.error('Error deleting news:', error);
@@ -212,7 +242,47 @@ export default function NewsModal({ news, onClose, action }) {
               </span>
             )}
           </div>
-
+          <div className={styles.formGroup}>
+            <label>News URL</label>
+            <input
+              type="text"
+              name="news_url"
+              value={selectedNews.news_url}
+              placeholder="Paste news article link here..."
+              onChange={handleChange}
+              className={`${styles.inputField} ${errors.news_url ? styles.inputError : ''}`}
+            />
+            {errors.news_url && (
+              <span className={styles.errorText}>{errors.news_url}</span>
+            )}
+          </div>
+          {isTechClubNews && (
+            <div className={styles.formGroup}>
+              <label>Category</label>
+              <input
+                type="text"
+                name="news_category"
+                value={selectedNews.news_category}
+                placeholder="Enter news category"
+                onChange={handleChange}
+                className={`${styles.inputField} ${errors.news_category ? styles.inputError : ''}`}
+              />
+              {errors.news_category && (
+                <span className={styles.errorText}>{errors.news_category}</span>
+              )}
+            </div>
+          )}
+          <div className={styles.formGroup}>
+            <label>Target Table</label>
+            <select
+              value={targetTable}
+              onChange={(e) => setTargetTable(e.target.value)}
+              className={styles.selectField}
+            >
+              <option value="techclubnews">Tech Club News</option>
+              <option value="dailynews">Daily News</option>
+            </select>
+          </div>
           {action === 'edit' ? (
             <div className={styles.modalActions}>
               <button

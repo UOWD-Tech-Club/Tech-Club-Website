@@ -37,14 +37,20 @@ const NewsManagement = () => {
 
       if (techClubNewsRes.ok) {
         const parsed = await parseJSONSafely(techClubNewsRes, 'Tech Club News');
-        techClubNews = parsed.news || [];
+        techClubNews = (parsed.news || []).map((n) => ({
+          ...n,
+          target_table: 'techclubnews',
+        }));
       } else if (techClubNewsRes.status === 404) {
         console.warn('Tech Club News: No articles found.');
       }
 
       if (dailyNewsRes.ok) {
         const parsed = await parseJSONSafely(dailyNewsRes, 'Daily News');
-        dailyNews = parsed.news || [];
+        dailyNews = (parsed.news || []).map((n) => ({
+          ...n,
+          target_table: 'dailynews',
+        }));
       } else if (dailyNewsRes.status === 404) {
         console.warn('Daily News: No articles found.');
       }
@@ -158,6 +164,10 @@ const NewsManagement = () => {
           news={selectedNews}
           onClose={handleModalClose}
           action={modalAction}
+          isTechClubNews={
+            selectedNews?.target_table === 'techclubnews' ||
+            (!selectedNews && true)
+          }
         />
       )}
     </div>

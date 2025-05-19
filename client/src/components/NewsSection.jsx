@@ -159,7 +159,9 @@ function NewsSection() {
               <div
                 key={index}
                 className={styles.carouselItem}
-                onClick={() => window.open(news.news_url, '_blank')}
+                onClick={() =>
+                  news.news_url && window.open(news.news_url, '_blank')
+                }
               >
                 <img
                   src={news.news_img}
@@ -193,7 +195,9 @@ function NewsSection() {
                 <div
                   key={index}
                   className={styles.secondCarouselItem}
-                  onClick={() => window.open(news.news_url, '_blank')}
+                  onClick={() =>
+                    news.news_url && window.open(news.news_url, '_blank')
+                  }
                 >
                   <img
                     src={news.news_img}
