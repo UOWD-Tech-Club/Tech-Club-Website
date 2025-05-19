@@ -2,10 +2,11 @@ import styles from './Navbar.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
-  const { isAuthenticated } = useAuth(); //add logout
+  const { isAuthenticated, logout } = useAuth(); //add logout
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
@@ -69,6 +70,12 @@ function Navbar() {
             >
               <button className={styles.joinus}>Dashboard</button>
             </Link>
+            <FaSignOutAlt
+              className={styles.logout_icon}
+              onClick={() => {
+                logout();
+              }}
+            />
           </>
         ) : (
           <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>

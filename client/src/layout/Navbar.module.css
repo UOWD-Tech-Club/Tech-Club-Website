@@ -26,6 +26,7 @@
 .nav_action {
   display: flex;
   gap: 50px;
+  align-items: center;
 }
 
 .nav_links {
@@ -231,4 +232,16 @@
 
 * {
   transition: none;
+}
+
+.logout_icon {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  transition: color 0.2s ease-in;
+  background-color: var(--primary);
+  cursor: pointer;
+}
+
+.logout_icon:hover {
+  color: var(--accent);
 }

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import styles from './LoginPage.module.css';
+import { Link } from 'react-router-dom';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -64,14 +65,14 @@ function LoginPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <div className={styles.logo}>
+        <Link to="/" className={styles.logo}>
           <div className={styles.logo_tech}>
             <h1>Tech</h1>
           </div>
           <div className={styles.logo_club}>
             <h1>Club</h1>
           </div>
-        </div>
+        </Link>
         <div>
           <form action="" onSubmit={handleSubmit}>
             <h3 className={styles.loginHeading}>Login</h3>
