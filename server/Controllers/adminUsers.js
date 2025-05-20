@@ -139,7 +139,7 @@ export const registerAdmin = async (req, res) => {
     }
 };
 
-// Utility to send email
+
 const sendMagicLinkEmail = async (email, token) => {
     const transporter = nodemailer.createTransport({
         // Configure your SMTP here
@@ -150,7 +150,7 @@ const sendMagicLinkEmail = async (email, token) => {
         },
     });
 
-    const magicLink = `https://www.uowdtechclub.com/magic-login?token=${token}`;
+    const magicLink = `http://localhost:5173/magic-login?token=${token}`;
 
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
@@ -198,31 +198,47 @@ export const magicLogin = async (req, res) => {
         const { email } = payload;
 
         // Check if user exists
-        let userResult = await db.query(
+        const userResult = await db.query(
             `SELECT * FROM "adminUsers" WHERE email = $1`,
             [email]
         );
 
-        let user;
-        if (userResult.rows.length === 0) {
-            // Create user (no password)
-            const newUser = await db.query(
-                `INSERT INTO "adminUsers" (email, password, "admin_createdAt") VALUES ($1, $2, NOW()) RETURNING *`,
-                [email, ''] // Empty password or random string
+        let user = userResult.rows[0];
+        let needsPassword = false;
+        let setPasswordToken;
+
+        if (!user) {
+            // User doesn't exist; generate setPassword token
+            needsPassword = true;
+            setPasswordToken = jwt.sign(
+                { email, action: 'set-password' },
+                process.env.JWT_SECRET,
+                { expiresIn: '15m' }
             );
-            user = newUser.rows[0];
-        } else {
-            user = userResult.rows[0];
+        } else if (!user.password) {
+            // User exists but hasn't set password
+            needsPassword = true;
+            setPasswordToken = jwt.sign(
+                { email, action: 'set-password' },
+                process.env.JWT_SECRET,
+                { expiresIn: '15m' }
+            );
         }
 
-        // Generate auth token
+        if (needsPassword) {
+            return res.status(200).json({
+                message: 'Password setup required',
+                needsPassword: true,
+                setPasswordToken
+            });
+        }
+
+        // User exists and has password; generate auth token
         const authToken = jwt.sign(
             { admin_id: user.admin_id, email: user.email, role: 'admin' },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
-
-        const needsPassword = !user.password; // true if password is empty string
 
         res.cookie('token', authToken, {
             httpOnly: true,
@@ -240,9 +256,11 @@ export const magicLogin = async (req, res) => {
                 role: 'admin',
                 createdAt: user.admin_createdAt
             },
-            needsPassword
+            needsPassword: false
         });
+
     } catch (err) {
+        console.error('Error in magic login:', err);
         res.status(500).json({ message: 'Internal server error' });
     } finally {
         db.release();
@@ -252,45 +270,60 @@ export const magicLogin = async (req, res) => {
 export const setPassword = async (req, res) => {
     const db = await pool.connect();
     try {
-        const { password, token } = req.body;
-        
-        if (!password) {
-            return res.status(400).json({ message: 'Password required' });
+        const { password, setPasswordToken } = req.body;
+
+        if (!password || !setPasswordToken) {
+            return res.status(400).json({ message: 'Password and token are required' });
         }
 
-        let userId;
-        
-        // If token is provided, verify it and get user from token
-        if (token) {
-            try {
-                const payload = jwt.verify(token, process.env.JWT_SECRET);
-                userId = payload.admin_id;
-            } catch (err) {
-                return res.status(400).json({ message: 'Invalid or expired token' });
-            }
-        } else if (req.user) {
-            // If no token but user is authenticated
-            userId = req.user.admin_id;
-        } else {
-            return res.status(401).json({ message: 'Authentication required' });
+        // Verify setPasswordToken
+        let payload;
+        try {
+            payload = jwt.verify(setPasswordToken, process.env.JWT_SECRET);
+        } catch (err) {
+            return res.status(400).json({ message: 'Invalid or expired token' });
         }
 
+        const { email, action } = payload;
+
+        if (action !== 'set-password') {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+
+        // Check if user exists
+        const userResult = await db.query(
+            `SELECT * FROM "adminUsers" WHERE email = $1`,
+            [email]
+        );
+
+        let user;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        await db.query(
-            `UPDATE "adminUsers" SET password = $1 WHERE admin_id = $2`,
-            [hashedPassword, userId]
-        );
+        if (userResult.rows.length === 0) {
+            // Create new user
+            const newUser = await db.query(
+                `INSERT INTO "adminUsers" (email, password, "admin_createdAt") 
+                 VALUES ($1, $2, NOW()) RETURNING *`,
+                [email, hashedPassword]
+            );
+            user = newUser.rows[0];
+        } else {
+            // Update existing user's password
+            user = userResult.rows[0];
+            await db.query(
+                `UPDATE "adminUsers" SET password = $1 WHERE admin_id = $2`,
+                [hashedPassword, user.admin_id]
+            );
+        }
 
-        // Generate new auth token after password is set
+        // Generate auth token
         const authToken = jwt.sign(
-            { admin_id: userId, role: 'admin' },
+            { admin_id: user.admin_id, email: user.email, role: 'admin' },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
-        // Set cookie with new token
         res.cookie('token', authToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -298,10 +331,17 @@ export const setPassword = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         });
 
-        res.status(200).json({ 
+        res.status(200).json({
             message: "Password set successfully",
-            token: authToken
+            token: authToken,
+            user: {
+                admin_id: user.admin_id,
+                email: user.email,
+                role: 'admin',
+                createdAt: user.admin_createdAt
+            }
         });
+
     } catch (err) {
         console.error('Error setting password:', err);
         res.status(500).json({ message: "Internal server error" });

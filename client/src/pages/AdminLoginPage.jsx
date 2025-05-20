@@ -10,11 +10,10 @@ const AdminLoginPage = () => {
   const [setPasswordStatus, setSetPasswordStatus] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [setPasswordToken, setSetPasswordToken] = useState(''); // Add this state
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Handle magic link login on mount
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
@@ -25,19 +24,18 @@ const AdminLoginPage = () => {
 
     axios
       .post(
-        'https://tech-club-website.onrender.com/auth/magic-login',
+        'https://www.uowdtechclub.com/auth/magic-login',
         { token },
         { withCredentials: true },
       )
       .then((res) => {
         if (res.data.needsPassword) {
           setNeedsPassword(true);
-          setStatus(''); // Clear status so we show the form
+          setSetPasswordToken(res.data.setPasswordToken); // Store the token
+          setStatus('');
         } else {
           setStatus('Login successful! Redirecting...');
-          setTimeout(() => {
-            navigate('/dashboard');
-          }, 1500);
+          setTimeout(() => navigate('/dashboard'), 1500);
         }
       })
       .catch(() => {
@@ -45,7 +43,6 @@ const AdminLoginPage = () => {
       });
   }, [location, navigate]);
 
-  // Handle set password form submit
   const handleSetPassword = async (e) => {
     e.preventDefault();
     setSetPasswordError('');
@@ -58,26 +55,20 @@ const AdminLoginPage = () => {
       setSetPasswordError('Passwords do not match.');
       return;
     }
-    setIsLoading(true);
     try {
-      const res = await axios.post(
+      await axios.post(
         'https://tech-club-website.onrender.com/auth/set-password',
-        { password: newPassword },
+        {
+          password: newPassword,
+          setPasswordToken: setPasswordToken,
+        },
         { withCredentials: true },
       );
 
-      console.log(res.data);
-
-      setSetPasswordStatus(
-        'Password set successfully! Redirecting to dashboard...',
-      );
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1500);
-    } catch (err) {
-      setSetPasswordError('Failed to set password:', err);
-    } finally {
-      setIsLoading(false);
+      setSetPasswordStatus('Password set! Redirecting...');
+      setTimeout(() => navigate('/dashboard'), 1500);
+    } catch {
+      setSetPasswordError('Failed to set password. Please try again.');
     }
   };
 
@@ -108,13 +99,7 @@ const AdminLoginPage = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={styles.submitButton}
-          >
-            {isLoading ? 'Setting Password...' : 'Set Password'}
-          </button>
+          <button type="submit">Set Password</button>
         </form>
       )}
     </div>

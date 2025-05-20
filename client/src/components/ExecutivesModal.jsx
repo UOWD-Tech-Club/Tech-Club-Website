@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './ExecutivesModal.module.css';
 import { FaTimes, FaTrash } from 'react-icons/fa';
-import axios from 'axios';
+import axios from 'axios'; // Add this at the top with other imports
 
 export default function ExecutivesModal({ exec, onClose, action }) {
   const modalRef = useRef(null);
@@ -14,7 +14,8 @@ export default function ExecutivesModal({ exec, onClose, action }) {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const API_BASE_URL = 'https://tech-club-website.onrender.com';
+  const API_BASE_URL =
+    'https://tech-club-website.onrender.com/executivesManagement';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,65 +39,33 @@ export default function ExecutivesModal({ exec, onClose, action }) {
 
     setErrors({});
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/invite-admin`,
+      await axios.post(
+        'https://tech-club-website.onrender.com/auth/invite-admin',
         { email: selectedExecutive.email },
         { withCredentials: true },
       );
 
-      if (response.data.message === 'Magic link sent') {
-        console.log('Magic link sent!');
-        onClose(true);
-      } else {
-        throw new Error('Failed to send magic link');
-      }
+      console.log('Magic link sent!');
+      onClose(true);
     } catch (err) {
       console.error('Failed to send magic link:', err);
-      setErrors({
-        general:
-          err.response?.data?.message ||
-          'Failed to send magic link. Please try again.',
-      });
+      setErrors({ general: 'Failed to send magic link. Please try again.' });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleResetPassword = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/invite-admin`,
-        { email: selectedExecutive.email },
-        { withCredentials: true },
-      );
-
-      if (response.data.message === 'Magic link sent') {
-        console.log('Reset password link sent!');
-        onClose(true);
-      } else {
-        throw new Error('Failed to send reset link');
-      }
-    } catch (err) {
-      console.error('Failed to send reset link:', err);
-      setErrors({
-        general:
-          err.response?.data?.message ||
-          'Failed to send reset link. Please try again.',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const handleResetPassword = () => {
+    console.log('Reset Password Handler');
   };
 
   const handleDeleteExec = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${API_BASE_URL}/executivesManagement/executives/${selectedExecutive.admin_id}`,
+        `${API_BASE_URL}/executives/${selectedExecutive.admin_id}`,
         {
           method: 'DELETE',
-          credentials: 'include',
         },
       );
 
@@ -193,7 +162,7 @@ export default function ExecutivesModal({ exec, onClose, action }) {
                 onClick={handleResetPassword}
                 disabled={isLoading}
               >
-                {isLoading ? 'Sending Reset Link...' : 'Reset Password'}
+                {isLoading ? 'Resetting...' : 'Reset Password'}
               </button>
             </div>
           ) : (
