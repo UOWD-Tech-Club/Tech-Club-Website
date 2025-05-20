@@ -16,6 +16,36 @@
   padding-bottom: 13px;
 }
 
+.eventsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.viewAllButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.viewAllButton:hover {
+  color: var(--accent);
+}
+
+.viewAllButton .arrow {
+  transition: transform 0.2s ease;
+}
+
+.viewAllButton:hover .arrow {
+  transform: translateX(4px);
+}
+
 /* Carousel Styles */
 .events {
   position: relative;
@@ -143,7 +173,7 @@
     opacity ease-in 0.2s;
 }
 
-.allEventsButton {
+.seeMoreButton {
   background-color: var(--accent);
   color: var(--primary);
   font-size: 14px;
@@ -158,7 +188,7 @@
   transition: background-color ease-in 0.2s;
 }
 
-.allEventsButton:hover {
+.seeMoreButton:hover {
   background-color: var(--secondary);
 }
 
@@ -331,4 +361,29 @@
   .events {
     margin: 0px;
   }
+}
+
+.noDataContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.noDataContainer h2 {
+  color: #e1f264;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.noDataContainer p {
+  color: #fafafa;
+  font-size: 1.1rem;
+  opacity: 0.8;
 }

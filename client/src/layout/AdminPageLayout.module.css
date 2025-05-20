@@ -1,0 +1,12 @@
+/* In your PageLayout.module.css */
+.pageContainer {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.contentArea {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}

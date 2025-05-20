@@ -4,6 +4,7 @@ import {
   getEvents,
   searchEvents,
   registerUser,
+  exportEventRegistrationsToSheet,
 } from "../Controllers/Events.js";
 import { fetchDailyNews } from "../Controllers/dailyNews.js";
 
@@ -17,5 +18,6 @@ router.get("/user/:studentId" , getUser)
 router.get("/", getEvents);
 router.get("/search", searchEvents);
 router.post("/register", registerUser);
+router.post("/export/:event_id", exportEventRegistrationsToSheet);
 
 export default router;

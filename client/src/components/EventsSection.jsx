@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import { NextArrow, PrevArrow } from './CustomArrows/CustomArrows';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function EventsSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -38,7 +38,12 @@ function EventsSection() {
       );
       const data = await response.json();
 
-      setEvents(data.events);
+      // Sort events by date in descending order and take the first 5
+      const sortedEvents = data.events
+        .sort((a, b) => new Date(b.event_date) - new Date(a.event_date))
+        .slice(0, 7);
+
+      setEvents(sortedEvents);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -121,7 +126,7 @@ function EventsSection() {
               ))}
             </Slider>
           </SkeletonTheme>
-        ) : (
+        ) : events.length > 0 ? (
           <Slider {...settings}>
             {events.map((event, index) => (
               <div
@@ -161,15 +166,17 @@ function EventsSection() {
               </div>
             ))}
           </Slider>
+        ) : (
+          <div className={styles.noDataContainer}>
+            <h2>No Events Available</h2>
+            <p>There are currently no upcoming events available.</p>
+          </div>
         )}
       </div>
 
       <div className={styles.buttonContainer}>
-        <button
-          className={styles.allEventsButton}
-          onClick={() => navigate(`/events`)}
-        >
-          All events
+        <Link to="/events" className={styles.seeMoreButton}>
+          All Events
           <svg
             className={styles.arrow}
             width="20"
@@ -189,7 +196,7 @@ function EventsSection() {
               fill="#121212"
             />
           </svg>
-        </button>
+        </Link>
       </div>
     </div>
   );
