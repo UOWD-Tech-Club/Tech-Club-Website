@@ -89,25 +89,30 @@ function NewsSection() {
   const sliderRef1 = useRef(null);
   const sliderRef2 = useRef(null);
 
+  const [error, setError] = useState(null);
+
   const fetchDailyNews = async () => {
     try {
       const response = await fetch(
-        'https://tech-club-website.onrender.com/news/dailynews',
+        'https://tech-club-website.onrender.com/news/techClubNews',
       );
-      const data = await response.json();
+      if (!response.ok) throw new Error('Failed to fetch news');
 
+      const data = await response.json();
       const allNews = data.news;
-      // Split news into two parts
       const midIndex = Math.ceil(allNews.length / 2);
       setNewsPart1(allNews.slice(0, midIndex));
       setNewsPart2(allNews.slice(midIndex));
       setLoading(false);
-    } catch (error) {
-      console.error('Error fetching news:', error);
+    } catch (err) {
+      console.error('Error fetching news:', err);
+      setError('Unable to load news at the moment. Please try again later.');
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    console.log(error);
     fetchDailyNews();
   }, []);
 
@@ -154,7 +159,9 @@ function NewsSection() {
               <div
                 key={index}
                 className={styles.carouselItem}
-                onClick={() => window.open(news.news_url, '_blank')}
+                onClick={() =>
+                  news.news_url && window.open(news.news_url, '_blank')
+                }
               >
                 <img
                   src={news.news_img}
@@ -188,7 +195,9 @@ function NewsSection() {
                 <div
                   key={index}
                   className={styles.secondCarouselItem}
-                  onClick={() => window.open(news.news_url, '_blank')}
+                  onClick={() =>
+                    news.news_url && window.open(news.news_url, '_blank')
+                  }
                 >
                   <img
                     src={news.news_img}

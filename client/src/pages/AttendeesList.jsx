@@ -1,36 +1,39 @@
 import { useEffect, useState } from 'react';
 import styles from './AttendeesList.module.css';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AdminLayout from '../layout/AdminPageLayout';
 
 export default function Attendees() {
-  const location = useLocation();
-  const { event } = location.state || {};
+  const { eventId } = useParams();
   const [attendees, setAttendees] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!event) return;
+    if (!eventId) return;
 
     const fetchAttendees = async () => {
       try {
         const response = await fetch(
-          `https://tech-club-website.onrender.com/events/users/${event.event_id}`,
+          `https://tech-club-website.onrender.com/events/users/${eventId}`,
         );
         const data = await response.json();
+        console.log('Fetched attendees data:', data); // Debug log
         setAttendees(data.users);
       } catch (error) {
         console.error('Error fetching attendees:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchAttendees();
-  }, [event]);
+  }, [eventId]);
 
-  if (!event) {
+  if (loading) {
     return (
       <AdminLayout>
         <div className={styles.attendeesContainer}>
-          <p>No event data available.</p>
+          <p>Loading attendees...</p>
         </div>
       </AdminLayout>
     );
@@ -42,20 +45,37 @@ export default function Attendees() {
         <h2 className={styles.header}>Attendees</h2>
         <div className={styles.tableWrapper}>
           <div className={styles.tableHeader}>
-            <div>First Name</div>
-            <div>Last Name</div>
+            <div>Name</div>
             <div>Student ID</div>
             <div>Email</div>
+            <div>Phone</div>
+            <div>Degree</div>
           </div>
           <div className={styles.tableBody}>
-            {attendees.map((attendee) => (
-              <div key={attendee.user_studentid} className={styles.tableRow}>
-                <div className={styles.tableCell}>{attendee.fname}</div>
-                <div className={styles.tableCell}>{attendee.lname}</div>
-                <div className={styles.tableCell}>{attendee.studentId}</div>
-                <div className={styles.tableCell}>{attendee.studentEmail}</div>
+            {attendees.length > 0 ? (
+              attendees.map((attendee) => (
+                <div key={attendee.user_studentid} className={styles.tableRow}>
+                  <div className={styles.tableCell}>{attendee.user_name}</div>
+                  <div className={styles.tableCell}>
+                    {attendee.user_studentid}
+                  </div>
+                  <div
+                    className={styles.tableCell}
+                    title={attendee.user_studentemail}
+                  >
+                    {attendee.user_studentemail}
+                  </div>
+                  <div className={styles.tableCell}>{attendee.user_phone}</div>
+                  <div className={styles.tableCell}>{attendee.user_degree}</div>
+                </div>
+              ))
+            ) : (
+              <div className={styles.tableRow}>
+                <div className={styles.tableCell} colSpan="3">
+                  No attendees found
+                </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

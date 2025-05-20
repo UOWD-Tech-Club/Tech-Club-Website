@@ -191,6 +191,34 @@ function AboutUsPage() {
               </div>
               <p className={styles.personName}>Name</p>
             </div>
+
+            <div className={styles.profileContainer}>
+              <div className={styles.photoContainer}>
+                <img
+                  src="https://placehold.co/128x128/111111/111111"
+                  alt="Head of AI Team portrait placeholder"
+                  className={styles.photo}
+                />
+              </div>
+              <div className={styles.roleLabel}>
+                <p className={styles.roleText}>Head of AI Team</p>
+              </div>
+              <p className={styles.personName}>Name</p>
+            </div>
+
+            <div className={styles.profileContainer}>
+              <div className={styles.photoContainer}>
+                <img
+                  src="https://placehold.co/128x128/111111/111111"
+                  alt="Head of Cybersecurity portrait placeholder"
+                  className={styles.photo}
+                />
+              </div>
+              <div className={styles.roleLabel}>
+                <p className={styles.roleText}>Head of Cybersecurity</p>
+              </div>
+              <p className={styles.personName}>Name</p>
+            </div>
           </div>
 
           {/* Deputies - Desktop */}
@@ -247,6 +275,34 @@ function AboutUsPage() {
               </div>
               <div className={styles.roleLabel}>
                 <p className={styles.roleText}>Deputy of Engineering</p>
+              </div>
+              <p className={styles.personName}>Name</p>
+            </div>
+
+            <div className={styles.profileContainer}>
+              <div className={styles.photoContainer}>
+                <img
+                  src="https://placehold.co/128x128/111111/111111"
+                  alt="Deputy of AI Team portrait placeholder"
+                  className={styles.photo}
+                />
+              </div>
+              <div className={styles.roleLabel}>
+                <p className={styles.roleText}>Deputy of AI Team</p>
+              </div>
+              <p className={styles.personName}>Name</p>
+            </div>
+
+            <div className={styles.profileContainer}>
+              <div className={styles.photoContainer}>
+                <img
+                  src="https://placehold.co/128x128/111111/111111"
+                  alt="Deputy of Cybersecurity portrait placeholder"
+                  className={styles.photo}
+                />
+              </div>
+              <div className={styles.roleLabel}>
+                <p className={styles.roleText}>Deputy of Cybersecurity</p>
               </div>
               <p className={styles.personName}>Name</p>
             </div>

@@ -4,10 +4,19 @@
 import jwt from "jsonwebtoken";
 
 export const authenticateToken = (req, res, next) => {
+  // Check for token in Authorization header
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const tokenFromHeader = authHeader && authHeader.split(' ')[1];
   
-  if (!token) return res.status(401).json({ message: "Access denied. No token provided." });
+  // Check for token in cookies
+  const tokenFromCookie = req.cookies.token;
+
+  // Use token from header if available, otherwise use cookie
+  const token = tokenFromHeader || tokenFromCookie;
+  
+  if (!token) {
+    return res.status(401).json({ message: "Access denied. No token provided." });
+  }
 
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);

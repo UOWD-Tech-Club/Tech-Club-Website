@@ -26,9 +26,9 @@ function Footer() {
             Home
           </Link>
 
-          {/* <li>
-            <a href="">Events</a>
-          </li> */}
+          <Link to="/events" className={styles.footer__link}>
+            Events
+          </Link>
 
           <Link to="/projects" className={styles.footer__link}>
             Projects
@@ -59,7 +59,11 @@ function Footer() {
       <div className={styles.footer__socials}>
         <h1>Socials</h1>
         <div className={styles.footer__socials__iconsContatiner}>
-          <a href="https://www.instagram.com/uowd_tech_club/" target="_blank">
+          <a
+            href="https://www.instagram.com/uowd_tech_club/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <svg
               className={styles.footer__socialIcon}
               width="30"
@@ -85,6 +89,7 @@ function Footer() {
           <a
             href="https://chat.whatsapp.com/EIKeuIKUuEaDBSOpwDWEq4"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <svg
               className={styles.footer__socialIcon}
@@ -107,6 +112,7 @@ function Footer() {
           <a
             href="https://www.linkedin.com/company/uowd-tech-club/"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <svg
               className={styles.footer__socialIcon}

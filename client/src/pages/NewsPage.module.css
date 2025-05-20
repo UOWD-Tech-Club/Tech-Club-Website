@@ -90,6 +90,7 @@ a {
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
+  cursor: pointer;
   transition:
     background-color ease-in 0.2s,
     opacity ease-in 0.2s;
@@ -169,6 +170,7 @@ a {
   flex-direction: column;
   gap: 20px;
   max-width: 500px;
+  cursor: pointer;
 }
 
 .tag {
@@ -225,6 +227,7 @@ a {
 .newsContent {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   gap: 12px;
 }
 

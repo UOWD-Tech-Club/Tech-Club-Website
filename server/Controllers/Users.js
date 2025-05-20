@@ -80,7 +80,10 @@ export const getRegisteredUsers = async (req, res) => {
 		}
 
 		const result = await db.query(
-			`SELECT * FROM eventRegistration WHERE event_id = $1`,
+			`SELECT u.user_studentid, u.user_name, u.user_studentemail, u.user_phone, u.user_degree
+			FROM eventregistration er
+			JOIN users u ON er.user_studentid = u.user_studentid
+			WHERE er.event_id = $1`,
 			[eventId]
 		);
 

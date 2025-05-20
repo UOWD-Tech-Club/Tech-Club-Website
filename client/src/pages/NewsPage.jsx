@@ -2,24 +2,22 @@ import PageLayout from '../layout/PageLayout';
 import styles from './NewsPage.module.css';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 function NewsPage() {
   const [newsItems, setNewsItems] = useState([]);
-  const [filter, setFilter] = useState('dailyNews');
+  const [filter, setFilter] = useState('techClubNews');
   const [latestNews, setLatestNews] = useState([]); // Initialize as empty array instead of null
   const [isLoading, setIsLoading] = useState(true); // Add loading state
-
-  const navigate = useNavigate();
 
   const fetchNews = async () => {
     try {
       setIsLoading(true);
+
       const apiUrl =
-        filter === 'techClubNews'
-          ? 'https://tech-club-website.onrender.com/news/techClubNews'
-          : 'https://tech-club-website.onrender.com/news/dailynews';
+        filter === 'dailyNews'
+          ? 'http://localhost:5000/news/dailynews'
+          : 'http://localhost:5000/news/techClubNews';
 
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -29,7 +27,32 @@ function NewsPage() {
         },
       });
 
-      const data = await response.json();
+      // Safely parse JSON or handle invalid response
+      const safeParseJSON = async (res, label) => {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch (err) {
+          console.log('error:', err);
+          throw new Error(
+            `${label} returned invalid JSON or HTML: ${text.slice(0, 100)}`,
+          );
+        }
+      };
+
+      let data = { news: [] };
+
+      if (response.ok) {
+        data = await safeParseJSON(response, filter);
+      } else if (response.status === 404) {
+        console.warn(`${filter} returned 404 - No news found.`);
+        data.news = [];
+      } else {
+        throw new Error(
+          `${filter} request failed with status ${response.status}`,
+        );
+      }
+
       const allNews = data.news;
 
       if (allNews && allNews.length > 0) {
@@ -40,7 +63,7 @@ function NewsPage() {
         setNewsItems([]);
       }
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error('Error fetching news:', error.message);
       setLatestNews();
       setNewsItems([]);
     } finally {
@@ -53,9 +76,13 @@ function NewsPage() {
   }, [filter]); // Add filter as dependency
 
   const handleArticleClick = (article, filter) => {
-    if (filter === 'techClubNews') {
-      navigate(`/news/${article.news_id}`, { state: { article } });
-    } else {
+    // if (filter === 'techClubNews') {
+    //   navigate(`/news/${article.news_id}`, { state: { article } });
+    // } else {
+    //   window.open(article.news_url, '_blank');
+    // }
+    console.log(filter);
+    if (article.news_url) {
       window.open(article.news_url, '_blank');
     }
   };
