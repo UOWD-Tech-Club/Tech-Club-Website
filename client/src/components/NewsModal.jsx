@@ -121,10 +121,13 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
     const method = action === 'edit' ? 'PUT' : 'POST';
 
     try {
-      const response = await fetch(`http://localhost:5000${url}`, {
-        method,
-        body: formData,
-      });
+      const response = await fetch(
+        `https://tech-club-website.onrender.com${url}`,
+        {
+          method,
+          body: formData,
+        },
+      );
 
       const data = await response.json();
       console.log('Server response:', data);
@@ -142,7 +145,7 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/newsManagement/admin/news/${selectedNews.news_id}`,
+        `https://tech-club-website.onrender.com/newsManagement/admin/news/${selectedNews.news_id}`,
         {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },

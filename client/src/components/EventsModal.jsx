@@ -26,7 +26,7 @@ const EventsModal = ({ event, onClose, action }) => {
   const handleOpenGoogleSheet = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/eventManagement/admin/google-sheet/${event.event_id}`,
+        `https://tech-club-website.onrender.com/eventManagement/admin/google-sheet/${event.event_id}`,
       );
       const data = await response.json();
       console.log(data.sheetUrl);
@@ -67,8 +67,8 @@ const EventsModal = ({ event, onClose, action }) => {
     try {
       const url =
         action === 'edit'
-          ? `http://localhost:5000/eventManagement/admin/events/${event.event_id}`
-          : 'http://localhost:5000/eventManagement/admin/events';
+          ? `https://tech-club-website.onrender.com/eventManagement/admin/events/${event.event_id}`
+          : 'https://tech-club-website.onrender.com/eventManagement/admin/events';
 
       const method = action === 'edit' ? 'PUT' : 'POST';
 
@@ -103,7 +103,7 @@ const EventsModal = ({ event, onClose, action }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/eventManagement/admin/events/${event.event_id}`,
+        `https://tech-club-website.onrender.com/eventManagement/admin/events/${event.event_id}`,
         {
           method: 'DELETE',
         },

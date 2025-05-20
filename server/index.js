@@ -29,7 +29,7 @@ const app = express();
 // Configure CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://www.uowdtechclub.com",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

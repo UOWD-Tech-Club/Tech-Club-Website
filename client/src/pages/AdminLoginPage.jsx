@@ -25,7 +25,7 @@ const AdminLoginPage = () => {
 
     axios
       .post(
-        'http://localhost:5000/auth/magic-login',
+        'https://tech-club-website.onrender.com/auth/magic-login',
         { token },
         { withCredentials: true },
       )
@@ -61,7 +61,7 @@ const AdminLoginPage = () => {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        'http://localhost:5000/auth/set-password',
+        'https://tech-club-website.onrender.com/auth/set-password',
         { password: newPassword },
         { withCredentials: true },
       );

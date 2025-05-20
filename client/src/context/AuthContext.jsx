@@ -22,15 +22,18 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://tech-club-website.onrender.com/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+          credentials: 'include',
+          mode: 'cors',
         },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-        mode: 'cors',
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -65,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
 
     // Clear cookies by making a logout request
-    fetch('http://localhost:5000/auth/logout', {
+    fetch('https://tech-club-website.onrender.com/auth/logout', {
       method: 'POST',
       credentials: 'include',
       mode: 'cors',

@@ -40,7 +40,7 @@ export default function ExecutivesModal({ exec, onClose, action }) {
     setErrors({});
     try {
       await axios.post(
-        'http://localhost:5000/auth/invite-admin',
+        'https://tech-club-website.onrender.com/auth/invite-admin',
         { email: selectedExecutive.email },
         { withCredentials: true },
       );

@@ -16,8 +16,8 @@ function NewsPage() {
 
       const apiUrl =
         filter === 'dailyNews'
-          ? 'http://localhost:5000/news/dailynews'
-          : 'http://localhost:5000/news/techClubNews';
+          ? 'https://tech-club-website.onrender.com/news/dailynews'
+          : 'https://tech-club-website.onrender.com/news/techClubNews';
 
       const response = await fetch(apiUrl, {
         method: 'GET',
