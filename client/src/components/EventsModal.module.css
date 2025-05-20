@@ -30,6 +30,12 @@
   justify-content: center;
   cursor: pointer;
   z-index: 1001;
+  transition: all 0.3s ease;
+}
+
+.modalClose:hover {
+  background: #e1f264;
+  color: #000;
 }
 
 .modalContent {
@@ -67,12 +73,11 @@
 input[type='date'].inputField {
   appearance: none;
   -webkit-appearance: none;
-  padding-right: 20px; /* Make space for the calendar icon */
+  padding-right: 20px;
 }
 
-/* Add back the calendar icon functionality */
 input[type='date'].inputField::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Makes the calendar icon white */
+  filter: invert(1);
   opacity: 0.6;
   cursor: pointer;
 }
@@ -109,6 +114,7 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   justify-content: flex-end;
   width: 100%;
   margin-top: 10px;
+  gap: 16px;
 }
 
 .attendeesButton {
@@ -118,7 +124,6 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   font-size: 1rem;
   padding: 10px 30px;
   border-radius: 30px;
-  margin-right: 10px;
   border: none;
   cursor: pointer;
   display: flex;
@@ -126,6 +131,7 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   justify-content: center;
   height: 48px;
   min-width: 180px;
+  transition: all 0.3s ease;
 }
 
 .deleteButton {
@@ -143,6 +149,7 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   gap: 10px;
   height: 48px;
   min-width: 180px;
+  transition: all 0.3s ease;
 }
 
 .saveButton {
@@ -169,39 +176,12 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   background: #000;
   color: #e1f264;
   border: 1px solid #e1f264;
-  transition: all 0.3s ease;
 }
 
 .attendeesButton:active,
 .deleteButton:active,
 .saveButton:active {
   transform: translateY(1px);
-}
-
-@media (max-width: 768px) {
-  .rowContainer {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .modal {
-    padding: 25px;
-  }
-
-  .buttonContainer {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .attendeesContainer {
-    justify-content: center;
-  }
-
-  .attendeesButton,
-  .deleteButton,
-  .saveButton {
-    width: 100%;
-  }
 }
 
 .imageUploadContainer {
@@ -213,18 +193,20 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
 
 .uploadButton {
   padding: 0.75rem 1.5rem;
-  background-color: var(--accent);
-  color: var(--primary);
+  background-color: #e1f264;
+  color: #000;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.2s ease-in;
+  transition: all 0.3s ease;
   width: fit-content;
 }
 
 .uploadButton:hover {
-  background-color: var(--secondary);
+  background-color: #000;
+  color: #e1f264;
+  border: 1px solid #e1f264;
 }
 
 .imagePreview {
@@ -241,4 +223,64 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   height: auto;
   object-fit: cover;
   display: block;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .modal {
+    width: 95%;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal {
+    padding: 25px;
+    width: 95%;
+  }
+
+  .rowContainer {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .buttonContainer,
+  .attendeesContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .attendeesButton,
+  .deleteButton,
+  .saveButton {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .formGroup label {
+    font-size: 16px;
+  }
+
+  .inputField,
+  .descriptionField {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 20px;
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .modalClose {
+    top: 15px;
+    right: 15px;
+  }
+
+  .imagePreview {
+    max-width: 100%;
+  }
 }

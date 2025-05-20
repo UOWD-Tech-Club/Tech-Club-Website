@@ -6,13 +6,19 @@ import { FaSignOutAlt } from 'react-icons/fa';
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
-  const { isAuthenticated, logout } = useAuth(); //add logout
+  const { isAuthenticated, logout } = useAuth();
+
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
 
   const closeNavbar = () => {
     setShowNavbar(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    closeNavbar();
   };
 
   return (
@@ -44,9 +50,6 @@ function Navbar() {
         <div
           className={`${styles.nav_links} ${showNavbar ? styles.active : ''}`}
         >
-          {/* <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
-            Events
-          </Link> */}
           <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
             Events
           </Link>
@@ -60,6 +63,21 @@ function Navbar() {
           <Link to="/aboutus" className={styles.nav_link} onClick={closeNavbar}>
             About Us
           </Link>
+          {isAuthenticated && (
+            <>
+              <Link
+                to="/dashboard"
+                className={styles.nav_link}
+                onClick={closeNavbar}
+              >
+                Dashboard
+              </Link>
+              <div className={styles.mobile_logout} onClick={handleLogout}>
+                <FaSignOutAlt className={styles.mobile_logout_icon} />
+                <span>Logout</span>
+              </div>
+            </>
+          )}
         </div>
         {isAuthenticated ? (
           <>
@@ -71,10 +89,9 @@ function Navbar() {
               <button className={styles.joinus}>Dashboard</button>
             </Link>
             <FaSignOutAlt
-              className={styles.logout_icon}
-              onClick={() => {
-                logout();
-              }}
+              className={`${styles.logout_icon} ${styles.desktop_logout}`}
+              onClick={handleLogout}
+              aria-label="Logout"
             />
           </>
         ) : (
