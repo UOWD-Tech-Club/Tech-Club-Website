@@ -42,16 +42,21 @@ function App() {
         <Route path="/newsmanagement" element={<NewsManagementPage />} />
         <Route path="/magic-login" element={<AdminMagicLogin />} />
         <Route
+          path="/newsmanagement"
+          element={
+            <ProtectedRoute>
+              <NewsManagementPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/executivesmanagement"
           element={
             <ProtectedRoute>
               <ExecutivesManagementPage />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/executivesmanagement"
-          element={<ExecutivesManagementPage />}
         />
         {/* Protected Routes */}
         <Route
