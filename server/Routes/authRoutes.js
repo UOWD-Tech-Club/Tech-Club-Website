@@ -8,15 +8,13 @@ const router = express.Router();
 // Public routes
 router.post('/login', loginAdmin);
 router.post('/register', registerAdmin);
+router.post('/invite-admin', inviteAdmin);
+router.post('/magic-login', magicLogin);
+router.post('/set-password', setPassword);
 
 // Protected routes
 router.post('/logout', authenticateToken, logout);
 router.get('/verify', authenticateToken, verifyToken);
-
-router.post('/invite-admin', inviteAdmin);
-router.post('/magic-login', magicLogin);
-router.post('/set-password', authenticateToken, setPassword);
-
 
 // // protected routes
 // router.get('/dashboard', authenticateToken, (req, res) => {

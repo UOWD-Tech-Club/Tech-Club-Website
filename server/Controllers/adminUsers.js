@@ -252,11 +252,27 @@ export const magicLogin = async (req, res) => {
 export const setPassword = async (req, res) => {
     const db = await pool.connect();
     try {
-        const { password } = req.body;
-        const userId = req.user.admin_id; // assuming you use auth middleware
-
+        const { password, token } = req.body;
+        
         if (!password) {
             return res.status(400).json({ message: 'Password required' });
+        }
+
+        let userId;
+        
+        // If token is provided, verify it and get user from token
+        if (token) {
+            try {
+                const payload = jwt.verify(token, process.env.JWT_SECRET);
+                userId = payload.admin_id;
+            } catch (err) {
+                return res.status(400).json({ message: 'Invalid or expired token' });
+            }
+        } else if (req.user) {
+            // If no token but user is authenticated
+            userId = req.user.admin_id;
+        } else {
+            return res.status(401).json({ message: 'Authentication required' });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -267,8 +283,27 @@ export const setPassword = async (req, res) => {
             [hashedPassword, userId]
         );
 
-        res.status(200).json({ message: "Password set successfully" });
+        // Generate new auth token after password is set
+        const authToken = jwt.sign(
+            { admin_id: userId, role: 'admin' },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        // Set cookie with new token
+        res.cookie('token', authToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000
+        });
+
+        res.status(200).json({ 
+            message: "Password set successfully",
+            token: authToken
+        });
     } catch (err) {
+        console.error('Error setting password:', err);
         res.status(500).json({ message: "Internal server error" });
     } finally {
         db.release();
