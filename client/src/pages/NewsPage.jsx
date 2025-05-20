@@ -121,7 +121,7 @@ function NewsPage() {
               </div>
             </div>
           </SkeletonTheme>
-        ) : (
+        ) : latestNews ? (
           <>
             {/* Featured News Section */}
             <a
@@ -165,49 +165,63 @@ function NewsPage() {
             </a>
 
             {/* Latest News Section */}
-            <h1 className={styles.sectionTitle}>Latest News</h1>
-            <div className={styles.newsGrid}>
-              {newsItems.map((news) => (
-                <a
-                  key={news.news_id}
-                  className={styles.newsCard}
-                  onClick={() => handleArticleClick(news, filter)}
-                >
-                  <div className={styles.imageWrapper}>
-                    <img
-                      src={news.news_img}
-                      alt={news.news_title}
-                      className={styles.newsImage}
-                    />
-                    <div
-                      className={styles.readMore}
-                      onClick={() => handleArticleClick(latestNews, filter)}
+            {newsItems.length > 0 ? (
+              <>
+                <h1 className={styles.sectionTitle}>Latest News</h1>
+                <div className={styles.newsGrid}>
+                  {newsItems.map((news) => (
+                    <a
+                      key={news.news_id}
+                      className={styles.newsCard}
+                      onClick={() => handleArticleClick(news, filter)}
                     >
-                      Read More
-                    </div>
-                  </div>
-                  <div className={styles.newsContent}>
-                    <span className={styles.tag}>
-                      {news.news_category ||
-                        (filter === 'dailyNews' && 'Daily News')}
-                    </span>
-                    <h3 className={styles.newsTitle}>{news.news_title}</h3>
-                    <p className={styles.newsExcerpt}>
-                      {news.news_description}
-                    </p>
-                    <div className={styles.meta}>
-                      <span className={styles.date}>
-                        {format(new Date(news.news_pubdate), 'd MMMM, yyyy')}
-                      </span>
-                      <span className={styles.author}>
-                        • by {news.news_source}
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
+                      <div className={styles.imageWrapper}>
+                        <img
+                          src={news.news_img}
+                          alt={news.news_title}
+                          className={styles.newsImage}
+                        />
+                        <div
+                          className={styles.readMore}
+                          onClick={() => handleArticleClick(news, filter)}
+                        >
+                          Read More
+                        </div>
+                      </div>
+                      <div className={styles.newsContent}>
+                        <span className={styles.tag}>
+                          {news.news_category ||
+                            (filter === 'dailyNews' && 'Daily News')}
+                        </span>
+                        <h3 className={styles.newsTitle}>{news.news_title}</h3>
+                        <p className={styles.newsExcerpt}>
+                          {news.news_description}
+                        </p>
+                        <div className={styles.meta}>
+                          <span className={styles.date}>
+                            {format(
+                              new Date(news.news_pubdate),
+                              'd MMMM, yyyy',
+                            )}
+                          </span>
+                          <span className={styles.author}>
+                            • by {news.news_source}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </>
+            ) : null}
           </>
+        ) : (
+          <div className={styles.noNewsContainer}>
+            <h2>No News Available</h2>
+            <p>
+              There are currently no news articles available for this category.
+            </p>
+          </div>
         )}
       </div>
     </PageLayout>

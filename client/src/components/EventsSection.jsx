@@ -126,7 +126,7 @@ function EventsSection() {
               ))}
             </Slider>
           </SkeletonTheme>
-        ) : (
+        ) : events.length > 0 ? (
           <Slider {...settings}>
             {events.map((event, index) => (
               <div
@@ -166,6 +166,11 @@ function EventsSection() {
               </div>
             ))}
           </Slider>
+        ) : (
+          <div className={styles.noDataContainer}>
+            <h2>No Events Available</h2>
+            <p>There are currently no upcoming events available.</p>
+          </div>
         )}
       </div>
 

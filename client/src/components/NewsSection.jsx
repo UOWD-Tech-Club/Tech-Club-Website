@@ -94,7 +94,7 @@ function NewsSection() {
   const fetchDailyNews = async () => {
     try {
       const response = await fetch(
-        'https://tech-club-website.onrender.com/news/techClubNews',
+        'https://tech-club-website.onrender.com/news/dailynews',
       );
       if (!response.ok) throw new Error('Failed to fetch news');
 
@@ -149,10 +149,10 @@ function NewsSection() {
       <div className={styles.carousel}>
         {loading ? (
           renderLoadingComponent(settings1, true)
-        ) : (
+        ) : newsPart1.length > 0 ? (
           <Slider
             {...settings1}
-            asNavFor={isTablet ? null : sliderRef2.current} // Only sync if not a tablet
+            asNavFor={isTablet ? null : sliderRef2.current}
             ref={sliderRef1}
           >
             {newsPart1.map((news, index) => (
@@ -177,6 +177,11 @@ function NewsSection() {
               </div>
             ))}
           </Slider>
+        ) : (
+          <div className={styles.noDataContainer}>
+            <h2>No News Available</h2>
+            <p>There are currently no news articles available.</p>
+          </div>
         )}
       </div>
 
@@ -185,10 +190,10 @@ function NewsSection() {
         <div className={classNames(styles.carousel, styles.secondCarousel)}>
           {loading ? (
             renderLoadingComponent(settings2, false)
-          ) : (
+          ) : newsPart2.length > 0 ? (
             <Slider
               {...settings2}
-              asNavFor={isTablet ? null : sliderRef1.current} // Only sync if not a tablet
+              asNavFor={isTablet ? null : sliderRef1.current}
               ref={sliderRef2}
             >
               {newsPart2.map((news, index) => (
@@ -213,7 +218,7 @@ function NewsSection() {
                 </div>
               ))}
             </Slider>
-          )}
+          ) : null}
         </div>
       )}
 
