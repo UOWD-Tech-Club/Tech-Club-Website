@@ -150,7 +150,7 @@ const sendMagicLinkEmail = async (email, token) => {
         },
     });
 
-    const magicLink = `http://localhost:5173/magic-login?token=${token}`;
+    const magicLink = `https://www.uowdtechclub.com/magic-login?token=${token}`;
 
     await transporter.sendMail({
         from: process.env.EMAIL_USER,

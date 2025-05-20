@@ -65,13 +65,6 @@ function Navbar() {
           </Link>
           {isAuthenticated && (
             <>
-              <Link
-                to="/dashboard"
-                className={styles.nav_link}
-                onClick={closeNavbar}
-              >
-                Dashboard
-              </Link>
               <div className={styles.mobile_logout} onClick={handleLogout}>
                 <FaSignOutAlt className={styles.mobile_logout_icon} />
                 <span>Logout</span>
