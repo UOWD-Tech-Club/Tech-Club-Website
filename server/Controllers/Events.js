@@ -9,7 +9,7 @@ Things to be included
 }
 
 import pool from "../Db/db_config.js";
-import { addRegistrationToSheet } from "../Utils/googleSheetsUtil.js";
+import { addRegistrationToSheet } from "../utils/googleSheetsUtil.js";
 
 export const getEvents = async (req, res) => {
   const db = await pool.connect();
@@ -124,7 +124,7 @@ export const registerUser = async (req, res) => {
     
     // 4. Export to Google Sheets
     try {
-      await addRegistrationToSheet(eventTitle, {
+      await addRegistrationToSheet(event_id, eventTitle, {
         studentId: user_studentid,
         name: userName,
         email: userEmail,
@@ -201,7 +201,7 @@ export const exportEventRegistrationsToSheet = async (req, res) => {
           year: 'numeric'
         });
         
-        await addRegistrationToSheet(eventTitle, {
+        await addRegistrationToSheet(event_id, eventTitle, {
           studentId: registration.user_studentid,
           name: registration.user_name,
           email: registration.user_studentemail,
