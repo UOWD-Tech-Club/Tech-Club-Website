@@ -46,8 +46,8 @@ export const addUser = async (req, res) => {
 		const user = req.body.user;
 
 		const result = await db.query(
-			`INSERT INTO users (user_studentId, user_name, user_studentEmail) VALUES ($1,$2,$3) RETURNING *`,
-			[user.studentId, user.name, user.studentEmail]
+			`INSERT INTO users (user_studentId, user_name, user_studentEmail, user_phone, user_degree) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+			[user.studentId, user.name, user.studentEmail, user.phone, user.degree]
 		);
 
 		const newUser = await result.rows[0];
@@ -80,7 +80,10 @@ export const getRegisteredUsers = async (req, res) => {
 		}
 
 		const result = await db.query(
-			`SELECT * FROM eventRegistration WHERE event_id = $1`,
+			`SELECT u.user_studentid, u.user_name, u.user_studentemail, u.user_phone, u.user_degree
+			FROM eventregistration er
+			JOIN users u ON er.user_studentid = u.user_studentid
+			WHERE er.event_id = $1`,
 			[eventId]
 		);
 

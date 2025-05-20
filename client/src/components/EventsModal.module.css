@@ -1,0 +1,244 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 970px;
+  background: #000;
+  z-index: 1000;
+  padding: 40px;
+  overflow-y: auto;
+  max-height: 90vh;
+  border-radius: 15px;
+  color: white;
+}
+
+.modalClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  color: #e1f264;
+  background: transparent;
+  border: 1px solid #e1f264;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.modalContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.formGroup label {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+}
+
+.inputField {
+  height: 48px;
+  border-radius: 30px;
+  border: 1px solid #e1f264;
+  background: transparent;
+  color: #fafafa;
+  padding: 0 20px;
+  font-size: 16px;
+  width: 100%;
+}
+
+/* Fix for date input alignment */
+input[type='date'].inputField {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 20px; /* Make space for the calendar icon */
+}
+
+/* Add back the calendar icon functionality */
+input[type='date'].inputField::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes the calendar icon white */
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.descriptionField {
+  border-radius: 15px;
+  border: 1px solid #e1f264;
+  background: transparent;
+  color: #fafafa;
+  padding: 15px 20px;
+  font-size: 16px;
+  min-height: 120px;
+  width: 100%;
+  resize: vertical;
+}
+
+.rowContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.attendeesContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.attendeesButton {
+  background: #e1f264;
+  color: #000;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 30px;
+  border-radius: 30px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  min-width: 180px;
+}
+
+.deleteButton {
+  background: #e1f264;
+  color: #000;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 30px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  min-width: 180px;
+}
+
+.saveButton {
+  background: #e1f264;
+  color: #000;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 30px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  min-width: 180px;
+  transition: all 0.3s ease;
+}
+
+.attendeesButton:hover,
+.deleteButton:hover,
+.saveButton:hover {
+  background: #000;
+  color: #e1f264;
+  border: 1px solid #e1f264;
+  transition: all 0.3s ease;
+}
+
+.attendeesButton:active,
+.deleteButton:active,
+.saveButton:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .rowContainer {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .modal {
+    padding: 25px;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .attendeesContainer {
+    justify-content: center;
+  }
+
+  .attendeesButton,
+  .deleteButton,
+  .saveButton {
+    width: 100%;
+  }
+}
+
+.imageUploadContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.uploadButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--accent);
+  color: var(--primary);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in;
+  width: fit-content;
+}
+
+.uploadButton:hover {
+  background-color: var(--secondary);
+}
+
+.imagePreview {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.previewImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}

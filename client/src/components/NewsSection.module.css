@@ -2,35 +2,13 @@ div {
   padding: 0 5px;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  z-index: 10;
-
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.overlay p {
-  font-size: 30px;
-  font-weight: bold;
-}
-
 .newsletterContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: var(--primary);
   color: var(--secondary);
-  padding: 40px 0;
-  margin: 40px 0 40px;
-  position: relative;
+  padding: 80px 0;
 }
 
 .newsletter h1 {
@@ -75,7 +53,11 @@ div {
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;
+  padding: 20px;
   border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
 .newsImage {
@@ -98,8 +80,8 @@ div {
   bottom: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.8)
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.4)
   );
   opacity: 0.85;
   pointer-events: none;
@@ -119,15 +101,18 @@ div {
 .carouselItem h2,
 .secondCarouselItem h2 {
   position: relative;
-  padding: 31px 0 0 32px;
-  font-size: 25px;
+  font-size: 22px;
   line-height: 29px;
   z-index: 2;
 }
 
+.secondCarouselItem h2 {
+  font-size: 18px;
+}
+
 .newsDate {
   position: relative;
-  padding: 0 0 0 32px;
+  /* padding: 0 0 0 32px; */
   font-size: 15px;
   line-height: 18px;
   z-index: 2;
@@ -261,4 +246,29 @@ div {
   .carouselItem {
     width: 400px !important;
   }
+}
+
+.noDataContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.noDataContainer h2 {
+  color: #e1f264;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.noDataContainer p {
+  color: #fafafa;
+  font-size: 1.1rem;
+  opacity: 0.8;
 }

@@ -1,10 +1,12 @@
 import styles from './Navbar.module.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
-
+  const { isAuthenticated, logout } = useAuth(); //add logout
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
@@ -45,20 +47,41 @@ function Navbar() {
           {/* <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
             Events
           </Link> */}
-          <Link to="/about" className={styles.nav_link} onClick={closeNavbar}>
+          <Link to="/events" className={styles.nav_link} onClick={closeNavbar}>
+            Events
+          </Link>
+          <Link
+            to="/newsletter"
+            className={styles.nav_link}
+            onClick={closeNavbar}
+          >
+            Newsletter
+          </Link>
+          <Link to="/aboutus" className={styles.nav_link} onClick={closeNavbar}>
             About Us
           </Link>
-          <Link to="/news" className={styles.nav_link} onClick={closeNavbar}>
-            Tech News
-          </Link>
         </div>
-        <a
-          href="https://chat.whatsapp.com/EIKeuIKUuEaDBSOpwDWEq4"
-          target="_blank"
-          className={styles.joinus}
-        >
-          Join Us
-        </a>
+        {isAuthenticated ? (
+          <>
+            <Link
+              to="/dashboard"
+              className={styles.nav_link}
+              onClick={closeNavbar}
+            >
+              <button className={styles.joinus}>Dashboard</button>
+            </Link>
+            <FaSignOutAlt
+              className={styles.logout_icon}
+              onClick={() => {
+                logout();
+              }}
+            />
+          </>
+        ) : (
+          <Link to="/login" className={styles.nav_link} onClick={closeNavbar}>
+            <button className={styles.joinus}>Login</button>
+          </Link>
+        )}
       </div>
     </nav>
   );

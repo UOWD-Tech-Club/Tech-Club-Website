@@ -6,7 +6,7 @@ export const fetchTechClubNews = async (req, res) => {
     try {
       // Getting tech club news
       const result = await db.query(`
-          SELECT * FROM techclubnews ORDER BY news_pubdate;
+          SELECT * FROM techclubnews ORDER BY news_pubdate DESC;
       `);
   
       const news = result.rows;
