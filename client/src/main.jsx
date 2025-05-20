@@ -15,7 +15,7 @@ const routerConfig = {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/Tech-Club-Website" {...routerConfig}>
+    <BrowserRouter basename="/Tech-Club-Website/" {...routerConfig}>
       <ScrollToTop />
       <App />
     </BrowserRouter>
