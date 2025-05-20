@@ -39,6 +39,21 @@
   font-weight: 600;
   font-size: 20px;
   height: 40px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.createButton:hover {
+  background-color: #d4e55a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(225, 242, 100, 0.2);
+}
+
+.createButton:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .tableContainer {
@@ -53,6 +68,27 @@
   overflow-y: auto;
   max-height: calc(70vh - 40px);
   padding-right: 5px;
+}
+
+.tableContent::-webkit-scrollbar {
+  width: 2px;
+}
+
+.tableContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tableContent::-webkit-scrollbar-thumb {
+  background: #e1f264;
+}
+
+.tableContent {
+  scrollbar-width: thin;
+  scrollbar-color: #e1f264 transparent;
+}
+
+.tableContent {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .tableRow {
@@ -111,4 +147,122 @@
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+/* Responsive styles */
+@media (max-width: 1400px) {
+  .header h1 {
+    font-size: 50px;
+  }
+
+  .createButton {
+    font-size: 18px;
+  }
+
+  .tableHeader {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header h1 {
+    font-size: 45px;
+  }
+
+  .createButton {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  .tableHeader {
+    grid-template-columns: 40% 15% 15% 30%;
+  }
+}
+
+@media (max-width: 992px) {
+  .header h1 {
+    font-size: 40px;
+  }
+
+  .createButton {
+    font-size: 15px;
+    padding: 6px 12px;
+  }
+
+  .tableHeader {
+    font-size: 15px;
+    grid-template-columns: 45% 15% 15% 25%;
+  }
+}
+
+@media (max-width: 768px) {
+  .newsContainer {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .createButton {
+    width: 100%;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .tableHeader {
+    font-size: 14px;
+    grid-template-columns: 50% 25% 25%;
+  }
+
+  .tableHeader div:nth-child(4) {
+    display: none;
+  }
+
+  .tableRow {
+    font-size: 14px;
+    grid-template-columns: 50% 25% 25%;
+  }
+
+  .tableRow div:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .header h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .createButton {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .tableHeader {
+    font-size: 13px;
+    grid-template-columns: 60% 40%;
+  }
+
+  .tableHeader div:nth-child(3) {
+    display: none;
+  }
+
+  .tableRow {
+    font-size: 13px;
+    padding: 0 10px;
+    grid-template-columns: 60% 40%;
+  }
+
+  .tableRow div:nth-child(3) {
+    display: none;
+  }
 }
