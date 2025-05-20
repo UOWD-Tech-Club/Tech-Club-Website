@@ -24,7 +24,7 @@ const AdminLoginPage = () => {
 
     axios
       .post(
-        'https://www.uowdtechclub.com/auth/magic-login',
+        'https://tech-club-website.onrender.com/auth/magic-login',
         { token },
         { withCredentials: true },
       )
@@ -38,7 +38,8 @@ const AdminLoginPage = () => {
           setTimeout(() => navigate('/dashboard'), 1500);
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         setStatus('Login failed. Invalid or expired link.');
       });
   }, [location, navigate]);
@@ -60,15 +61,16 @@ const AdminLoginPage = () => {
         'https://tech-club-website.onrender.com/auth/set-password',
         {
           password: newPassword,
-          setPasswordToken: setPasswordToken,
+          setPasswordToken: setPasswordToken, // Include the token
         },
         { withCredentials: true },
       );
 
       setSetPasswordStatus('Password set! Redirecting...');
       setTimeout(() => navigate('/dashboard'), 1500);
-    } catch {
+    } catch (err) {
       setSetPasswordError('Failed to set password. Please try again.');
+      console.log(err);
     }
   };
 
