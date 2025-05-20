@@ -118,6 +118,7 @@ input[type='date'].inputField::-webkit-calendar-picker-indicator {
   font-size: 1rem;
   padding: 10px 30px;
   border-radius: 30px;
+  margin-right: 10px;
   border: none;
   cursor: pointer;
   display: flex;

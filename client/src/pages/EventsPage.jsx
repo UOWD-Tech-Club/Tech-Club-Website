@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './EventsPage.module.css';
 import { useLocation } from 'react-router-dom';
 import PageLayout from '../layout/PageLayout';
@@ -19,6 +19,37 @@ function EventsPage() {
     phone: '',
     degree: '',
   });
+
+  // Load user details from localStorage on component mount
+  useEffect(() => {
+    const savedUserDetails = localStorage.getItem('userDetails');
+    console.log('Loading saved details:', savedUserDetails);
+    if (savedUserDetails) {
+      const { name, user_studentid, email, phone, degree } =
+        JSON.parse(savedUserDetails);
+      setName(name || '');
+      setUser_studentId(user_studentid || '');
+      setEmail(email || '');
+      setPhone(phone || '');
+      setDegree(degree || '');
+    }
+  }, []);
+
+  // Save user details to localStorage whenever they change
+  useEffect(() => {
+    // Only save if at least one field has a value
+    if (name || user_studentid || email || phone || degree) {
+      const userDetails = {
+        name: name || '',
+        user_studentid: user_studentid || '',
+        email: email || '',
+        phone: phone || '',
+        degree: degree || '',
+      };
+      console.log('Saving user details:', userDetails);
+      localStorage.setItem('userDetails', JSON.stringify(userDetails));
+    }
+  }, [name, user_studentid, email, phone, degree]);
 
   // Degrees organized by category
   const degreesByCategory = {
@@ -101,6 +132,17 @@ function EventsPage() {
       });
       return;
     }
+
+    // Save details after successful validation
+    const userDetails = {
+      name,
+      user_studentid,
+      email,
+      phone,
+      degree,
+    };
+    console.log('Saving details after validation:', userDetails);
+    localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
     setLoading(true);
     setStatusMessage({ text: '', type: '' });

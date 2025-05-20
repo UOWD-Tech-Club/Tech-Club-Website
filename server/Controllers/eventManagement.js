@@ -87,3 +87,28 @@ export const deleteEvent = async (req, res) => {
 
   res.status(200).json({ message: "Event deleted successfully" });
 };
+
+export const getGoogleSheetByEventId = async (req, res) => {
+  const { event_id } = req.params;
+
+  try {
+    const result = await pool.query(
+      'SELECT google_sheet_id FROM event_sheets WHERE event_id = $1',
+      [event_id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Google Sheet not found for this event' });
+    }
+
+    
+    const googleSheetId = result.rows[0].google_sheet_id;
+    console.log(googleSheetId)
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${googleSheetId}`;
+
+    res.json({ sheetUrl });
+  } catch (error) {
+    console.error('Error fetching Google Sheet:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

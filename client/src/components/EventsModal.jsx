@@ -23,6 +23,24 @@ const EventsModal = ({ event, onClose, action }) => {
 
   const navigate = useNavigate();
 
+  const handleOpenGoogleSheet = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/eventManagement/admin/google-sheet/${event.event_id}`,
+      );
+      const data = await response.json();
+      console.log(data.sheetUrl);
+      if (data.sheetUrl) {
+        window.open(data.sheetUrl, '_blank');
+      } else {
+        alert('No Google Sheet found for this event.');
+      }
+    } catch (error) {
+      console.error('Error fetching Google Sheet:', error);
+      alert('Failed to fetch Google Sheet.');
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -214,6 +232,13 @@ const EventsModal = ({ event, onClose, action }) => {
                 onClick={handleAttendeesClick}
               >
                 Attendees list
+              </button>
+              <button
+                className={styles.attendeesButton}
+                onClick={handleOpenGoogleSheet}
+                disabled={!event?.event_id}
+              >
+                Google Sheet
               </button>
             </div>
           </div>
