@@ -12,6 +12,7 @@ export default function ExecutivesModal({ exec, onClose, action }) {
     },
   );
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const API_BASE_URL =
     'https://tech-club-website.onrender.com/executivesManagement';
@@ -34,32 +35,32 @@ export default function ExecutivesModal({ exec, onClose, action }) {
 
   const handleSaveChanges = async () => {
     if (!validateForm()) return;
+    setIsLoading(true);
 
     setErrors({});
     try {
       await axios.post(
-        'http://localhost:5000/auth/invite-admin', // Update to production URL if needed
+        'http://localhost:5000/auth/invite-admin',
         { email: selectedExecutive.email },
         { withCredentials: true },
       );
 
       console.log('Magic link sent!');
-      onClose(true); // close modal on success
+      onClose(true);
     } catch (err) {
       console.error('Failed to send magic link:', err);
       setErrors({ general: 'Failed to send magic link. Please try again.' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleResetPassword = () => {
     console.log('Reset Password Handler');
   };
+
   const handleDeleteExec = async () => {
-    /*
-    if (!confirm('Are you sure you want to delete this executive?')) {
-      return;
-    }
-*/
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${API_BASE_URL}/executives/${selectedExecutive.admin_id}`,
@@ -79,6 +80,8 @@ export default function ExecutivesModal({ exec, onClose, action }) {
     } catch (error) {
       console.error('Error deleting executive:', error);
       setErrors({ general: 'Error deleting executive' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -150,20 +153,26 @@ export default function ExecutivesModal({ exec, onClose, action }) {
               <button
                 className={styles.deleteButton}
                 onClick={handleDeleteExec}
+                disabled={isLoading}
               >
-                Delete Executive <FaTrash />
+                {isLoading ? 'Deleting...' : 'Delete Executive'} <FaTrash />
               </button>
               <button
                 className={styles.resetButton}
                 onClick={handleResetPassword}
+                disabled={isLoading}
               >
-                Reset Password
+                {isLoading ? 'Resetting...' : 'Reset Password'}
               </button>
             </div>
           ) : (
             <div className={styles.modalActions}>
-              <button className={styles.saveButton} onClick={handleSaveChanges}>
-                Invite Executive
+              <button
+                className={styles.saveButton}
+                onClick={handleSaveChanges}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Sending Invite...' : 'Invite Executive'}
               </button>
             </div>
           )}

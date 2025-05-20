@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const EventsModal = ({ event, onClose, action }) => {
   const modalRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
     event_id: event?.event_id || '',
     event_title: event?.event_title || '',
@@ -43,6 +45,7 @@ const EventsModal = ({ event, onClose, action }) => {
   };
 
   const handleSaveChanges = async () => {
+    setIsSaving(true);
     try {
       const url =
         action === 'edit'
@@ -69,6 +72,8 @@ const EventsModal = ({ event, onClose, action }) => {
       onClose(true);
     } catch (error) {
       console.error('Error saving event:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -76,6 +81,7 @@ const EventsModal = ({ event, onClose, action }) => {
     if (!confirm('Are you sure you want to delete this event?')) {
       return;
     }
+    setIsDeleting(true);
 
     try {
       const response = await fetch(
@@ -90,6 +96,8 @@ const EventsModal = ({ event, onClose, action }) => {
       onClose(true);
     } catch (error) {
       console.error('Error deleting event:', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -229,19 +237,25 @@ const EventsModal = ({ event, onClose, action }) => {
                 <button
                   className={styles.deleteButton}
                   onClick={handleDeleteEvent}
+                  disabled={isDeleting || isSaving}
                 >
-                  Delete Event <FaTrash />
+                  {isDeleting ? 'Deleting...' : 'Delete Event'} <FaTrash />
                 </button>
                 <button
                   className={styles.saveButton}
                   onClick={handleSaveChanges}
+                  disabled={isDeleting || isSaving}
                 >
-                  Save Changes <FaEdit />
+                  {isSaving ? 'Saving...' : 'Save Changes'} <FaEdit />
                 </button>
               </>
             ) : (
-              <button className={styles.saveButton} onClick={handleSaveChanges}>
-                Create Event
+              <button
+                className={styles.saveButton}
+                onClick={handleSaveChanges}
+                disabled={isSaving}
+              >
+                {isSaving ? 'Creating...' : 'Create Event'}
               </button>
             )}
           </div>

@@ -10,6 +10,7 @@ const AdminLoginPage = () => {
   const [setPasswordStatus, setSetPasswordStatus] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,6 +58,7 @@ const AdminLoginPage = () => {
       setSetPasswordError('Passwords do not match.');
       return;
     }
+    setIsLoading(true);
     try {
       const res = await axios.post(
         'http://localhost:5000/auth/set-password',
@@ -74,6 +76,8 @@ const AdminLoginPage = () => {
       }, 1500);
     } catch (err) {
       setSetPasswordError('Failed to set password:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +108,13 @@ const AdminLoginPage = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <button type="submit">Set Password</button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={styles.submitButton}
+          >
+            {isLoading ? 'Setting Password...' : 'Set Password'}
+          </button>
         </form>
       )}
     </div>

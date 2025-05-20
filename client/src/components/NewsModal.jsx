@@ -12,6 +12,8 @@ function formatDateYYYYMMDD(date) {
 export default function NewsModal({ news, onClose, action, isTechClubNews }) {
   const modalRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [selectedNews, setSelectedNews] = useState(
     news
@@ -92,6 +94,7 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
 
   const handleSaveChanges = async () => {
     if (!validateForm()) return;
+    setIsSaving(true);
 
     const formData = new FormData();
 
@@ -128,11 +131,14 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
       onClose(true);
     } catch (error) {
       console.error('Error saving news:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
   const handleDeleteNews = async () => {
     if (!confirm('Are you sure you want to delete this news item?')) return;
+    setIsDeleting(true);
 
     try {
       const response = await fetch(
@@ -151,6 +157,8 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
       onClose(true);
     } catch (error) {
       console.error('Error deleting news:', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -317,8 +325,9 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
               <button
                 className={styles.deleteButton}
                 onClick={handleDeleteNews}
+                disabled={isDeleting || isSaving}
               >
-                Delete News <FaTrash />
+                {isDeleting ? 'Deleting...' : 'Delete News'} <FaTrash />
               </button>
             )}
             <button
@@ -326,11 +335,14 @@ export default function NewsModal({ news, onClose, action, isTechClubNews }) {
                 action === 'edit' ? styles.editButton : styles.saveButton
               }
               onClick={handleSaveChanges}
+              disabled={isDeleting || isSaving}
             >
               {action === 'edit' ? (
                 <>
-                  Save News <FaEdit />
+                  {isSaving ? 'Saving...' : 'Save News'} <FaEdit />
                 </>
+              ) : isSaving ? (
+                'Creating...'
               ) : (
                 'Create News'
               )}
