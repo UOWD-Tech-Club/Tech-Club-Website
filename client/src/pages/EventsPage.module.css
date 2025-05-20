@@ -57,7 +57,8 @@
   border-radius: 8px;
 }
 
-.registrationForm input {
+.registrationForm input,
+.registrationForm .degreeInput {
   color: var(--secondary);
   padding: 10px 20px;
   width: 100%;
@@ -68,12 +69,56 @@
   background-color: var(--primary);
 }
 
-.registrationForm input::placeholder {
-  color: var(--secondary);
+.registrationForm input:disabled,
+.registrationForm .degreeInput:disabled {
+  opacity: 0.5;
 }
 
-.registrationForm input:disabled {
-  opacity: 0.5;
+.registrationForm .degreeSelect {
+  color: var(--secondary);
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 1rem;
+  border: 1px solid var(--secondary);
+  border-radius: 20px;
+  background-color: var(--primary);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.searchableDropdown {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.degreeInput {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.registrationForm .degreeSelect optgroup {
+  font-weight: bold;
+  color: var(--accent);
+  background-color: var(--primary);
+}
+
+.registrationForm .degreeSelect option {
+  font-weight: normal;
+  color: var(--secondary);
+  padding: 8px;
+}
+
+.registrationForm input::placeholder {
+  color: var(--secondary);
 }
 
 .registrationForm button {
@@ -122,6 +167,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -333,7 +379,8 @@
     width: 100%;
   }
 
-  .registrationForm input {
+  .registrationForm input,
+  .registrationForm .degreeInput {
     width: 100%;
     padding: 8px 16px;
     margin: 4px 0;

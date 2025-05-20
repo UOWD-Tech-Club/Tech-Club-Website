@@ -50,7 +50,6 @@ function App() {
           }
         />
         <Route
-
           path="/executivesmanagement"
           element={<ExecutivesManagementPage />}
         />
