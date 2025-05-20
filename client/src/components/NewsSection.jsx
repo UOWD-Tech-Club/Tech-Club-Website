@@ -17,6 +17,12 @@ function NewsSection() {
   const tabletSize = 959;
   const [isMobile, setIsMobile] = useState(window.innerWidth <= mobileSize);
   const [isTablet, setIsTablet] = useState(window.innerWidth <= tabletSize);
+  const [newsPart1, setNewsPart1] = useState([]);
+  const [newsPart2, setNewsPart2] = useState([]);
+  const [error, setError] = useState(null);
+
+  const sliderRef1 = useRef(null);
+  const sliderRef2 = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,70 +33,6 @@ function NewsSection() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Settings for the first carousel
-  const settings1 = {
-    dots: false,
-    arrows: loading ? false : true,
-    infinite: true,
-    speed: 300,
-    adaptiveHeight: false,
-    variableWidth: true,
-    draggable: false,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 960,
-        settings: {
-          draggable: true,
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          arrows: false,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          draggable: true,
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          arrows: false,
-        },
-      },
-    ],
-  };
-
-  // Settings for the second carousel
-  const settings2 = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    speed: 300,
-    variableWidth: true,
-    adaptiveHeight: false,
-    slidesToScroll: 1,
-    draggable: false,
-  };
-
-  const [newsPart1, setNewsPart1] = useState([]);
-  const [newsPart2, setNewsPart2] = useState([]);
-
-  const sliderRef1 = useRef(null);
-  const sliderRef2 = useRef(null);
-
-  const [error, setError] = useState(null);
-
   const fetchDailyNews = async () => {
     try {
       const response = await fetch(
@@ -100,19 +42,27 @@ function NewsSection() {
 
       const data = await response.json();
       const allNews = data.news;
-      const midIndex = Math.ceil(allNews.length / 2);
-      setNewsPart1(allNews.slice(0, midIndex));
-      setNewsPart2(allNews.slice(midIndex));
+
+      // If we have 4 or fewer items, only use one carousel
+      if (allNews.length <= 4) {
+        setNewsPart1(allNews);
+        setNewsPart2([]);
+      } else {
+        // For 5+ items, split into two carousels
+        const midIndex = Math.ceil(allNews.length / 2);
+        setNewsPart1(allNews.slice(0, midIndex));
+        setNewsPart2(allNews.slice(midIndex));
+      }
       setLoading(false);
     } catch (err) {
       console.error('Error fetching news:', err);
       setError('Unable to load news at the moment. Please try again later.');
+      console.log(error);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log(error);
     fetchDailyNews();
   }, []);
 
@@ -139,6 +89,63 @@ function NewsSection() {
     </SkeletonTheme>
   );
 
+  // Settings for the first carousel
+  const settings1 = {
+    dots: false,
+    arrows: loading ? false : true,
+    infinite: true, // Always enable infinite for smooth looping
+    speed: 300,
+    adaptiveHeight: false,
+    variableWidth: true,
+    draggable: false,
+    slidesToShow: Math.min(3, newsPart1.length || 3),
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: Math.min(3, newsPart1.length || 3),
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 960,
+        settings: {
+          draggable: true,
+          slidesToShow: Math.min(2, newsPart1.length || 2),
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          draggable: true,
+          slidesToShow: Math.min(1, newsPart1.length || 1),
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
+  };
+
+  // Settings for the second carousel
+  const settings2 = {
+    dots: false,
+    arrows: false,
+    infinite: true, // Always enable infinite for smooth looping
+    speed: 300,
+    variableWidth: true,
+    adaptiveHeight: false,
+    slidesToScroll: 1,
+    draggable: false,
+    slidesToShow: Math.min(3, newsPart2.length || 3),
+  };
+
   return (
     <div className={styles.newsletterContainer}>
       <div className={styles.newsletter}>
@@ -152,12 +159,14 @@ function NewsSection() {
         ) : newsPart1.length > 0 ? (
           <Slider
             {...settings1}
-            asNavFor={isTablet ? null : sliderRef2.current}
+            asNavFor={
+              isTablet || newsPart1.length <= 4 ? null : sliderRef2.current
+            }
             ref={sliderRef1}
           >
             {newsPart1.map((news, index) => (
               <div
-                key={index}
+                key={news.news_id || index}
                 className={styles.carouselItem}
                 onClick={() =>
                   news.news_url && window.open(news.news_url, '_blank')
@@ -185,12 +194,12 @@ function NewsSection() {
         )}
       </div>
 
-      {/* Second Carousel for Desktop/Tablet */}
-      {!isMobile && (
+      {/* Second Carousel for Desktop/Tablet - Only show if we have more than 4 items */}
+      {!isMobile && newsPart2.length > 0 && (
         <div className={classNames(styles.carousel, styles.secondCarousel)}>
           {loading ? (
             renderLoadingComponent(settings2, false)
-          ) : newsPart2.length > 0 ? (
+          ) : (
             <Slider
               {...settings2}
               asNavFor={isTablet ? null : sliderRef1.current}
@@ -198,7 +207,7 @@ function NewsSection() {
             >
               {newsPart2.map((news, index) => (
                 <div
-                  key={index}
+                  key={news.news_id || index}
                   className={styles.secondCarouselItem}
                   onClick={() =>
                     news.news_url && window.open(news.news_url, '_blank')
@@ -218,7 +227,7 @@ function NewsSection() {
                 </div>
               ))}
             </Slider>
-          ) : null}
+          )}
         </div>
       )}
 
