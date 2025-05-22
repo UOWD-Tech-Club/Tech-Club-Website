@@ -205,6 +205,10 @@
   .desktop_logout {
     display: block;
   }
+
+  .menu_icon {
+    display: none;
+  }
 }
 
 /* Small Desktop Styles */
